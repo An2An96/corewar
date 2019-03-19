@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:22:06 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/19 17:56:53 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,25 @@
 
 # include "libft.h"
 
-/*
-**	tmp
-*/
+# include "op.h"
 
-# define REG_NUMBER				16
+# define COLOR_BLACK		"\x1b[30m"
+# define COLOR_CYAN			"\x1b[36m"
+# define COLOR_ERROR		"\x1b[1;31m"
+# define COLOR_NONE			"\x1b[0m"
 
-# define PROG_NAME_LENGTH		(128)
-# define COMMENT_LENGTH			(2048)
-# define COREWAR_EXEC_MAGIC		0xea83f3
+# define BG_COLOR_WHITE		"\x1b[47m"
+# define BG_COLOR_NONE		"\x1b[49m"
+
+# define COLOR_BLACK		"\x1b[30m"
+# define COLOR_CYAN			"\x1b[36m"
+# define COLOR_ERROR		"\x1b[1;31m"
+# define COLOR_NONE			"\x1b[0m"
+
+# define SECURE_MALLOC(a)	!(a) && throw_error(MEMORY_ERR)
+
+# define STR_ERROR_SYS		COLOR_ERROR"[System Error]: "COLOR_NONE
+# define MEMORY_ERR			STR_ERROR_SYS, "Not enough memory"
 
 /*
 **	Структура описывающая объект каретки
@@ -31,8 +41,13 @@
 
 typedef struct	s_carriage
 {
+	int				id;
+	bool			carry;
+	unsigned char	op_code;
+	int				last_live_cycle;
 	int				cycles_to_execute;
-	unsigned char	registers[REG_NUMBER];
+	int				position;
+	void			*registers[REG_NUMBER];
 }				t_carriage;
 
 /*
@@ -41,20 +56,31 @@ typedef struct	s_carriage
 
 typedef struct	s_env
 {
-	unsigned char	*field;
+	unsigned char	field[MEM_SIZE];
+	t_list			*carriages;
+	int				last_live_champ;
 	int				cycles_to_die;
+	int				cycles_count;
+	int				checks_count;
 }				t_env;
+
+/*
+**	Структура описывающая чемпиона
+*/
 
 typedef struct	s_champion
 {
 	char			prog_name[PROG_NAME_LENGTH + 1];
 	char			comment[COMMENT_LENGTH + 1];
+	unsigned int	prog_size;
 	unsigned char	*exec_code;
 }				t_champion;
 
-//	void	read_champion(char *name)
-//	void	init_arena(t_list *champions)
 
-t_env	*init_vm(t_champion *champions);
+int		throw_error(const char *title, const char *err);
+
+t_env	*init_vm(t_list *champions);
+
+void	print_memory(const void *memory, size_t size);
 
 #endif

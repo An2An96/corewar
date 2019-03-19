@@ -10,20 +10,23 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS = main.c init_vm.c
+SRCS = main.c throw_error.c init_vm.c print_memory.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = vm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))
 
-FLAGS += -I$(INC_DIR)
-FLAGS += $(foreach lib,$(LIBS),-I$(LIB_DIR)/$(lib)/includes)
+OBJ_FLAGS += -I$(INC_DIR)
+OBJ_FLAGS += -I../common
+OBJ_FLAGS += $(foreach lib,$(LIBS),-I$(LIB_DIR)/$(lib)/includes)
 
 ifeq ($(STRICT),true)
-	FLAGS += -Wall -Wextra -Werror
+	OBJ_FLAGS += -Wall -Wextra -Werror
 endif
 ifeq ($(DEBUG),true)
-	FLAGS += -g
+	OBJ_FLAGS += -g
 endif
+
+FLAGS += $(foreach lib,$(LIBS),-L$(LIB_DIR)/$(lib) -l$(lib:lib%=%))
 
 ############################		  Rules 		############################
 
@@ -36,10 +39,10 @@ $(OBJ_DIR):
 	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS) | $(OBJ_DIR)
-	@gcc $(FLAGS) -c $< -o $@
+	@gcc $(OBJ_FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	@gcc -o $@ $^
+	@gcc $(FLAGS) -o $@ $^
 	@echo "$(OK_COLOR)Build vm complete$(NO_COLOR)"
 
 clean:
