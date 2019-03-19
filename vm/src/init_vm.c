@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   init_vm.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:09:38 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/19 16:04:15 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/19 16:22:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	main(int argc, char **argv)
+t_env	*init_vm(t_champion *champions)
 {
-	init_vm(NULL);
-	return (0);
+	t_env *vm;
+
+	return (vm);
 }

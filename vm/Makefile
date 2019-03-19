@@ -10,13 +10,13 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS = main.c
+SRCS = main.c init_vm.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = vm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))
 
 FLAGS += -I$(INC_DIR)
-FLAGS += $(foreach lib,$(LIBS),-I$(LIBS_DIR)/$(lib)/includes)
+FLAGS += $(foreach lib,$(LIBS),-I$(LIB_DIR)/$(lib)/includes)
 
 ifeq ($(STRICT),true)
 	FLAGS += -Wall -Wextra -Werror
