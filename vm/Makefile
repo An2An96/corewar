@@ -10,7 +10,7 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS = main.c throw_error.c init_vm.c print_memory.c
+SRCS = main.c init_vm.c print_memory.c swap_bytes.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = vm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 17:56:53 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/19 19:39:27 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,6 @@
 # include "libft.h"
 
 # include "op.h"
-
-# define COLOR_BLACK		"\x1b[30m"
-# define COLOR_CYAN			"\x1b[36m"
-# define COLOR_ERROR		"\x1b[1;31m"
-# define COLOR_NONE			"\x1b[0m"
-
-# define BG_COLOR_WHITE		"\x1b[47m"
-# define BG_COLOR_NONE		"\x1b[49m"
-
-# define COLOR_BLACK		"\x1b[30m"
-# define COLOR_CYAN			"\x1b[36m"
-# define COLOR_ERROR		"\x1b[1;31m"
-# define COLOR_NONE			"\x1b[0m"
 
 # define SECURE_MALLOC(a)	!(a) && throw_error(MEMORY_ERR)
 
@@ -82,5 +69,6 @@ int		throw_error(const char *title, const char *err);
 t_env	*init_vm(t_list *champions);
 
 void	print_memory(const void *memory, size_t size);
+void	swap_bytes(void *memory, int size);
 
 #endif
