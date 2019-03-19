@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 19:39:27 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/19 19:49:40 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VM_H
 
 # include "libft.h"
+# include "ft_printf.h"
 
 # include "op.h"
 
@@ -70,5 +71,7 @@ t_env	*init_vm(t_list *champions);
 
 void	print_memory(const void *memory, size_t size);
 void	swap_bytes(void *memory, int size);
+
+void	print_memory(const void *memory, size_t size);
 
 #endif
