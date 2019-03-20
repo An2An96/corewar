@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   zjmp.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:36:31 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:07:35 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/20 20:16:16 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/20 20:16:46 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(int argc, char **argv)
+#include "vm.h"
+
+void	op_zjmp(t_carriage *carriage, unsigned int arg)
 {
-	return (0);
+	ft_printf("op_zjmp, arg: %d\n", arg);
 }

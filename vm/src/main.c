@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 15:23:49 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/20 16:56:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	print_champion(t_champion *champion)
 	ft_putchar('\n');
 }
 
-void	read_args(int argc, char **argv)
+t_list	*read_args(int argc, char **argv)
 {
 	int			i;
 	t_list 		*listchamp;
@@ -30,26 +30,25 @@ void	read_args(int argc, char **argv)
 
 	i = 1;
 	read_status = 0;
+	listchamp = NULL;
 	while (i < argc)
 	{
-		// if (read_status == 0)
-		// {
 		champion = read_champion(argv[i]);
 		SECURE_MALLOC(new = ft_lstnew(champion, sizeof(t_champion)));
 		ft_lstadd(&listchamp, new);
-		print_champion((t_champion*)listchamp->content);
-		// 	read_status++;
-		// 	i++;
-		// 	continue ;
-		// }
-		// champion = read_champion(argv[i]);
-		// ft_lstpush(listchamp, champion);
+		// print_champion((t_champion*)listchamp->content);
 		i++;
 	}
+	return (listchamp);
 }
 
 int		main(int argc, char **argv)
 {
-	read_args(argc, argv);
+	t_list	*champions;
+	t_env	*env;
+
+	champions = read_args(argc, argv);
+	env = init_env(champions);
+	vm_loop(env);
 	return (0);
 }

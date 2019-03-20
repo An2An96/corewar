@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   or.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:36:31 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:07:35 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/20 20:32:29 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/20 20:32:43 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(int argc, char **argv)
+#include "vm.h"
+
+void	op_or(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3)
 {
-	return (0);
+	ft_printf("op_or, arg1: %d, arg2: %d, arg3: %d\n", arg1, arg2, arg3);
 }

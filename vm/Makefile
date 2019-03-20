@@ -10,7 +10,13 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS = main.c init_vm.c print_memory.c swap_bytes.c read_champion.c
+SRCS =	main.c read_champion.c init_vm.c print_memory.c swap_bytes.c op.c \
+		vm_loop.c debug.c \
+		operations/live.c operations/ld.c operations/st.c operations/add.c \
+		operations/sub.c operations/and.c operations/or.c operations/xor.c \
+		operations/zjmp.c operations/ldi.c operations/sti.c operations/fork.c \
+		operations/lld.c operations/lldi.c operations/lfork.c \
+		operations/aff.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = vm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))
@@ -37,6 +43,7 @@ $(LIBS):
 
 $(OBJ_DIR):
 	@mkdir -p $@
+	@mkdir -p $@/operations
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS) | $(OBJ_DIR)
 	@gcc $(OBJ_FLAGS) -c $< -o $@

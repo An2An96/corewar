@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   live.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:36:31 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:07:35 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/20 20:13:09 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/20 20:13:10 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(int argc, char **argv)
+#include "vm.h"
+
+void	op_live(t_carriage *carriage, unsigned int arg)
 {
-	return (0);
+	ft_printf("live op call, arg: %d\n", arg);
 }

@@ -1,59 +1,61 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_vm.c                                          :+:      :+:    :+:   */
+/*   init_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/19 16:04:15 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 20:19:35 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/20 13:11:11 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-t_env	*init_vm(t_list *champions)
+t_env	*init_env(t_list *champions)
 {
 	int8_t		i;
 	int8_t		j;
 	int			offset;
 	int8_t		champions_count;
-	t_env		*vm;
+	t_env		*env;
 	t_list		*cur_lst;
 	t_champion	*cur_champ;
 	t_carriage	*carriage;
 
-	SECURE_MALLOC(vm = ft_memalloc(sizeof(t_env)));
+	// ft_printf("exec code of champion:\n");
+	// print_memory(((t_champion*)champions->content)->exec_code, ((t_champion*)champions->content)->prog_size);
+	// ft_printf("\n\n");
+	SECURE_MALLOC(env = ft_memalloc(sizeof(t_env)));
 	champions_count = ft_lstlen(champions);
 	offset = MEM_SIZE / champions_count;
 
 	//	инициализация чемпиона
 	i = 0;
 	cur_lst = champions;
-	while (champions)
+	while (cur_lst)
 	{
 		cur_champ = (t_champion*)cur_lst->content;
 		
 		//	создание каретки
-		SECURE_MALLOC(carriage = ft_memalloc(sizeof(t_carriage)));
+		SECURE_MALLOC(carriage = (t_carriage*)ft_memalloc(sizeof(t_carriage)));
 		carriage->position = offset * i;
 
 		//	размещение исполняемого кода чемпиона
-		ft_memcpy(vm->field + carriage->position, cur_champ->exec_code, cur_champ->prog_size);
+		ft_memcpy(env->field + carriage->position, cur_champ->exec_code, cur_champ->prog_size);
 
-		j = 0;
-		while (j < REG_NUMBER)
-			SECURE_MALLOC(carriage->registers[j++] = ft_memalloc(REG_SIZE));
-		// carriage->registers[0] = -(i + 1);
+		carriage->registers[0] = -(i + 1);
 
-		ft_lstadd(&vm->carriages, ft_lstnew(carriage, sizeof(carriage)));
+		print_carriage(env, carriage);
+
+		ft_lstadd(&env->carriages, ft_lstnew_ptr(carriage));
 
 		cur_lst = cur_lst->next;
 		i++;
 	}
 
-	print_memory(vm->field, MEM_SIZE);
+	print_memory(env->field, MEM_SIZE);
 	
-	vm->cycles_to_die = CYCLE_TO_DIE;
-	return (vm);
+	env->cycles_to_die = CYCLE_TO_DIE;
+	return (env);
 }

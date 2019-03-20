@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   aff.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:36:31 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:07:35 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/20 20:37:40 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/20 20:37:57 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(int argc, char **argv)
+#include "vm.h"
+
+void	op_aff(t_carriage *carriage, unsigned int arg1)
 {
-	return (0);
+	ft_printf("op_aff, arg1: %d\n", arg1);
 }

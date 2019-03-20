@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ldi.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:36:31 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 16:07:35 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/20 20:26:57 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/20 20:30:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	main(int argc, char **argv)
+#include "vm.h"
+
+void	op_ldi(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3)
 {
-	return (0);
+	ft_printf("op_ldi, arg1: %d, arg2: %d, arg3: %d\n", arg1, arg2, arg3);
 }
