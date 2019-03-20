@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 20:38:15 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/20 20:58:44 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ typedef struct	s_env
 
 typedef struct	s_champion
 {
+	int				nbr_player;
 	char			prog_name[PROG_NAME_LENGTH + 1];
 	char			comment[COMMENT_LENGTH + 1];
 	unsigned char	*exec_code;
@@ -96,12 +97,13 @@ t_op	g_op_tab[17];
 */
 
 t_champion	*read_champion(char *filename);
+t_champion	**read_args(int argc, char **argv);
 
 /*
 **	Main VM functions
 */
 
-t_env		*init_env(t_list *champions);
+t_env		*init_env(t_champion **champions);
 void		vm_loop(t_env *env);
 
 void		op_live(t_carriage *carriage, unsigned int arg);
@@ -132,6 +134,7 @@ void		swap_bytes(void *memory, int size);
 **	Debug
 */
 
+void		print_champion(t_champion *champion);
 void		print_carriage(t_env *env, t_carriage *carriage);
 
 #endif

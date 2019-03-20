@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_champion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/20 15:21:59 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/20 20:56:44 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@ static void		read_exec_code(int fd, t_champion *champion)
 	unsigned char	read_null;
 
 	i = 0;
+    // if (champion->prog_size > CHAMP_MAX_SIZE)
+    //     throw_error("[Validation Error]:",
+    //         "error exec code champion more than CHAMP_MAX_SIZE");
 	SECURE_MALLOC(champion->exec_code = (unsigned char*)
 		ft_memalloc(sizeof(unsigned char) * champion->prog_size));
 	while (i < champion->prog_size)
@@ -59,4 +62,121 @@ t_champion	*read_champion(char *filename)
 		throw_error("[Validation Error]:", "error NULL 2");
 	read_exec_code(fd, champion);
 	return (champion);
+}
+
+int			cw_atoi(const char *str)
+{
+	int			i;
+	long long	nb;
+
+	nb = 0;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] < '0' || str[i] > '9')
+			throw_error("[Read Error]:", "Invalid player nbr");
+		nb = nb * 10 + (str[i] - '0');
+		if (nb > 2147483647)
+			throw_error("[Read Error]:", "Invalid player nbr");
+		i++;
+	}
+	if (nb > MAX_PLAYERS || nb == 0)
+		throw_error("[Read Error]:", "Invalid player nbr");
+	return (nb);
+}
+
+int		*create_mask(int argc, char **argv)
+{
+	int	*mask;
+	int i;
+	int	nbr_player;
+
+	i = 0;
+	nbr_player = 0;
+	SECURE_MALLOC(mask = (int*)ft_memalloc(sizeof(int) * MAX_PLAYERS));
+	while (i < argc)
+	{
+		if (!ft_strcmp(argv[i], "-n"))
+		{
+			if (++i < argc)
+			{
+				nbr_player = cw_atoi(argv[i]);
+				if (nbr_player - 1 < MAX_PLAYERS)
+				{
+					if (mask[nbr_player - 1] == 0)
+						mask[nbr_player - 1] = 1;
+					else
+						throw_error("[Read Error]:", "same player numbers");
+				}
+			}
+			else
+				throw_error("[Read Error]:", "Invalid player nbr");
+			if (++i >= argc)
+				throw_error("[Read Error]:", "Invalid name file");
+			continue ;
+		}
+		i++;
+	}
+	return (mask);
+}
+
+t_champion	**read_args(int argc, char **argv)
+{
+	int			i;
+	t_champion	*champion;
+	t_champion	**arrchamp;
+	int			nbr_player;
+	int			count_champion;
+	int			*mask;
+	int			j;
+
+	if (argc == 1)
+		throw_error("[Read Error]:", "Invalid name file");
+	i = 1;
+
+	nbr_player = 0;
+	count_champion = 0;
+	SECURE_MALLOC(arrchamp = (t_champion**)ft_memalloc(sizeof(t_champion*) * MAX_PLAYERS));
+	mask = create_mask(argc, argv);
+	while (i < argc)
+	{
+		if (count_champion > MAX_PLAYERS)
+			throw_error("[Read Error]:", "Incorrect count players");
+		nbr_player = 0;
+		if (!ft_strcmp(argv[i], "-n"))
+		{
+			if (++i < argc)
+				nbr_player = cw_atoi(argv[i]);
+			i++;
+		}
+		if (nbr_player)
+			arrchamp[nbr_player - 1] = read_champion(argv[i]);
+		else
+		{
+			j = 0;
+			while (mask[j] != 0)
+				j++;
+			mask[j] = 1;
+			arrchamp[j] = read_champion(argv[i]);
+		}
+		count_champion++;
+		i++;
+	}
+	if (count_champion > MAX_PLAYERS)
+		throw_error("[Read Error]:", "Incorrect count players");
+	j = 0;
+	while (j < count_champion)
+	{
+		if (mask[j] == 0)
+			throw_error("[Read Error]:", "Incorrect position players");
+		j++;
+	}
+	j = 0;
+	ft_printf("ANTON HUI\n");
+	while (j < count_champion)
+	{
+		print_champion(arrchamp[j]);
+		j++;
+	}
+	return (arrchamp);
 }

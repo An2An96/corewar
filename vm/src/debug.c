@@ -6,11 +6,19 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 16:43:17 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/20 20:57:31 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
+
+void	print_champion(t_champion *champion)
+{
+	ft_printf("\nChamp:\nName: %s\nComment: %s\nSize exec: %u\n",
+		champion->prog_name, champion->comment, champion->prog_size);
+	print_memory(champion->exec_code, champion->prog_size);
+	ft_putchar('\n');
+}
 
 void	print_carriage(t_env *env, t_carriage *carriage)
 {
