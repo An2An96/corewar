@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 19:49:40 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/20 15:22:11 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct	s_champion
 
 
 int		throw_error(const char *title, const char *err);
+
+t_champion	*read_champion(char *filename);
 
 t_env	*init_vm(t_list *champions);
 

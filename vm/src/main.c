@@ -6,40 +6,50 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/19 20:18:39 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/20 15:23:49 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-// void print_champion()
-
-int	main(int argc, char **argv)
+void	print_champion(t_champion *champion)
 {
-	int magic_header;
-	int	fd;
-	t_champion *champion;
-	unsigned int buf;
+	ft_printf("\nChamp:\nName: %s\nComment: %s\nSize exec: %u\n",
+		champion->prog_name, champion->comment, champion->prog_size);
+	print_memory(champion->exec_code, champion->prog_size);
+	ft_putchar('\n');
+}
 
-	fd = open(argv[1], O_RDONLY);
+void	read_args(int argc, char **argv)
+{
+	int			i;
+	t_list 		*listchamp;
+	t_list		*new;
+	t_champion	*champion;
+	int			read_status;
 
-	read(fd, &magic_header, sizeof(int));
-	swap_bytes(&magic_header, sizeof(magic_header));
-	if (magic_header != COREWAR_EXEC_MAGIC)
-		throw_error("[Validation Error]:", "error magic header");
-	SECURE_MALLOC(champion = (t_champion*)malloc(sizeof(t_champion)));
-	read(fd, &champion->prog_name, PROG_NAME_LENGTH);
-	champion->prog_name[PROG_NAME_LENGTH] = '\0';
-	read(fd, &buf, sizeof(buf));
-	if (buf)
-		throw_error("[Validation Error]:", "error NULL 1");
-	read(fd, &champion->prog_size, sizeof(int));
-	read(fd, &champion->comment, COMMENT_LENGTH);
-	champion->comment[COMMENT_LENGTH] = '\0';
-	read(fd, &buf, sizeof(buf));
-	if (buf)
-		throw_error("[Validation Error]:", "error NULL 2");
-	ft_printf("Champ:\nName: %s\nComment: %s\n", champion->prog_name, champion->comment);
+	i = 1;
+	read_status = 0;
+	while (i < argc)
+	{
+		// if (read_status == 0)
+		// {
+		champion = read_champion(argv[i]);
+		SECURE_MALLOC(new = ft_lstnew(champion, sizeof(t_champion)));
+		ft_lstadd(&listchamp, new);
+		print_champion((t_champion*)listchamp->content);
+		// 	read_status++;
+		// 	i++;
+		// 	continue ;
+		// }
+		// champion = read_champion(argv[i]);
+		// ft_lstpush(listchamp, champion);
+		i++;
+	}
+}
 
+int		main(int argc, char **argv)
+{
+	read_args(argc, argv);
 	return (0);
 }
