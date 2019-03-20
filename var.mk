@@ -1,5 +1,5 @@
 STRICT = false
-DEBUG = false
+DEBUG = true
 
 ASM_DIR = ./assembler
 ASM_NAME = asm

@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 15:22:11 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/20 20:36:42 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,24 @@ typedef struct	s_env
 
 typedef struct	s_champion
 {
+	int				nbr_player;
 	char			prog_name[PROG_NAME_LENGTH + 1];
 	char			comment[COMMENT_LENGTH + 1];
 	unsigned int	prog_size;
 	unsigned char	*exec_code;
 }				t_champion;
 
-
-int		throw_error(const char *title, const char *err);
+int			throw_error(const char *title, const char *err);
 
 t_champion	*read_champion(char *filename);
+void		read_args(int argc, char **argv);
+void		print_champion(t_champion *champion);
 
-t_env	*init_vm(t_list *champions);
+t_env		*init_vm(t_list *champions);
 
-void	print_memory(const void *memory, size_t size);
-void	swap_bytes(void *memory, int size);
+void		print_memory(const void *memory, size_t size);
+void		swap_bytes(void *memory, int size);
 
-void	print_memory(const void *memory, size_t size);
+void		print_memory(const void *memory, size_t size);
 
 #endif
