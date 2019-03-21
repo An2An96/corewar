@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/21 17:52:40 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/21 18:04:59 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,16 +139,17 @@ void read_args(int argc, char **argv, t_env *env)
 	mask = create_mask(argc, argv);
 	while (i < argc)
 	{
+		if (count_champion > MAX_PLAYERS)
+			throw_error("[Read Error]:", "Incorrect count players");
+		nbr_player = 0;	
 		if (!ft_strcmp(argv[i], "-dump"))
 		{
 			if (++i < argc)
 				env->dump_nbr_cycle = cw_atoi(argv[i]);
 			i++;
-			ft_printf("get dump = %d\n", env->dump_nbr_cycle );
+			ft_printf("get dump = %d\n", env->dump_nbr_cycle );		
+			continue ;
 		}
-		if (count_champion > MAX_PLAYERS)
-			throw_error("[Read Error]:", "Incorrect count players");
-		nbr_player = 0;
 		if (!ft_strcmp(argv[i], "-n"))
 		{
 			if (++i < argc)
