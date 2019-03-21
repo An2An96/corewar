@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/20 20:56:44 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/21 17:32:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,11 +120,10 @@ int		*create_mask(int argc, char **argv)
 	return (mask);
 }
 
-t_champion	**read_args(int argc, char **argv)
+void read_args(int argc, char **argv, t_env *env)
 {
 	int			i;
 	t_champion	*champion;
-	t_champion	**arrchamp;
 	int			nbr_player;
 	int			count_champion;
 	int			*mask;
@@ -136,7 +135,7 @@ t_champion	**read_args(int argc, char **argv)
 
 	nbr_player = 0;
 	count_champion = 0;
-	SECURE_MALLOC(arrchamp = (t_champion**)ft_memalloc(sizeof(t_champion*) * MAX_PLAYERS));
+	SECURE_MALLOC(env->champions = (t_champion**)ft_memalloc(sizeof(t_champion*) * (MAX_PLAYERS + 1)));
 	mask = create_mask(argc, argv);
 	while (i < argc)
 	{
@@ -150,14 +149,14 @@ t_champion	**read_args(int argc, char **argv)
 			i++;
 		}
 		if (nbr_player)
-			arrchamp[nbr_player - 1] = read_champion(argv[i]);
+			env->champions[nbr_player - 1] = read_champion(argv[i]);
 		else
 		{
 			j = 0;
 			while (mask[j] != 0)
 				j++;
 			mask[j] = 1;
-			arrchamp[j] = read_champion(argv[i]);
+			env->champions[j] = read_champion(argv[i]);
 		}
 		count_champion++;
 		i++;
@@ -175,8 +174,7 @@ t_champion	**read_args(int argc, char **argv)
 	ft_printf("ANTON HUI\n");
 	while (j < count_champion)
 	{
-		print_champion(arrchamp[j]);
+		print_champion(env->champions[j]);
 		j++;
 	}
-	return (arrchamp);
 }

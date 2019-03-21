@@ -12,22 +12,16 @@
 
 #include "vm.h"
 
-t_env	*init_env(t_champion **champions)
+void	init_env(t_env *env)
 {
 	int8_t		i;
 	int8_t		j;
 	int			offset;
 	int8_t		champions_count;
-	t_env		*env;
 	t_carriage	*carriage;
 
-	// ft_printf("exec code of champion:\n");
-	// print_memory(((t_champion*)champions->content)->exec_code, ((t_champion*)champions->content)->prog_size);
-	// ft_printf("\n\n");
-	SECURE_MALLOC(env = ft_memalloc(sizeof(t_env)));
-
 	i = 0;
-	while (champions[i])
+	while (env->champions[i])
 		i++;
 
 	champions_count = i;
@@ -35,14 +29,14 @@ t_env	*init_env(t_champion **champions)
 
 	//	инициализация чемпиона
 	i = 0;
-	while (champions[i])
+	while (env->champions[i])
 	{
 		//	создание каретки
 		SECURE_MALLOC(carriage = (t_carriage*)ft_memalloc(sizeof(t_carriage)));
 		carriage->position = offset * i;
 
 		//	размещение исполняемого кода чемпиона
-		ft_memcpy(env->field + carriage->position, champions[i]->exec_code, champions[i]->prog_size);
+		ft_memcpy(env->field + carriage->position, env->champions[i]->exec_code, env->champions[i]->prog_size);
 
 		carriage->registers[0] = -(i + 1);
 
@@ -56,5 +50,4 @@ t_env	*init_env(t_champion **champions)
 	print_memory(env->field, MEM_SIZE);
 	
 	env->cycles_to_die = CYCLE_TO_DIE;
-	return (env);
 }
