@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_champion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/21 18:12:13 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/21 18:50:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void read_args(int argc, char **argv, t_env *env)
 	count_champion = 0;
 	SECURE_MALLOC(env->champions = (t_champion**)ft_memalloc(sizeof(t_champion*) * (MAX_PLAYERS + 1)));
 	mask = create_mask(argc, argv);
+	env->dump_nbr_cycle = -1;
 	while (i < argc)
 	{
 		if (count_champion > MAX_PLAYERS)
@@ -145,7 +146,7 @@ void read_args(int argc, char **argv, t_env *env)
 			if (++i < argc)
 				env->dump_nbr_cycle = cw_atoi(argv[i]);
 			i++;
-			ft_printf("get dump = %d\n", env->dump_nbr_cycle );		
+			// ft_printf("get dump = %d\n", env->dump_nbr_cycle );		
 			continue ;
 		}
 		if (!ft_strcmp(argv[i], "-n"))
@@ -179,10 +180,10 @@ void read_args(int argc, char **argv, t_env *env)
 		j++;
 	}
 	j = 0;
-	ft_printf("ANTON HUI\n");
-	while (j < count_champion)
-	{
-		print_champion(env->champions[j]);
-		j++;
-	}
+	// ft_printf("ANTON HUI\n");
+	// while (j < count_champion)
+	// {
+	// 	print_champion(env->champions[j]);
+	// 	j++;
+	// }
 }

@@ -40,14 +40,14 @@ void	init_env(t_env *env)
 
 		carriage->registers[0] = -(i + 1);
 
-		print_carriage(env, carriage);
+		// print_carriage(env, carriage);
 
 		ft_lstadd(&env->carriages, ft_lstnew_ptr(carriage));
 
 		i++;
 	}
 
-	print_memory(env->field, MEM_SIZE);
+	// print_memory(env->field, MEM_SIZE);
 	
 	env->cycles_to_die = CYCLE_TO_DIE;
 }

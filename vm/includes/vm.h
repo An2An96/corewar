@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 17:35:16 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/21 18:15:45 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ typedef struct	s_champion
 typedef struct	s_env
 {
 	unsigned char	field[MEM_SIZE];
+
 	int				dump_nbr_cycle;
 
 	t_champion		**champions;
@@ -117,8 +118,8 @@ void		vm_loop(t_env *env);
 int			op_live(t_env *env, t_carriage *carriage, int args_types, ...);
 int			op_ld(t_env *env, t_carriage *carriage, int args_types, ...);
 void		op_st(t_carriage *carriage, unsigned int arg1, unsigned int arg2);
-void		op_add(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
-void		op_sub(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
+int			op_add(t_env *env, t_carriage *carriage, int args_types, ...);
+int			op_sub(t_env *env, t_carriage *carriage, int args_types, ...);
 void		op_and(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
 void		op_or(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
 void		op_xor(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
@@ -130,6 +131,8 @@ void		op_lld(t_carriage *carriage, unsigned int arg1, unsigned int arg2);
 void		op_lldi(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
 void		op_lfork(t_carriage *carriage, unsigned int arg1);
 void		op_aff(t_carriage *carriage, unsigned int arg1);
+
+int			get_reg_value(t_carriage *carriage, char idx);
 
 /*
 **	Utils functions
