@@ -10,8 +10,8 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS =	main.c read_champion.c init_vm.c print_memory.c swap_bytes.c op.c \
-		vm_loop.c debug.c \
+SRCS =	main.c read_args.c read_champion.c init_vm.c print_memory.c swap_bytes.c op.c \
+		vm_loop.c debug.c print_players.c\
 		operations/live.c operations/ld.c operations/st.c operations/add.c \
 		operations/sub.c operations/and.c operations/or.c operations/xor.c \
 		operations/zjmp.c operations/ldi.c operations/sti.c operations/fork.c \

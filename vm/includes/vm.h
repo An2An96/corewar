@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vm.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 17:35:16 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/21 20:55:33 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,10 @@ t_op	g_op_tab[17];
 **	Read
 */
 
+
+void		put_champ_on_arr(int nbr_player, char *argv, t_env *env, int *mask);
 void		read_args(int argc, char **argv, t_env *env);
+void		check_arr_champions(int count_champion, int *mask, t_env *env);
 
 /*
 **	Main VM functions
@@ -144,5 +147,11 @@ void		swap_bytes(void *memory, int size);
 
 void		print_champion(t_champion *champion);
 void		print_carriage(t_env *env, t_carriage *carriage);
+
+/*
+**	Print
+*/
+
+void    print_players(t_env *env);
 
 #endif
