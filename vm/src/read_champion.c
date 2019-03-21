@@ -6,7 +6,7 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/21 18:04:59 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/21 18:12:13 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ int			cw_atoi(const char *str)
 			throw_error("[Read Error]:", "Invalid player nbr");
 		i++;
 	}
-	if (nb > MAX_PLAYERS || nb == 0)
-		throw_error("[Read Error]:", "Invalid player nbr");
 	return (nb);
 }
 
@@ -154,6 +152,8 @@ void read_args(int argc, char **argv, t_env *env)
 		{
 			if (++i < argc)
 				nbr_player = cw_atoi(argv[i]);
+			if (nbr_player > MAX_PLAYERS || nbr_player == 0)
+				throw_error("[Read Error]:", "Invalid player nbr");
 			i++;
 		}
 		if (nbr_player)
