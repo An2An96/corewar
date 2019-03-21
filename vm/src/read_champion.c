@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_champion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/20 20:56:44 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/21 16:07:40 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ t_champion	**read_args(int argc, char **argv)
 
 	nbr_player = 0;
 	count_champion = 0;
-	SECURE_MALLOC(arrchamp = (t_champion**)ft_memalloc(sizeof(t_champion*) * MAX_PLAYERS));
+	SECURE_MALLOC(arrchamp = (t_champion**)ft_memalloc(sizeof(t_champion*) * MAX_PLAYERS + 1));
 	mask = create_mask(argc, argv);
 	while (i < argc)
 	{
