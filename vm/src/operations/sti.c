@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:17:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 20:37:27 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 13:38:53 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	op_sti(t_env *env, t_carriage *carriage, int args_types, ...)
 	arg_type = ARG_TYPE(args_types, 1);
 	value1 = va_arg(args, int);
 	if (arg_type == T_REG)
-		value1 = get_reg_value(carriage, value1);
+		get_reg_value(carriage, value1, &value1, PROC_ENDIAN);
 	else if (arg_type == T_IND)
 	{
 		value1 = *((unsigned int*)(carriage->position + value1 % IDX_MOD));
@@ -36,7 +36,7 @@ int	op_sti(t_env *env, t_carriage *carriage, int args_types, ...)
 
 	arg_type = ARG_TYPE(args_types, 2);
 	value2 = va_arg(args, int);
-	(arg_type == T_REG) && (value2 = get_reg_value(carriage, value2));
+	(arg_type == T_REG) && get_reg_value(carriage, value2, &value2, PROC_ENDIAN);
 	ft_printf("op_sti, reg: %d, val1: %d, val2: %d\n", reg, value1, value2);
 	ft_printf("%d + (%d + %d) %% %d | %d | %d\n", carriage->position, value1, value2, IDX_MOD, value1 + value2, (value1 + value2) % IDX_MOD);
 	mempos = carriage->position + (value1 + value2) % IDX_MOD;

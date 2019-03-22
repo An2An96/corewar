@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 18:15:45 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 13:43:49 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 /*
 **	Macroses
 */
+
+# define PROC_ENDIAN		(LITTLE_ENDIAN == BYTE_ORDER)
+# define BIG_END			0
+# define LITTLE_END			1
 
 # define ARG_TYPE(val, num)	((val) >> (8 - (2 * (num + 1))) & 0x3)
 
@@ -106,40 +110,41 @@ t_op	g_op_tab[17];
 **	Read
 */
 
-void		read_args(int argc, char **argv, t_env *env);
+void	read_args(int argc, char **argv, t_env *env);
 
 /*
 **	Main VM functions
 */
 
-void		init_env(t_env *env);
-void		vm_loop(t_env *env);
+void	init_env(t_env *env);
+void	vm_loop(t_env *env);
 
-int			op_live(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_ld(t_env *env, t_carriage *carriage, int args_types, ...);
-void		op_st(t_carriage *carriage, unsigned int arg1, unsigned int arg2);
-int			op_add(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_sub(t_env *env, t_carriage *carriage, int args_types, ...);
-void		op_and(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
-void		op_or(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
-void		op_xor(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
-int			op_zjmp(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_ldi(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_sti(t_env *env, t_carriage *carriage, int args_types, ...);
-void		op_fork(t_carriage *carriage, unsigned int arg);
-void		op_lld(t_carriage *carriage, unsigned int arg1, unsigned int arg2);
-void		op_lldi(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
-void		op_lfork(t_carriage *carriage, unsigned int arg1);
-void		op_aff(t_carriage *carriage, unsigned int arg1);
+int		op_live(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_ld(t_env *env, t_carriage *carriage, int args_types, ...);
+void	op_st(t_carriage *carriage, unsigned int arg1, unsigned int arg2);
+int		op_add(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_sub(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_and(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_or(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_xor(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_zjmp(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_ldi(t_env *env, t_carriage *carriage, int args_types, ...);
+int		op_sti(t_env *env, t_carriage *carriage, int args_types, ...);
+void	op_fork(t_carriage *carriage, unsigned int arg);
+void	op_lld(t_carriage *carriage, unsigned int arg1, unsigned int arg2);
+void	op_lldi(t_carriage *carriage, unsigned int arg1, unsigned int arg2, unsigned int arg3);
+void	op_lfork(t_carriage *carriage, unsigned int arg1);
+void	op_aff(t_carriage *carriage, unsigned int arg1);
 
-int			get_reg_value(t_carriage *carriage, char idx);
+bool	get_reg_value(t_carriage *carriage, char idx, int *value, bool endian);
+bool	set_reg_value(t_carriage *carriage, char idx, int value, bool endian);
 
 /*
 **	Utils functions
 */
 
-void		print_memory(const void *memory, size_t size);
-void		swap_bytes(void *memory, int size);
+void	print_memory(const void *memory, size_t size);
+void	swap_bytes(void *memory, int size);
 
 /*
 **	Debug

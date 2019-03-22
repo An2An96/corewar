@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:14:11 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 20:54:48 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 13:23:06 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,6 @@ t_op_func	g_op_funcs[] = {
 	op_lfork,
 	op_aff
 };
-
-int	get_reg_value(t_carriage *carriage, char idx)
-{
-	int value;
-
-	value = carriage->registers[idx - 1];
-	swap_bytes(&value, sizeof(int));
-	return (value);
-}
 
 t_op	*get_op(char op_code)
 {
