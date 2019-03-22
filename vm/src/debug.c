@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 20:57:31 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/21 17:36:30 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,21 @@ void	print_champion(t_champion *champion)
 void	print_carriage(t_env *env, t_carriage *carriage)
 {
 	int i;
+	int val;
 
 	ft_printf("Carriage %d:\n", carriage->id);
 	ft_printf("Position: %d, byte: ", carriage->position);
 	print_memory(env->field + carriage->position, 1);
-	ft_printf("\nRegisters:\n");
+	ft_printf("\nLast_live_cycle: %d\n", carriage->last_live_cycle);
+	ft_printf("Carry: %d\n", carriage->carry);
+	ft_printf("Registers:\n");
 	i = 0;
 	while (i < REG_NUMBER)
 	{
-		ft_printf("[%d] = %d, ", i + 1, carriage->registers[i]);
-		print_memory(carriage->registers + i, REG_SIZE);
+		val = carriage->registers[i];
+		swap_bytes(&val, sizeof(int));
+		ft_printf("[%02d] = %10d, ", i + 1, val);
+		print_memory(&val, REG_SIZE);
 		write(1, "\n", 1);
 		i++;
 	}
