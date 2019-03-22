@@ -1,5 +1,5 @@
 #!/bin/sh
-CYCLES=400
+CYCLES=1100
 MY_COREWAR=/Users/rschuppe/projects/corewar/corewar
 ORIGINAL_COREWAR=/Users/rschuppe/Downloads/vm_champs/corewar
 CHAMPION=/Users/rschuppe/projects/corewar/champions/Gagnant.cor

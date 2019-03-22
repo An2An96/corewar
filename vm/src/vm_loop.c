@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:14:11 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 20:54:48 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:13:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,61 @@ t_op_func	g_op_funcs[] = {
 	op_aff
 };
 
-int	get_reg_value(t_carriage *carriage, char idx)
+int	calc_mem_addr(int start, int offset, bool truncat)
 {
-	int value;
+	int	mempos;
 
-	value = carriage->registers[idx - 1];
-	swap_bytes(&value, sizeof(int));
-	return (value);
+	truncat && (offset %= IDX_MOD);
+	mempos = start + offset;
+	(mempos < 0) && (mempos = MEM_SIZE - mempos);
+	return (mempos);
+}
+
+int	get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat)
+{
+	unsigned char	value[4];
+	int				mempos;
+
+	mempos = calc_mem_addr(carriage->position, offset, truncat);
+	value[0] = *(env->field + mempos % MEM_SIZE);
+	mempos++;
+	value[1] = *(env->field + mempos % MEM_SIZE);
+	mempos++;
+	value[2] = *(env->field + mempos % MEM_SIZE);
+	mempos++;
+	value[3] = *(env->field + mempos % MEM_SIZE);
+	return (int)value;
+}
+
+void	set_carriage_pos(t_carriage *carriage, int pos)
+{
+	pos %= MEM_SIZE;
+	(pos < 0) && (pos = MEM_SIZE - pos);
+	carriage->position = pos;
+
+	ft_printf("[!] new carriage pos: %d\n\n", carriage->position);
+}
+
+t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
+{
+	t_carriage *new_carriage;
+
+	SECURE_MALLOC(new_carriage = (t_carriage*)ft_memalloc(sizeof(t_carriage)));
+	ft_lstadd(&env->carriages, ft_lstnew_ptr(new_carriage));
+	if (parent)
+	{
+		ft_printf("PARENT:\n");
+		print_carriage(env, parent);
+
+		ft_memcpy(new_carriage->registers,
+			parent->registers, REG_NUMBER * sizeof(unsigned int));
+		new_carriage->carry = parent->carry;
+		new_carriage->last_live_cycle = parent->last_live_cycle;
+	}
+	new_carriage->position = pos;
+	ft_printf("NEW CARRIAGE:\n");
+	print_carriage(env, new_carriage);
+	return (new_carriage);
 }
 
 t_op	*get_op(char op_code)
@@ -138,7 +186,7 @@ unsigned int	get_arg(char type, bool dir_ind_size, unsigned char **mempos)
 		swap_bytes(&arg, sizeof(unsigned int));
 		*mempos += sizeof(unsigned int);
 		print_memory(&arg, 4);	ft_printf("\n");
-		ft_printf("DIR_CODE: %d\n", arg);
+		ft_printf("DIR_CODE: %u 123\n", arg);
 	}
 	return (arg);
 }
@@ -158,8 +206,7 @@ unsigned int	get_arg(char type, bool dir_ind_size, unsigned char **mempos)
 unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 {
 	t_op			*op;
-	int	args[3];
-	// unsigned char	arg_type[3];
+	int				args[3];
 	unsigned char	args_types;
 	bool			invalid_args;
 	int				new_pos;
@@ -167,14 +214,10 @@ unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 	mempos++;
 	if (env->field[carriage->position] && env->field[carriage->position] <= 0x10)
 	{
-		// print_memory(mempos, 1);	ft_printf("\n");
 		op = get_op(carriage->op_code);
 		if (op->codage_octal)
 		{
 			args_types = *mempos;
-			// arg_type[0] = ARG_TYPE(*mempos, 0); //(*mempos) >> 6;
-			// arg_type[1] = ARG_TYPE(*mempos, 1); //(*mempos) >> 4 & 0x3;
-			// arg_type[2] = ARG_TYPE(*mempos, 2); //(*mempos) >> 2 & 0x3;
 			invalid_args = (!(ARG_TYPE(args_types, 0) & op->arg_type[0]
 				&& (op->arg_count < 2 || ARG_TYPE(args_types, 1) & op->arg_type[1])
 				&& (op->arg_count < 3 || ARG_TYPE(args_types, 2) & op->arg_type[2])));
@@ -182,31 +225,35 @@ unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 		}
 		else
 			args_types = T_DIR << 6;
-			// arg_type[0] = T_DIR;
 		args[0] = get_arg(ARG_TYPE(args_types, 0), op->dir_ind_size, &mempos);
 		if (op->arg_count > 1)
 			args[1] = get_arg(ARG_TYPE(args_types, 1), op->dir_ind_size, &mempos);
 		if (op->arg_count > 2)
 			args[2] = get_arg(ARG_TYPE(args_types, 2), op->dir_ind_size, &mempos);
-		ft_printf("args: %d %d %d\n", args[0], args[1], args[2]);
 		if (!invalid_args)
 		{
 			if (op->arg_count == 1)
-				new_pos = g_op_funcs[carriage->op_code](env, carriage, args_types, args[0]);
+			{
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d]\n", env->acount_cycles, op->cmd, args[0]);
+				new_pos = g_op_funcs[carriage->op_code](
+					env, carriage, args_types, args[0]);
+			}
 			else if (op->arg_count == 2)
-				new_pos = g_op_funcs[carriage->op_code](env, carriage, args_types, args[0], args[1]);
+			{
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d, %d, %d]\n", env->acount_cycles, op->cmd, args[0], args[1], args[2]);
+				new_pos = g_op_funcs[carriage->op_code](
+					env, carriage, args_types, args[0], args[1]);
+			}
 			else if (op->arg_count == 3)
-				new_pos = g_op_funcs[carriage->op_code](env, carriage, args_types, args[0], args[1], args[2]);
+			{
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d, %d, %d]\n", env->acount_cycles, op->cmd, args[0], args[1], args[2]);
+				new_pos = g_op_funcs[carriage->op_code](
+					env, carriage, args_types, args[0], args[1], args[2]);
+			}
 		}
-		else	//	for debug
-		{
+		else
 			new_pos = -1;
-			ft_printf("invalid arg types\n");
-		}
-		carriage->position = (new_pos != -1) ? new_pos : mempos - env->field;
-		ft_printf("[!] new carriage pos: %d | ", carriage->position);
-		print_memory(env->field + carriage->position, 1);
-		ft_printf("\n\n");
+		set_carriage_pos(carriage, (new_pos != -1) ? new_pos : (mempos - env->field));
 	}
 	return (mempos);
 }

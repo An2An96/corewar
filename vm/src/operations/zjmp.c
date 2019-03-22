@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:16:16 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 14:29:06 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:27:29 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,12 @@ int	op_zjmp(t_env *env, t_carriage *carriage, int args_types, ...)
 	unsigned int	offset;
 	int				new_pos;
 
-	ft_printf("op_zjmp");
-	if (carriage->carry)
-	{
-		va_start(args, args_types);
-		offset = va_arg(args, int);
-		new_pos = carriage->position + offset % IDX_MOD;
-		ft_printf(", offset: %d\n", offset);
-		print_carriage(env, carriage);
-		va_end(args);
-	}
-	ft_printf("\n");
+	if (!carriage->carry)
+		return (-1);
+	va_start(args, args_types);
+	offset = va_arg(args, int);
+	new_pos = carriage->position + offset % IDX_MOD;
+	print_carriage(env, carriage);
+	va_end(args);
 	return (new_pos);
 }

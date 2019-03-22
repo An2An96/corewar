@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/21 20:43:28 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/22 16:35:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 	{
 		if (++(*i) < argc)
 			env->dump_nbr_cycle = cw_atoi(argv[(*i)]);
-		(*i)++;
+		// (*i)++;
 		return (-1);
 	}
 	if (!ft_strcmp(argv[(*i)], "-n"))
@@ -95,8 +95,6 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 	return (nbr_player);
 }
 
-
-
 void	read_args(int argc, char **argv, t_env *env)
 {
 	int			i;
@@ -107,12 +105,12 @@ void	read_args(int argc, char **argv, t_env *env)
 
 	if (argc == 1)
 		throw_error("[Read Error]:", "Invalid name file");
-	i = 0;
 	count_champion = 0;
 	SECURE_MALLOC(env->champions = (t_champion**)
 		ft_memalloc(sizeof(t_champion*) * (MAX_PLAYERS + 1)));
 	mask = create_mask(argc, argv);
 	env->dump_nbr_cycle = -1;
+	i = 0;
 	while (++i < argc)
 	{
 		if (count_champion > MAX_PLAYERS)

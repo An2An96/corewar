@@ -6,13 +6,27 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:35:19 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 20:35:33 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 17:42:38 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void	op_lld(t_carriage *carriage, unsigned int arg1, unsigned int arg2)
+int	op_lld(t_env *env, t_carriage *carriage, int args_types, ...)
 {
-	ft_printf("op_lld, arg1: %d, arg2: %d\n", arg1, arg2);
+	va_list			args;
+	unsigned int	value;
+	unsigned char	reg_idx;
+
+	va_start(args, args_types);
+
+	value = va_arg(args, int);
+	if (ARG_TYPE(args_types, 0) == IND_CODE)
+		value = get_mem_value(env, carriage, value, false);
+	reg_idx = va_arg(args, int);
+	set_reg_value(carriage, reg_idx, value, BIG_ENDIAN);
+	carriage->carry = !value;
+	print_carriage(env, carriage);
+	va_end(args);
+	return (-1);
 }

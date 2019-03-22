@@ -6,13 +6,19 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:37:05 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 20:37:31 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 17:53:06 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void	op_lfork(t_carriage *carriage, unsigned int arg1)
+int	op_lfork(t_env *env, t_carriage *carriage, int args_types, ...)
 {
-	ft_printf("op_lfork, arg1: %d\n", arg1);
+	va_list	args;
+
+	va_start(args, args_types);
+	create_carriage(env, carriage,
+		calc_mem_addr(carriage->position, va_arg(args, int), false));
+	va_end(args);
+	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:26:57 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 20:36:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 17:47:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,29 @@ int	op_ldi(t_env *env, t_carriage *carriage, int args_types, ...)
 {
 	va_list			args;
 	unsigned char	arg_type;
-	unsigned char	reg;
-	int				value1;
-	int				value2;
-	unsigned int	mempos;
+	unsigned char	reg_idx;
+	int				value[2];
 
 	va_start(args, args_types);
-
 	arg_type = ARG_TYPE(args_types, 0);
-	value1 = va_arg(args, int);
-	if (arg_type == T_REG)
-		value1 = get_reg_value(carriage, value1);
-	else if (arg_type == T_IND)
+	value[0] = va_arg(args, int);
+	if (arg_type == REG_CODE)
 	{
-		value1 = *((unsigned int*)(carriage->position + value1 % IDX_MOD));
-		swap_bytes(&value1, sizeof(unsigned int));
+		if (!get_reg_value(carriage, value[0], &value[0], PROC_ENDIAN))
+			return (-1);
 	}
-	arg_type = ARG_TYPE(args_types, 1);
-	value2 = va_arg(args, int);
-	(arg_type == T_REG) && (value2 = get_reg_value(carriage, value2));
-	reg = va_arg(args, int) - 1;
-
-	ft_printf("op_ldi, val1: %d, val2: %d, reg: %d\n", value1, value2, reg);
-
-	ft_printf("%d + (%d + %d) %% %d | %d | %d\n", carriage->position, value1, value2, IDX_MOD, value1 + value2, (value1 + value2) % IDX_MOD);
-	mempos = carriage->position + (value1 + value2) % IDX_MOD;
-	
-	ft_printf("mempos: %d, reg old val: %d\n", mempos, carriage->registers[reg]);
-	
-	ft_printf("Memory val: ");			print_memory(env->field + mempos, 4);		ft_printf("\n");
-	ft_printf("Old register val: ");	print_memory(&carriage->registers[reg], 4);	ft_printf("\n");
-	carriage->registers[reg] = *(int*)(env->field + mempos);
-	ft_printf("New register val: ");	print_memory(&carriage->registers[reg], 4);		ft_printf("\n");
-	
-	ft_printf("new reg val: %d, mem val: %d\n", carriage->registers[reg], *(int*)(env->field + mempos));
-
+	else if (arg_type == IND_CODE)
+	{
+		value[0] = get_mem_value(env, carriage, value[0], true);
+		swap_bytes(&value[0], sizeof(int));
+	}
+	value[1] = va_arg(args, int);
+	if (ARG_TYPE(args_types, 1) == REG_CODE
+		&& !get_reg_value(carriage, value[1], &value[1], PROC_ENDIAN))
+		return (-1);
+	reg_idx = va_arg(args, int);
+	set_reg_value(carriage, reg_idx,
+		get_mem_value(env, carriage, value[0] + value[1], true), BIG_END);
 	va_end(args);
 	return (-1);
 }

@@ -1,3 +1,6 @@
+tmp/
 **/*.o
 asm
 corewar
+out
+.vscode/

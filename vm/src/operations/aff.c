@@ -6,13 +6,20 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:37:40 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/20 20:37:57 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 17:55:48 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-void	op_aff(t_carriage *carriage, unsigned int arg1)
+int	op_aff(t_env *env, t_carriage *carriage, int args_types, ...)
 {
-	ft_printf("op_aff, arg1: %d\n", arg1);
+	va_list	args;
+	int		value;
+
+	va_start(args, args_types);
+	get_reg_value(carriage, va_arg(args, int), &value, PROC_ENDIAN);
+	write(1, (char*)&value, 1);
+	va_end(args);
+	return (-1);
 }

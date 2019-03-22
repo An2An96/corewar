@@ -32,17 +32,13 @@ void	init_env(t_env *env)
 	while (env->champions[i])
 	{
 		//	создание каретки
-		SECURE_MALLOC(carriage = (t_carriage*)ft_memalloc(sizeof(t_carriage)));
-		carriage->position = offset * i;
+		carriage = create_carriage(env, NULL, offset * i);
+		carriage->registers[0] = -(i + 1);
 
 		//	размещение исполняемого кода чемпиона
 		ft_memcpy(env->field + carriage->position, env->champions[i]->exec_code, env->champions[i]->prog_size);
 
-		carriage->registers[0] = -(i + 1);
-
 		// print_carriage(env, carriage);
-
-		ft_lstadd(&env->carriages, ft_lstnew_ptr(carriage));
 
 		i++;
 	}
