@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:21:14 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 18:22:29 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 21:18:34 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
 
 void	remove_carriage(t_list **carriages, t_list *die_carriage)
 {
+	ft_printf("remove_carriage\n");
 	t_list	*cur_lst;
 
 	if (*carriages == die_carriage)

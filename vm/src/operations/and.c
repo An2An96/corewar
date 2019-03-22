@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:34:08 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 17:40:58 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 21:24:41 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,34 @@ int	op_and(t_env *env, t_carriage *carriage, int args_types, ...)
 
 	va_start(args, args_types);
 	arg_type = ARG_TYPE(args_types, 0);
+	value[0] = va_arg(args, int);
 	if (arg_type == REG_CODE)
-		get_reg_value(carriage, va_arg(args, int), &value[0], BIG_END);
+	{
+		if (!get_reg_value(carriage, value[0], &value[0], BIG_END))
+		{
+			va_end(args);
+			return (-1);
+		}
+	}
 	else if (arg_type == IND_CODE)
-		value[0] = get_mem_value(env, carriage, va_arg(args, int), true);
+		value[0] = get_mem_value(env, carriage, value[0], true);
 	arg_type = ARG_TYPE(args_types, 1);
+	value[1] = va_arg(args, int);
 	if (arg_type == REG_CODE)
-		get_reg_value(carriage, va_arg(args, int), &value[1], BIG_END);
+	{
+		if (!get_reg_value(carriage, value[1], &value[1], BIG_END))
+		{
+			va_end(args);
+			return (-1);
+		}
+	}
 	else if (arg_type == IND_CODE)
-		value[1] = get_mem_value(env, carriage, va_arg(args, int), true);
+		value[1] = get_mem_value(env, carriage, value[1], true);
 	res_reg = va_arg(args, int);
 	value[2] = value[0] & value[1];
-	set_reg_value(carriage, res_reg, value[2], BIG_END);
-	carriage->carry = !value[2];
+	if (set_reg_value(carriage, res_reg, value[2], BIG_END))
+		carriage->carry = !value[2];
+	print_carriage(env, carriage);
 	va_end(args);
 	return (-1);
 }

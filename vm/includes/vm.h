@@ -6,13 +6,14 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 18:27:17 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 21:30:49 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
 
+# include <stdio.h>
 # include <stdarg.h>
 
 /*
@@ -130,6 +131,7 @@ bool		set_reg_value(t_carriage *carriage, char idx, int value, bool endian);
 
 int			calc_mem_addr(int start, int offset, bool truncat);
 int			get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat);
+void		set_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat, int value);
 
 t_op		*get_op(char op_code);
 unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
@@ -169,6 +171,6 @@ void		print_carriage(t_env *env, t_carriage *carriage);
 **	Print
 */
 
-void    print_players(t_env *env);
+void    	print_players(t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 16:36:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 21:31:11 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int		main(int argc, char **argv)
 
 	SECURE_MALLOC(env = ft_memalloc(sizeof(t_env)));
 	read_args(argc, argv, env);
-	print_players(env);
 	init_env(env);
 	vm_loop(env);
 	return (0);

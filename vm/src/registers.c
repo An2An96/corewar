@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 13:22:51 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 15:24:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 20:10:42 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ bool	set_reg_value(t_carriage *carriage, char idx, int value, bool endian)
 	if (endian == LITTLE_END)
 		swap_bytes(&value, sizeof(int));
 
-	write(1, "Old register val: ", 18);
+	ft_printf("[register %d] Old val: ", idx);
 	print_memory(&carriage->registers[idx - 1], 4);
 	write(1, "\n", 1);
 
 	carriage->registers[idx - 1] = value;
 	// carriage->carry = !value;
 
-	write(1, "New register val: ", 18);
+	ft_printf("[register %d] New val: ", idx);
 	print_memory(&carriage->registers[idx - 1], 4);
 	write(1, "\n", 1);
 	return (true);

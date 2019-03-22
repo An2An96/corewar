@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 18:28:24 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 21:04:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,31 +56,31 @@ unsigned int	get_arg(char type, bool dir_ind_size, unsigned char **mempos)
 
 	if (type == REG_CODE)
 	{
-		print_memory(*mempos, 1);	ft_printf("\n");
+		// print_memory(*mempos, 1);	ft_printf("\n");
 		arg = *((unsigned char*)(*mempos));
 		swap_bytes(&arg, sizeof(unsigned char));
 		*mempos += sizeof(unsigned char);
-		print_memory(&arg, 4);	ft_printf("\n");
-		ft_printf("REG_CODE: %d\n", arg);
+		// print_memory(&arg, 4);	ft_printf("\n");
+		// ft_printf("REG_CODE: %d\n", arg);
 	}
 	else if (type == IND_CODE || dir_ind_size)
 	{
-		print_memory(*mempos, 2);	ft_printf("\n");
+		// print_memory(*mempos, 2);	ft_printf("\n");
 		short_arg = *((unsigned short*)(*mempos));
 		swap_bytes(&short_arg, sizeof(unsigned short));
 		*mempos += sizeof(unsigned short);
-		print_memory(&short_arg, 2);	ft_printf("\n");
+		// print_memory(&short_arg, 2);	ft_printf("\n");
 		arg = short_arg;
-		ft_printf("IND_CODE: %d\n", (int)arg);
+		// ft_printf("IND_CODE: %d\n", (int)arg);
 	}
 	else if (type == DIR_CODE)
 	{
-		print_memory(*mempos, 4);	ft_printf("\n");
+		// print_memory(*mempos, 4);	ft_printf("\n");
 		arg = *((unsigned int*)(*mempos));
 		swap_bytes(&arg, sizeof(unsigned int));
 		*mempos += sizeof(unsigned int);
-		print_memory(&arg, 4);	ft_printf("\n");
-		ft_printf("DIR_CODE: %u 123\n", arg);
+		// print_memory(&arg, 4);	ft_printf("\n");
+		// ft_printf("DIR_CODE: %u 123\n", arg);
 	}
 	return (arg);
 }
@@ -105,6 +105,8 @@ unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 	bool			invalid_args;
 	int				new_pos;
 
+	char *arg_type_names[] = { "", "REG_CODE", "DIR_CODE", "IND_CODE" };
+
 	mempos++;
 	if (env->field[carriage->position] && env->field[carriage->position] <= 0x10)
 	{
@@ -126,21 +128,32 @@ unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 			args[2] = get_arg(ARG_TYPE(args_types, 2), op->dir_ind_size, &mempos);
 		if (!invalid_args)
 		{
+			
+
+
 			if (op->arg_count == 1)
 			{
-				ft_printf("[Cycle: %d] CALL CMD: %s [%d]\n", env->acount_cycles, op->cmd, args[0]);
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s)]\n",
+					env->acount_cycles, op->cmd, args[0], arg_type_names[ARG_TYPE(args_types, 0)]);
 				new_pos = g_op_funcs[carriage->op_code](
 					env, carriage, args_types, args[0]);
 			}
 			else if (op->arg_count == 2)
 			{
-				ft_printf("[Cycle: %d] CALL CMD: %s [%d, %d, %d]\n", env->acount_cycles, op->cmd, args[0], args[1], args[2]);
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s)]\n",
+					env->acount_cycles, op->cmd,
+					args[0], arg_type_names[ARG_TYPE(args_types, 0)],
+					args[1], arg_type_names[ARG_TYPE(args_types, 1)]);
 				new_pos = g_op_funcs[carriage->op_code](
 					env, carriage, args_types, args[0], args[1]);
 			}
 			else if (op->arg_count == 3)
 			{
-				ft_printf("[Cycle: %d] CALL CMD: %s [%d, %d, %d]\n", env->acount_cycles, op->cmd, args[0], args[1], args[2]);
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s), %d (%s)]\n",
+					env->acount_cycles, op->cmd,
+					args[0], arg_type_names[ARG_TYPE(args_types, 0)],
+					args[1], arg_type_names[ARG_TYPE(args_types, 1)],
+					args[2], arg_type_names[ARG_TYPE(args_types, 2)]);
 				new_pos = g_op_funcs[carriage->op_code](
 					env, carriage, args_types, args[0], args[1], args[2]);
 			}

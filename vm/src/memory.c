@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:23:15 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 18:23:20 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 20:51:35 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,19 @@ int	get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat)
 	mempos++;
 	value[3] = *(env->field + mempos % MEM_SIZE);
 	return (int)value;
+}
+
+void	set_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat, int value)
+{
+	int mempos;
+
+	mempos = calc_mem_addr(carriage->position, offset, truncat);
+	env->field[mempos] = (unsigned int)((value) & 0xFF);
+	mempos++;
+	env->field[mempos % MEM_SIZE] = (unsigned int)((value >> 8) & 0xFF);
+	mempos++;
+	env->field[mempos % MEM_SIZE] = (unsigned int)((value >> 16) & 0xFF);
+	mempos++;
+	env->field[mempos % MEM_SIZE] = (unsigned int)(value >> 24);
+	mempos++;
 }
