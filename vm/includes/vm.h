@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 17:52:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 18:27:17 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,17 @@ void		init_env(t_env *env);
 void		vm_loop(t_env *env);
 
 t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos);
+void		remove_carriage(t_list **carriages, t_list *die_carriage);
+void		set_carriage_pos(t_carriage *carriage, int pos);
 
 bool		get_reg_value(t_carriage *carriage, char idx, int *value, bool endian);
 bool		set_reg_value(t_carriage *carriage, char idx, int value, bool endian);
 
 int			calc_mem_addr(int start, int offset, bool truncat);
 int			get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat);
+
+t_op		*get_op(char op_code);
+unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
 
 int			op_live(t_env *env, t_carriage *carriage, int args_types, ...);
 int			op_ld(t_env *env, t_carriage *carriage, int args_types, ...);
