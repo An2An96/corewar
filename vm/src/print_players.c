@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print_players.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 20:57:49 by wballaba         ###   ########.fr       */
+/*   Created: 2019/03/21 20:45:01 by wballaba          #+#    #+#             */
+/*   Updated: 2019/03/21 20:59:43 by wballaba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		main(int argc, char **argv)
+void	print_players(t_env *env)
 {
-	t_champion	**champions;
-	t_env		*env;
+	int i;
 
-	SECURE_MALLOC(env = ft_memalloc(sizeof(t_env)));
-	read_args(argc, argv, env);
-	// init_env(env);
-	// vm_loop(env);
-	print_players(env);
-	return (0);
+	i = 0;
+	ft_printf("Introducing contestants...\n");
+	while (env->champions[i])
+	{
+		ft_printf("Player %d, weighing %d bytes, \"%s (\"%s\") !\n",
+			i + 1, env->champions[i]->prog_size, env->champions[i]->prog_name,
+			env->champions[i]->comment);
+		i++;
+	}
 }
