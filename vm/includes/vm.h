@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 21:30:49 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 16:32:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,9 @@ typedef struct	s_carriage
 	int				id;
 	bool			carry;
 	unsigned char	op_code;
-	int				last_live_cycle;
-	int				cycles_to_execute;
-	int				position;
+	unsigned int	last_live_cycle;
+	unsigned int	cycles_to_execute;
+	unsigned int	position;
 	unsigned int	registers[REG_NUMBER];
 }				t_carriage;
 
@@ -91,6 +91,7 @@ typedef struct	s_env
 
 	t_champion		**champions;
 	t_list			*carriages;
+	int				carriages_count;
 
 	int				last_live_champ;
 	int				cycles_to_die;
@@ -121,9 +122,10 @@ void		check_arr_champions(int count_champion, int *mask, t_env *env);
 
 void		init_env(t_env *env);
 void		vm_loop(t_env *env);
+int			vm_check_die(t_env *env);
 
 t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos);
-void		remove_carriage(t_list **carriages, t_list *die_carriage);
+void		remove_carriage(t_env *env, t_list *die_carriage);
 void		set_carriage_pos(t_carriage *carriage, int pos);
 
 bool		get_reg_value(t_carriage *carriage, char idx, int *value, bool endian);
