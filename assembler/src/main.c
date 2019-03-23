@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/23 17:14:24 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 17:59:46 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "inc/asm.h"
 
 static t_lines  *ft_create_lines(char *str)
 {
@@ -78,6 +78,7 @@ int             main(int argc, char *argv[])
     lines = ft_create_lines(buff);
     tokens = ft_get_tokens(lines);
     ft_strdel(&buff);
+    // TODO: function to delete tokens structure
     // TODO: function to delete lines structure
     close(fd);
     exit(0);

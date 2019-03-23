@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lines_stuff.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 15:23:38 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/23 17:14:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/22 15:59:45 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "inc/asm.h"
 
 int         ft_count_lines(char *str)
 {

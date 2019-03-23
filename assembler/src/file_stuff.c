@@ -1,66 +1,66 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_stuff.c                                       :+:      :+:    :+:   */
+/*   file_name_validity.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:31:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/23 17:18:39 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/21 16:42:43 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "inc/asm.h"
 
-static char		*ft_get_extension(char *str, char c)
+static char     *ft_get_extension(char *str, char c)
 {
-	int len;
+    int len;
 
-	len = (int)ft_strlen(str);
-	str += len - 1;
-	while (*str)
-	{
-		if (*str == c)
-			return str;
-		str--;
-	}
-	return str;
+    len = (int)ft_strlen(str);
+    str += len - 1;
+    while (*str)
+    {
+        if (*str == c)
+            return str;
+        str--;
+    }
+    return str;
 }
 
-int		ft_file_name_validity(char *str)
+t_bool          ft_file_name_validity(char *str)
 {
-	char *ext;
+    char *ext;
 
-	ext = ft_get_extension(str, '.');
-	if (ft_strcmp(".s", ext) != 0)
-	{
-		ft_putendl("Invalid file extension!");
-		return false;
-	}
-	return true;
+    ext = ft_get_extension(str, '.');
+    if (ft_strcmp(".s", ext) != 0)
+    {
+        ft_putendl("Invalid file extension!");
+        return false;
+    }
+    return true;
 }
 
-char		*ft_create_out_file(char *str)
+char            *ft_create_out_file(char *str)
 {
-	char	*res;
-	char	*name;
-	char	*tmp;
-	int		len;
-	int		i;
+    char    *res;
+    char    *name;
+    char    *tmp;
+    int     len;
+    int     i;
 
-	i = 0;
-	tmp = ft_get_extension(str, '/');
-	tmp++;
-	len = (int)ft_strlen(tmp) - 1;
-	name = (char *)malloc(sizeof(char) * (len + 1));
-	CHECK_NULL(name);
-	while (tmp[i] && i < len)
-	{
-		name[i] = tmp[i];
-		i++;
-	}
-	res = ft_strjoin(name, "cor");
-	free(name);
-	name = NULL;
-	return (res);
+    i = 0;
+    tmp = ft_get_extension(str, '/');
+    tmp++;
+    len = (int)ft_strlen(tmp) - 1;
+    name = (char *)malloc(sizeof(char) * (len + 1));
+    CHECK_NULL(name);
+    while (tmp[i] && i < len)
+    {
+        name[i] = tmp[i];
+        i++;
+    }
+    res = ft_strjoin(name, "cor");
+    free(name);
+    name = NULL;
+    return (res);
 }
