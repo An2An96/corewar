@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-# include "../libft/libft.h"
+# include "libft.h"
 # include "op.h"
 
 # define CHECK_NULL(x) if (x == NULL) return (NULL)
