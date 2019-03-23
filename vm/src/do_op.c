@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 16:10:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 20:30:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,10 @@ unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 	if (env->acount_cycles == 104830)
 		new_pos = -1;
 
+	// write(1, "1\n", 2);
 	mempos++;
-	write(1, "do_op\n", 6);
-	// ft_putnbr(carriage->position);
-	// write(1, "\n", 1);
-	// ft_printf("do_op: car_pos: %d\n", carriage->position);
 	if (env->field[carriage->position] && env->field[carriage->position] <= 0x10)
 	{
-		// write(1, "1\n", 2);
 		op = get_op(carriage->op_code);
 		if (op->codage_octal)
 		{
@@ -129,68 +125,42 @@ unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 		}
 		else
 			args_types = T_DIR << 6;
-		// write(1, "2\n", 2);
 		args[0] = get_arg(ARG_TYPE(args_types, 0), op->dir_ind_size, &mempos);
 		if (op->arg_count > 1)
 			args[1] = get_arg(ARG_TYPE(args_types, 1), op->dir_ind_size, &mempos);
 		if (op->arg_count > 2)
 			args[2] = get_arg(ARG_TYPE(args_types, 2), op->dir_ind_size, &mempos);
-		// write(1, "3\n", 2);	
 		if (!invalid_args)
 		{
-			// write(1, "4\n", 2);	
-			ft_putstr(op->cmd);
-			write(1, "\n", 1);
-			// if (carriage->op_code == 1)
-			// {
-			// 	new_pos = op_live(env, carriage, args_types, args[0]);
-			// }
-			// else if (carriage->op_code == 9)
-			// {
-			// 	write(1, "jmp\n", 4);
-			// 	ft_putnbr(env->acount_cycles);
-			// 	write(1, "\n", 1);
-			// 	ft_putnbr(args_types);
-			// 	write(1, "\n", 1);
-			// 	ft_putnbr(args[0]);
-			// 	write(1, "\n", 1);
-			// 	new_pos = op_zjmp(env, carriage, args_types, args[0]);
-			// 	write(1, "jmp end\n", 8);
-			// }
 			if (op->arg_count == 1)
 			{
-				// ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s)]\n",
-				// 	env->acount_cycles, op->cmd, args[0], arg_type_names[ARG_TYPE(args_types, 0)]);
-				// write(1, "5\n", 2);
-				// ft_putnbr(carriage->op_code);
-				// write(1, "\n", 1);
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s)]\n",
+					env->acount_cycles, op->cmd, args[0], arg_type_names[ARG_TYPE(args_types, 0)]);
 				new_pos = g_op_funcs[carriage->op_code](
 					env, carriage, args_types, args[0]);
-				// write(1, "6\n", 2);
 			}
 			else if (op->arg_count == 2)
 			{
-				// ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s)]\n",
-				// 	env->acount_cycles, op->cmd,
-				// 	args[0], arg_type_names[ARG_TYPE(args_types, 0)],
-				// 	args[1], arg_type_names[ARG_TYPE(args_types, 1)]);
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s)]\n",
+					env->acount_cycles, op->cmd,
+					args[0], arg_type_names[ARG_TYPE(args_types, 0)],
+					args[1], arg_type_names[ARG_TYPE(args_types, 1)]);
 				new_pos = g_op_funcs[carriage->op_code](
 					env, carriage, args_types, args[0], args[1]);
 			}
 			else if (op->arg_count == 3)
 			{
-				// ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s), %d (%s)]\n",
-				// 	env->acount_cycles, op->cmd,
-				// 	args[0], arg_type_names[ARG_TYPE(args_types, 0)],
-				// 	args[1], arg_type_names[ARG_TYPE(args_types, 1)],
-				// 	args[2], arg_type_names[ARG_TYPE(args_types, 2)]);
+				ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s), %d (%s)]\n",
+					env->acount_cycles, op->cmd,
+					args[0], arg_type_names[ARG_TYPE(args_types, 0)],
+					args[1], arg_type_names[ARG_TYPE(args_types, 1)],
+					args[2], arg_type_names[ARG_TYPE(args_types, 2)]);
 				new_pos = g_op_funcs[carriage->op_code](
 					env, carriage, args_types, args[0], args[1], args[2]);
 			}
 		}
 		else
 			new_pos = -1;
-		// write(1, "4\n", 2);
 		set_carriage_pos(carriage, (new_pos != -1) ? new_pos : (mempos - env->field));
 	}
 	return (mempos);

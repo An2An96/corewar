@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:35:19 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 17:42:38 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 19:30:31 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	op_lld(t_env *env, t_carriage *carriage, int args_types, ...)
 	reg_idx = va_arg(args, int);
 	set_reg_value(carriage, reg_idx, value, BIG_ENDIAN);
 	carriage->carry = !value;
-	print_carriage(env, carriage);
+	// print_carriage(env, carriage);
 	va_end(args);
 	return (-1);
 }

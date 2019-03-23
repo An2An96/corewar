@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:21:14 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 15:39:20 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 19:57:02 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
 	env->carriages_count++;
 	if (parent)
 	{
-		ft_printf("PARENT:\n");
-		print_carriage(env, parent);
+		// ft_printf("PARENT:\n");
+		// print_carriage(env, parent);
 
 		ft_memcpy(new_carriage->registers,
 			parent->registers, REG_NUMBER * sizeof(unsigned int));
@@ -30,16 +30,18 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
 		new_carriage->last_live_cycle = parent->last_live_cycle;
 	}
 	new_carriage->position = pos;
-	ft_printf("NEW CARRIAGE:\n");
-	print_carriage(env, new_carriage);
+	// ft_printf("NEW CARRIAGE:\n");
+	// print_carriage(env, new_carriage);
 	return (new_carriage);
 }
 
-void	remove_carriage(t_env *env, t_list *die_carriage)
+t_list *remove_carriage(t_env *env, t_list *die_carriage)
 {
-	ft_printf("remove carriage, cycle: %d\n", env->acount_cycles);
+	// ft_printf("remove carriage, cycle: %d\n", env->acount_cycles);
 	t_list	*cur_lst;
+	t_list	*next;
 
+	next = die_carriage->next;
 	if (env->carriages == die_carriage)
 		env->carriages = env->carriages->next;
 	else
@@ -57,7 +59,8 @@ void	remove_carriage(t_env *env, t_list *die_carriage)
 	}
 	free(die_carriage);
 	env->carriages_count--;
-	ft_printf("env->carriages = %p | %d\n", env->carriages, env->carriages_count);
+	// ft_printf("env->carriages = %p | %d\n", env->carriages, env->carriages_count);
+	return (next);
 }
 
 void	set_carriage_pos(t_carriage *carriage, int pos)
@@ -65,13 +68,5 @@ void	set_carriage_pos(t_carriage *carriage, int pos)
 	pos %= MEM_SIZE;
 	(pos < 0) && (pos = MEM_SIZE - pos);
 	carriage->position = pos;
-
-	// if (carriage)
 	// 	ft_printf("[!] new carriage pos: %d\n\n", carriage->position);
-	// else
-	// {
-	// 	ft_printf("kakogo xy9");
-	// 	exit(1);
-	// }
-	
 }

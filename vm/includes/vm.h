@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 16:32:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 18:27:04 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void		vm_loop(t_env *env);
 int			vm_check_die(t_env *env);
 
 t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos);
-void		remove_carriage(t_env *env, t_list *die_carriage);
+t_list 		*remove_carriage(t_env *env, t_list *die_carriage);
 void		set_carriage_pos(t_carriage *carriage, int pos);
 
 bool		get_reg_value(t_carriage *carriage, char idx, int *value, bool endian);

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/22 16:35:35 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 19:26:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 	{
 		if (++(*i) < argc)
 			env->dump_nbr_cycle = cw_atoi(argv[(*i)]);
-		// (*i)++;
 		return (-1);
 	}
 	if (!ft_strcmp(argv[(*i)], "-n"))

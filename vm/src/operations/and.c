@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:34:08 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 21:24:41 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 20:13:51 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ int	op_and(t_env *env, t_carriage *carriage, int args_types, ...)
 	}
 	else if (arg_type == IND_CODE)
 		value[0] = get_mem_value(env, carriage, value[0], true);
+	else if (arg_type == DIR_CODE && PROC_ENDIAN)
+		swap_bytes(&value[0], sizeof(value[0]));
 	arg_type = ARG_TYPE(args_types, 1);
 	value[1] = va_arg(args, int);
 	if (arg_type == REG_CODE)
@@ -44,11 +46,13 @@ int	op_and(t_env *env, t_carriage *carriage, int args_types, ...)
 	}
 	else if (arg_type == IND_CODE)
 		value[1] = get_mem_value(env, carriage, value[1], true);
+	else if (arg_type == DIR_CODE && PROC_ENDIAN)
+		swap_bytes(&value[1], sizeof(value[1]));
 	res_reg = va_arg(args, int);
 	value[2] = value[0] & value[1];
 	if (set_reg_value(carriage, res_reg, value[2], BIG_END))
 		carriage->carry = !value[2];
-	print_carriage(env, carriage);
+	// print_carriage(env, carriage);
 	va_end(args);
 	return (-1);
 }
