@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/26 14:10:10 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 15:21:39 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ enum lexical_errors
 	EMPTY_VALUE = 1,
 	NON_EXISTENT_VALUE = 2,
 	OUT_OF_RANGE_VALUE = 3,
-	NON_VALIDE_VALUE = 4,
+	NON_VALID_VALUE = 4,
 	NON_EXISTENT_LEXEM = 5
 };
 
@@ -93,8 +93,7 @@ typedef struct			s_cursor
 
 typedef struct			s_lexical_err
 {
-	int 				error_code;
-	int					addit_code;
+	int 				error_code[2];
 	t_lexem				*lexem;
 	struct s_lexical_err	*next;
 }						t_lexical_err;
@@ -108,6 +107,7 @@ t_tokens				*ft_get_tokens(t_lines *lines);
 t_bool					ft_is_label_char(char c);
 t_bool					ft_is_undefined(char c);
 t_bool					ft_is_digit_sign(char c);
+t_lexical_err			*ft_new_lex_errors(int err, int addit_err, t_lexem *lexem);
 
 t_lexem   				*ft_get_command(char *str, t_cursor *cur);
 t_lexem   				*ft_get_string(t_lines *lines, t_cursor *cur);
@@ -125,5 +125,9 @@ t_lexem   				*check_indir_or_label(char *str, t_cursor *cur);
 t_lexem  				*check_label_or_undef(char *str, t_cursor *cur);
 
 t_lexical_err 			*ft_get_lex_errors(t_tokens *tokens);
+void					ft_push_list_lex_errors(t_lexical_err **alst, int err, int addit_err, t_lexem *lexem);
+void    				print_errors(char *filename, t_lexical_err *lex_errors);
+
+t_op					*get_op();
 
 #endif
