@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/23 21:52:56 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 14:10:10 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,43 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-# include "libft.h"
+# include "../libft/libft.h"
 # include "op.h"
 
 # define CHECK_NULL(x) if (x == NULL) return (NULL)
+# define CHECK_VOID(x) if (x == NULL) return
 # define BUFF 32
 
 enum tokens
 {
-						COMMAND = 1,
-						STRING,
-						INSTRUCT,
-						COMMENT,
-						LABEL,
-						REG,
-						SEP,
-						DIR,
-						DIR_LABEL,
-						INDIR,
-						INDIR_LABEL,
-						UNDEF
+    COMMAND = 1,
+    STRING = 2,
+    INSTRUCT = 3,
+    COMMENT = 4,
+    LABEL = 5,
+    REG = 6,
+    SEP = 7,
+    DIR = 8,
+    DIR_LABEL = 9,
+    INDIR = 10,
+    INDIR_LABEL = 11,
+    UNDEF = 12
+};
+
+enum errors
+{
+	LEXICAL = 1,
+	SYNTACTIC = 2,
+	SEMANTIC = 3
+};
+
+enum lexical_errors
+{
+	EMPTY_VALUE = 1,
+	NON_EXISTENT_VALUE = 2,
+	OUT_OF_RANGE_VALUE = 3,
+	NON_VALIDE_VALUE = 4,
+	NON_EXISTENT_LEXEM = 5
 };
 
 typedef struct          s_lines
@@ -50,6 +67,7 @@ typedef struct          s_lines
 typedef struct          s_lexem
 {
     int                 type;
+    int 				line;
     int                 start;
     char                *value;
 }                       t_lexem;
@@ -73,16 +91,23 @@ typedef struct			s_cursor
 	int 				pos;
 }						t_cursor;
 
-t_bool                  ft_file_name_validity(char *str);
-char                    *ft_create_out_file(char *str);
-void                    ft_str_extend(char **str, char const *new);
-int                     ft_count_lines(char *str);
-char                    **ft_lines_split(char *str);
-void		            ft_push_list(t_lex_list **alst, t_lexem *content);
-t_tokens                *ft_get_tokens(t_lines *lines);
-char					*ft_strjoin_free(char *s1, char *s2, int operation);
+typedef struct			s_lexical_err
+{
+	int 				error_code;
+	int					addit_code;
+	t_lexem				*lexem;
+	struct s_lexical_err	*next;
+}						t_lexical_err;
+
+t_bool					ft_file_name_validity(char *str);
+void					ft_str_extend(char **str, char const *new);
+int						ft_count_lines(char *str);
+char					**ft_lines_split(char *str);
+void					ft_push_list(t_lex_list **alst, t_lexem *content);
+t_tokens				*ft_get_tokens(t_lines *lines);
 t_bool					ft_is_label_char(char c);
 t_bool					ft_is_undefined(char c);
+t_bool					ft_is_digit_sign(char c);
 
 t_lexem   				*ft_get_command(char *str, t_cursor *cur);
 t_lexem   				*ft_get_string(t_lines *lines, t_cursor *cur);
@@ -93,5 +118,12 @@ t_lexem   				*ft_get_direct_label(char *str, t_cursor *cur);
 t_lexem   				*ft_get_registor(char *str, t_cursor *cur);
 t_lexem   				*ft_get_indir_num(char *str, t_cursor *cur);
 t_lexem   				*ft_get_undef(char *str, t_cursor *cur);
+t_lexem   				*check_instuct_label_reg(char *str, t_cursor *cur);
+t_lexem   				*ft_get_indir_label(char *str, t_cursor *cur);
+t_lexem   				*ft_get_label(char *str, t_cursor *cur, int len);
+t_lexem   				*check_indir_or_label(char *str, t_cursor *cur);
+t_lexem  				*check_label_or_undef(char *str, t_cursor *cur);
+
+t_lexical_err 			*ft_get_lex_errors(t_tokens *tokens);
 
 #endif
