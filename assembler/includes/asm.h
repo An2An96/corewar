@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/26 15:21:39 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 16:04:46 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ t_lexem  				*check_label_or_undef(char *str, t_cursor *cur);
 t_lexical_err 			*ft_get_lex_errors(t_tokens *tokens);
 void					ft_push_list_lex_errors(t_lexical_err **alst, int err, int addit_err, t_lexem *lexem);
 void    				print_errors(char *filename, t_lexical_err *lex_errors);
+void					delete_str_commas(t_tokens *tokens);
 
 t_op					*get_op();
 
