@@ -34,6 +34,7 @@ ifeq ($(DEBUG),true)
 endif
 
 FLAGS += $(foreach lib,$(LIBS),-L$(LIB_DIR)/$(lib) -l$(lib:lib%=%))
+FLAGS += -lncurses
 
 ############################		  Rules 		############################
 

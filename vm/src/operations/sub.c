@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:23:21 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 20:25:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/23 19:30:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	op_sub(t_env *env, t_carriage *carriage, int args_types, ...)
 		if (set_reg_value(carriage, va_arg(args, int), value[0], PROC_ENDIAN))
 			carriage->carry = !value[0];
 	}
-	print_carriage(env, carriage);
+	// print_carriage(env, carriage);
 	va_end(args);
 	return (-1);
 }
