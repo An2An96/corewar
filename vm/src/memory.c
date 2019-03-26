@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:23:15 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 14:16:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 21:35:43 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,18 @@ int	set_mem_value(t_env *env, t_carriage *carriage, int offset, int value)
 {
 	int mempos;
 
-	// print_memory(&value, 4);
-	// write(1, "\n", 1);
+	print_memory(&value, 4);
+	write(1, "\n", 1);
 
-	// ft_printf("set_mem_value cur pos: %d, offset: %d, value: %d\n",
-	// 	carriage->position, offset, value);
+	ft_printf("set_mem_value cur pos: %d, offset: %d, value: %d\n",
+		carriage->position, offset, value);
 
 	mempos = calc_mem_addr(carriage->position, offset, true);
 
-	// ft_printf("mempos = %d\n", mempos);
+	ft_printf("mempos = %d\n", mempos);
 
-	// print_memory(env->field + mempos, 4);
-	// write(1, "\n", 1);
+	print_memory(env->field + mempos, 4);
+	write(1, "\n", 1);
 
 	env->field[mempos] = (unsigned char)((value) & 0xFF);
 	mempos++;

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 19:16:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 19:49:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int		print_move(t_env *env, unsigned int curpos, unsigned int len)
 		len--;
 	}
 	write(1, "\n", 1);
-	if (curpos + len == 0x0f7f)
+	if (curpos + len == 0x0f7f)	//	DEBUG
 	{
 		print_memory(env->field + curpos + len, 6);
 		write(1, "\n", 1);

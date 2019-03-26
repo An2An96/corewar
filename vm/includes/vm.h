@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 18:43:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 20:55:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@
 # define STR_ERROR_SYS		COLOR_ERROR"[System Error]: "COLOR_NONE
 # define STR_ERROR_VALID	COLOR_ERROR"[Validation Error]: "COLOR_NONE
 # define MEMORY_ERR			STR_ERROR_SYS, "Not enough memory"
+
+typedef struct	s_arg
+{
+	int			value;
+	t_arg_type	type;
+	int			content;
+}				t_arg;
 
 /*
 **	Structure describe carriage
