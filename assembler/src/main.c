@@ -71,8 +71,14 @@ int             main(int argc, char *argv[])
         exit(1);
     }
     tokens = ft_get_tokens(lines);
+    lex_errors = NULL;
     lex_errors = ft_get_lex_errors(tokens);
-    print_errors(argv[1], lex_errors);
+    if (lex_errors)
+    {
+		print_errors(argv[1], lex_errors);
+		exit(1);
+	}
+	delete_str_commas(tokens);
     // TODO: function to delete lex_errors
     // TODO: function to delete tokens structure
     // TODO: function to delete lines structure
