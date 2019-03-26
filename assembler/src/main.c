@@ -6,51 +6,46 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/22 17:59:46 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 14:02:50 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/asm.h"
 
-static t_lines  *ft_create_lines(char *str)
+void            ft_expand_lines(t_lines **lines, char *line)
 {
-    t_lines *res;
-    char    **lines;
+    int     i;
+    char    *new;
+    int     len;
     int     count;
 
-    res = (t_lines *)malloc(sizeof(t_lines));
-    CHECK_NULL(res);
-    res->count = ft_count_lines(str);
-    res->line = ft_lines_split(str);
-    return (res);
+    new = ft_strdup(line);
+	count = (*lines)->count + 1;
+    (*lines)->line = realloc((*lines)->line, sizeof(char *) * count);
+	(*lines)->count = count;
+    (*lines)->line[count - 1] = new;
 }
 
-static char     *ft_read_file(int fd)
+static t_lines  *ft_read_file(int fd, char **line)
 {
-    char    buffer[BUFF + 1];
-    char    *res;
-    int     ret;
+    t_lines *lines;
 
-    res = NULL;
-    if (read(fd, buffer, 0) < 0) {
-        perror("read");
-        exit(1);
-    }
-    while ((ret = (int)read(fd, buffer, BUFF)) > 0)
-    {
-        buffer[ret] = '\0';
-        ft_str_extend(&res, buffer);
-    }
-    return (res);
+    lines = (t_lines *)ft_memalloc(sizeof(t_lines));
+	CHECK_NULL(lines);
+    while (get_next_line(fd, line) > 0)
+        ft_expand_lines(&lines, *line);
+    return (lines);
 }
 
 int             main(int argc, char *argv[])
 {
     int         fd;
     t_lines     *lines;
-    char        *buff;
     t_tokens    *tokens;
+    char        *line;
+    t_lexical_err   *lex_errors;
 
+    line = NULL;
     if (argc < 2)
     {
         ft_putendl("Usage: Enter name of the .s file containing your champion");
@@ -69,15 +64,15 @@ int             main(int argc, char *argv[])
     }
     if (ft_file_name_validity(argv[1]) == false)
         exit(1);
-    buff = ft_read_file(fd);
-    if (buff == NULL)
+    lines = ft_read_file(fd, &line);
+    if (lines->count == 0)
     {
         ft_putendl("There are no information at all about champion in the file!");
         exit(1);
     }
-    lines = ft_create_lines(buff);
     tokens = ft_get_tokens(lines);
-    ft_strdel(&buff);
+    lex_errors = ft_get_lex_errors(tokens);
+    print_errors(lex_errors);
     // TODO: function to delete tokens structure
     // TODO: function to delete lines structure
     close(fd);

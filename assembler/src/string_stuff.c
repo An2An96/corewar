@@ -75,7 +75,7 @@ t_bool		ft_is_undefined(char c)
 {
 	if (ft_isdigit(c))
 		return (false);
-	else if (ft_isalpha(c))
+	else if (ft_isalpha_small(c))
 		return (false);
 	else if (c == COMMENT_CHAR || c == ALT_COMMENT_CHAR || c == LABEL_CHAR ||
 			c == DIRECT_CHAR || c == SEPARATOR_CHAR)
@@ -85,4 +85,13 @@ t_bool		ft_is_undefined(char c)
 	else if (ft_is_label_char(c) == true)
 		return (false);
 	return (true);
+}
+
+t_bool		ft_is_digit_sign(char c)
+{
+	if (c == '-')
+		return (true);
+	if (c == '+')
+		return (true);
+	return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:46:26 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/23 21:48:27 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/25 20:01:09 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,18 @@ static t_lexem   *ft_define_lex(t_lines *lines, t_cursor *cur)
 		return(ft_get_separator(lines->line[cur->line], cur));
     else if (lines->line[cur->line][cur->pos] == DIRECT_CHAR)
 		return(ft_get_direct(lines->line[cur->line], cur));
-    else if (lines->line[cur->line][cur->pos] == 'r')
-		return(ft_get_registor(lines->line[cur->line], cur));
+    else if (lines->line[cur->line][cur->pos] == LABEL_CHAR)
+		return(ft_get_indir_label(lines->line[cur->line], cur));
     else if (ft_isdigit(lines->line[cur->line][cur->pos]))
+    	return(check_indir_or_label(lines->line[cur->line], cur));
+	else if (ft_is_digit_sign(lines->line[cur->line][cur->pos]))
 		return(ft_get_indir_num(lines->line[cur->line], cur));
+    else if (ft_isalpha_small(lines->line[cur->line][cur->pos]))
+		return (check_instuct_label_reg(lines->line[cur->line], cur));
+    else if (lines->line[cur->line][cur->pos] == '_')
+		return (check_label_or_undef(lines->line[cur->line], cur));
     else
     	return(ft_get_undef(lines->line[cur->line], cur));
-    /*
-    else if (ft_isalpha(str[*i]))
-        ft_get_instruction(str, i);
-    else if (str[*i] == ':')
-        ft_get_indir_label(str, i);
-    */
 }
 
 static t_lex_list   *ft_get_lex_list(t_lines *lines, t_cursor *cur, int prev)
@@ -45,10 +45,9 @@ static t_lex_list   *ft_get_lex_list(t_lines *lines, t_cursor *cur, int prev)
     t_lexem     *new;
 
     res = NULL;
-    while (lines->line[cur->line][cur->pos])
+    while (cur->line < lines->count && lines->line[cur->line] && lines->line[cur->line][cur->pos])
     {
-        if (lines->line[cur->line][cur->pos] == '\t' ||
-        lines->line[cur->line][cur->pos] == ' ')
+        if (lines->line[cur->line][cur->pos] == '\t' || lines->line[cur->line][cur->pos] == ' ')
 			cur->pos++;
         else
         {
@@ -61,6 +60,35 @@ static t_lex_list   *ft_get_lex_list(t_lines *lines, t_cursor *cur, int prev)
     return (res);
 }
 
+t_tokens            *ft_create_empty_tokens(int count)
+{
+    t_tokens    *tokens;
+    int         i;
+
+    i = 0;
+    tokens = (t_tokens *)malloc(sizeof(t_tokens));
+    CHECK_NULL(tokens);
+    tokens->count = count;
+    tokens->tokenlst = (t_lex_list **)malloc(sizeof(t_lex_list *) * count);
+    while (i < count)
+    {
+        tokens->tokenlst[i] = NULL;
+        i++;
+    }
+    return (tokens);
+}
+
+t_cursor            *ft_create_empty_cursor(void)
+{
+    t_cursor	*cursor;
+
+    cursor = (t_cursor *)malloc(sizeof(t_cursor));
+    CHECK_NULL(cursor);
+    cursor->line = 0;
+    cursor->pos = 0;
+    return (cursor);
+}
+
 t_tokens            *ft_get_tokens(t_lines *lines)
 {
     int         curr_line;
@@ -68,19 +96,13 @@ t_tokens            *ft_get_tokens(t_lines *lines)
     t_cursor	*cursor;
 
     curr_line = 0;
-    cursor = (t_cursor *)malloc(sizeof(t_cursor));
-    CHECK_NULL(cursor);
-    cursor->line = 0;
-    cursor->pos = 0;
-    res = (t_tokens *)malloc(sizeof(t_tokens));
-    CHECK_NULL(res);
-    res->count = lines->count;
-    res->tokenlst = (t_lex_list **)malloc(sizeof(t_lex_list *) * lines->count);
+    cursor = ft_create_empty_cursor();
+    res = ft_create_empty_tokens(lines->count);
     while (curr_line < lines->count)
     {
     	res->tokenlst[curr_line] = ft_get_lex_list(lines, cursor, curr_line);
     	if (cursor->line > curr_line)
-    		curr_line = cursor->line;
+    	    curr_line = cursor->line;
     	else
 		{
 			curr_line++;
