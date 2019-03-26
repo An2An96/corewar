@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/26 14:02:50 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 16:03:12 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ int             main(int argc, char *argv[])
     }
     tokens = ft_get_tokens(lines);
     lex_errors = ft_get_lex_errors(tokens);
-    print_errors(lex_errors);
+    print_errors(argv[1], lex_errors);
+    // TODO: function to delete lex_errors
     // TODO: function to delete tokens structure
     // TODO: function to delete lines structure
     close(fd);
