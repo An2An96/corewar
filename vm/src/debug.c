@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 17:36:30 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 19:16:05 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,25 @@ void	print_carriage(t_env *env, t_carriage *carriage)
 		write(1, "\n", 1);
 		i++;
 	}
+}
+
+int		print_move(t_env *env, unsigned int curpos, unsigned int len)
+{
+	if (curpos)
+		ft_printf("ADV %d (%#06x -> %#06x) ", len, curpos, curpos + len);
+	else
+		ft_printf("ADV %d (0x%04x -> %#06x) ", len, curpos, curpos + len);
+	while (len)
+	{
+		ft_printf("%02x ", *(env->field + curpos % MEM_SIZE));
+		curpos++;
+		len--;
+	}
+	write(1, "\n", 1);
+	if (curpos + len == 0x0f7f)
+	{
+		print_memory(env->field + curpos + len, 6);
+		write(1, "\n", 1);
+	}
+	return (1);
 }

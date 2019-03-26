@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 18:27:04 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 18:43:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdarg.h>
+# include <ncurses.h>
 
 /*
 **	Libs
@@ -32,6 +33,14 @@
 /*
 **	Macroses
 */
+
+# define SHOW_LIVES			1
+# define SHOW_CYCLES		2
+# define SHOW_OPS			4
+# define SHOW_DEATHS		8
+# define SHOW_PC_MOVES		16
+
+# define VERB_LEVEL(level)	(env->verb_levels & level)
 
 # define PROC_ENDIAN		(LITTLE_ENDIAN == BYTE_ORDER)
 # define BIG_END			0
@@ -71,6 +80,7 @@ typedef struct	s_champion
 	char			comment[COMMENT_LENGTH + 1];
 	unsigned char	*exec_code;
 	unsigned int	prog_size;
+	unsigned int	last_live_cycle;
 }				t_champion;
 
 /*
@@ -87,13 +97,14 @@ typedef struct	s_env
 {
 	unsigned char	field[MEM_SIZE];
 
+	int8_t			verb_levels;
 	int				dump_nbr_cycle;
 
 	t_champion		**champions;
 	t_list			*carriages;
 	int				carriages_count;
 
-	int				last_live_champ;
+	int8_t			last_live_champ;
 	int				cycles_to_die;
 
 	int				last_cycle_change_ctd;
@@ -126,17 +137,17 @@ int			vm_check_die(t_env *env);
 
 t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos);
 t_list 		*remove_carriage(t_env *env, t_list *die_carriage);
-void		set_carriage_pos(t_carriage *carriage, int pos);
+void		set_carriage_pos(t_env *env, t_carriage *carriage, int pos);
 
 bool		get_reg_value(t_carriage *carriage, char idx, int *value, bool endian);
 bool		set_reg_value(t_carriage *carriage, char idx, int value, bool endian);
 
 int			calc_mem_addr(int start, int offset, bool truncat);
 int			get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat);
-void		set_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat, int value);
+int			set_mem_value(t_env *env, t_carriage *carriage, int offset, int value);
 
 t_op		*get_op(char op_code);
-unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
+int			do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
 
 int			op_live(t_env *env, t_carriage *carriage, int args_types, ...);
 int			op_ld(t_env *env, t_carriage *carriage, int args_types, ...);
@@ -168,6 +179,7 @@ void		swap_bytes(void *memory, int size);
 
 void		print_champion(t_champion *champion);
 void		print_carriage(t_env *env, t_carriage *carriage);
+int			print_move(t_env *env, unsigned int curpos, unsigned int len);
 
 /*
 **	Print

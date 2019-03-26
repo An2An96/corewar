@@ -32,6 +32,7 @@ void	init_env(t_env *env)
 		//	создание каретки
 		carriage = create_carriage(env, NULL, offset * i);
 		carriage->registers[0] = -(i + 1);
+		swap_bytes(&carriage->registers[0], sizeof(carriage->registers[0]));
 		//	размещение исполняемого кода чемпиона
 		ft_memcpy(env->field + carriage->position, env->champions[i]->exec_code, env->champions[i]->prog_size);
 		// print_carriage(env, carriage);

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/23 19:26:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 14:51:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,19 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 			env->dump_nbr_cycle = cw_atoi(argv[(*i)]);
 		return (-1);
 	}
-	if (!ft_strcmp(argv[(*i)], "-n"))
+	else if (!ft_strcmp(argv[(*i)], "-n"))
 	{
 		if (++(*i) < argc)
 			nbr_player = cw_atoi(argv[(*i)]);
 		if (nbr_player > MAX_PLAYERS || nbr_player == 0)
 			throw_error("[Read Error]:", "Invalid player nbr");
 		(*i)++;
+	}
+	else if (!ft_strcmp(argv[(*i)], "-v"))
+	{
+		if (++(*i) < argc)
+			env->verb_levels = cw_atoi(argv[(*i)]);
+		return (-1);
 	}
 	return (nbr_player);
 }

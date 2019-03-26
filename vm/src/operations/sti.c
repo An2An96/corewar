@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:17:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 16:08:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/26 14:20:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	op_sti(t_env *env, t_carriage *carriage, int args_types, ...)
 	unsigned char	arg_type;
 	unsigned char	reg;
 	int				value[3];
+	unsigned short	mempos;
 
 	va_start(args, args_types);
 	reg = va_arg(args, int);
@@ -47,7 +48,10 @@ int	op_sti(t_env *env, t_carriage *carriage, int args_types, ...)
 		}
 	}
 	get_reg_value(carriage, reg, &value[2], BIG_END);
-	set_mem_value(env, carriage, value[0] + value[1], true, value[2]);
+	mempos = set_mem_value(env, carriage, value[0] + value[1], value[2]);
+	VERB_LEVEL(SHOW_OPS) &&
+		ft_printf("\n%8 | -> store to %d + %d = %d (with pc and mod %d)",
+		value[0], value[1], value[0] + value[1], mempos);
 	va_end(args);
 	return (-1);
 }
