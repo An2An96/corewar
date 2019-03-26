@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/26 16:04:46 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 17:27:34 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 # define CHECK_NULL(x) if (x == NULL) return (NULL)
 # define CHECK_VOID(x) if (x == NULL) return
 # define BUFF 32
+
+# define COLOR_BOLD 		"\x1b[1m"
+# define COLOR_ERROR		"\x1b[1;31m"
+# define COLOR_GREEN		"\x1b[32m"
+# define COLOR_NONE			"\x1b[0m"
 
 enum tokens
 {
