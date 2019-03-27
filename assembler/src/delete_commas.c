@@ -15,8 +15,8 @@
 static void			get_rid_of_commas(char **str)
 {
 	char	*new;
-	char 	*old;
-	int 	len;
+	char	*old;
+	int		len;
 
 	len = (int)ft_strlen(*str);
 	new = ft_strsub(*str, 1, (unsigned int)(len - 2));
@@ -27,8 +27,8 @@ static void			get_rid_of_commas(char **str)
 
 void				delete_str_commas(t_tokens *tokens)
 {
-	t_lex_list 	*tmp;
-	int 		i;
+	t_lex_list	*tmp;
+	int			i;
 
 	i = 0;
 	while (i < tokens->count)
@@ -42,5 +42,4 @@ void				delete_str_commas(t_tokens *tokens)
 		}
 		i++;
 	}
-
 }

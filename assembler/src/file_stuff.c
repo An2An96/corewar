@@ -6,36 +6,59 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:31:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/25 13:06:24 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/27 16:07:43 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/asm.h"
 
-static char     *ft_get_extension(char *str, char c)
+static char		*get_file_extension(char *str, char c)
 {
-    int len;
+	int len;
 
-    len = (int)ft_strlen(str);
-    str += len - 1;
-    while (*str)
-    {
-        if (*str == c)
-            return str;
-        str--;
-    }
-    return str;
+	len = (int)ft_strlen(str);
+	str += len - 1;
+	while (*str)
+	{
+		if (*str == c)
+			return (str);
+		str--;
+	}
+	return (str);
 }
 
-t_bool          ft_file_name_validity(char *str)
+t_bool			is_file_name_valid(char *str)
 {
-    char *ext;
+	char *ext;
 
-    ext = ft_get_extension(str, '.');
-    if (ft_strcmp(".s", ext) != 0)
-    {
-        ft_putendl("Invalid file extension!");
-        return false;
-    }
-    return true;
+	ext = get_file_extension(str, '.');
+	if (ft_strcmp(".s", ext) != 0)
+	{
+		ft_putendl_fd("Invalid file extension!", 2);
+		return (false);
+	}
+	return (true);
+}
+
+void			expand_lines(t_lines **lines, char *line)
+{
+	char	*new;
+	int		count;
+
+	new = ft_strdup(line);
+	count = (*lines)->count + 1;
+	(*lines)->line = realloc((*lines)->line, sizeof(char *) * count);
+	(*lines)->count = count;
+	(*lines)->line[count - 1] = new;
+}
+
+t_lines			*read_file_into_lines(int fd, char **line)
+{
+	t_lines *lines;
+
+	lines = (t_lines *)ft_memalloc(sizeof(t_lines));
+	CHECK_NULL(lines);
+	while (get_next_line(fd, line) > 0)
+		expand_lines(&lines, *line);
+	return (lines);
 }

@@ -6,23 +6,23 @@
 /*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 15:23:45 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/26 19:03:31 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/26 19:37:27 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/asm.h"
 
-void	print_semantic_err(t_lexical_err *lex_errors) // дописать функцию
+void	print_semantic_err(t_errors *lex_errors) // дописать функцию
 {
 	printf(COLOR_ERROR"semaniic error: "COLOR_NONE);
 }
 
-void	print_syntactic_err(t_lexical_err *lex_errors) // дописать функцию
+void	print_syntactic_err(t_errors *lex_errors) // дописать функцию
 {
 	printf(COLOR_ERROR"syntactic error: "COLOR_NONE);
 }
 
-void	print_lexical_err(t_lexical_err *lex_errors)
+void	print_lexical_err(t_errors *lex_errors)
 {
 	printf(COLOR_ERROR"lexical error: "COLOR_NONE);
 	if (lex_errors->error_code[1] == EMPTY_VALUE)
@@ -37,7 +37,7 @@ void	print_lexical_err(t_lexical_err *lex_errors)
 		printf("non existent lexem ");
 }
 
-void	print_type_lexem(t_lexical_err *lex_errors)
+void	print_type_lexem(t_errors *lex_errors)
 {
 	if (lex_errors->lexem->type == COMMAND)
 		printf("[COMMAND]");
@@ -65,12 +65,12 @@ void	print_type_lexem(t_lexical_err *lex_errors)
 		printf("[UNDEFINED]");
 }
 
-void    print_errors(char *filename, t_lexical_err *lex_errors)
+void    print_errors(char *filename, t_errors *lex_errors)
 {
 	while (lex_errors)
 	{
 		printf(COLOR_BOLD"%s:%d:%d: "COLOR_NONE,
-				  filename, lex_errors->lexem->line + 1, lex_errors->lexem->start);
+				  filename, lex_errors->lexem->line + 1, lex_errors->lexem->start + 1);
 		if (lex_errors->error_code[0] == LEXICAL)
 			print_lexical_err(lex_errors);
 		else if (lex_errors->error_code[0] == SYNTACTIC)
