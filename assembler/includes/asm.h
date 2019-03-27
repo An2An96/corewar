@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/26 17:27:34 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/27 22:00:58 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,20 @@
 # include "op.h"
 
 # define CHECK_NULL(x) if (x == NULL) return (NULL)
-# define CHECK_VOID(x) if (x == NULL) return
-# define BUFF 32
 
-# define COLOR_BOLD 		"\x1b[1m"
-# define COLOR_ERROR		"\x1b[1;31m"
-# define COLOR_GREEN		"\x1b[32m"
-# define COLOR_NONE			"\x1b[0m"
+# define COLOR_BOLD		"\x1b[1m"
+# define COLOR_ERROR	"\x1b[1;31m"
+# define COLOR_GREEN	"\x1b[32m"
+# define COLOR_NONE		"\x1b[0m"
+
+enum prog_errors
+{
+	NO_FILE = 1,
+	MORE_THAN_ONE_FILE = 2,
+	CANT_OPEN_FILE = 3,
+	EMPTY_FILE = 4,
+	ERRORS_IN_CODE = 5
+};
 
 enum tokens
 {
@@ -96,44 +103,61 @@ typedef struct			s_cursor
 	int 				pos;
 }						t_cursor;
 
-typedef struct			s_lexical_err
+typedef struct			s_errors
 {
 	int 				error_code[2];
 	t_lexem				*lexem;
-	struct s_lexical_err	*next;
-}						t_lexical_err;
+	struct s_errors		*next;
+}						t_errors;
 
-t_bool					ft_file_name_validity(char *str);
-void					ft_str_extend(char **str, char const *new);
-int						ft_count_lines(char *str);
-char					**ft_lines_split(char *str);
-void					ft_push_list(t_lex_list **alst, t_lexem *content);
-t_tokens				*ft_get_tokens(t_lines *lines);
-t_bool					ft_is_label_char(char c);
-t_bool					ft_is_undefined(char c);
-t_bool					ft_is_digit_sign(char c);
-t_lexical_err			*ft_new_lex_errors(int err, int addit_err, t_lexem *lexem);
+t_bool					is_file_name_valid(char *str);
 
-t_lexem   				*ft_get_command(char *str, t_cursor *cur);
-t_lexem   				*ft_get_string(t_lines *lines, t_cursor *cur);
-t_lexem					*ft_get_comment(char *str, t_cursor *cur);
-t_lexem   				*ft_get_separator(char *str, t_cursor *cur);
-t_lexem   				*ft_get_direct(char *str, t_cursor *cur);
-t_lexem   				*ft_get_direct_label(char *str, t_cursor *cur);
-t_lexem   				*ft_get_registor(char *str, t_cursor *cur);
-t_lexem   				*ft_get_indir_num(char *str, t_cursor *cur);
-t_lexem   				*ft_get_undef(char *str, t_cursor *cur);
+t_lines         		*read_file_into_lines(int fd, char **line);
+t_tokens				*get_tokens(t_lines *lines);
+t_errors 				*get_lex_errors(t_tokens *tokens);
+
+void					push_back_lex_list(t_lex_list **alst, t_lexem *content);
+void					push_back_lex_errors(t_errors **alst, int err, int addit_err, t_lexem *lexem);
+
+t_bool					is_label_char(char c);
+t_bool					is_undefined(char c);
+t_bool					is_digit_sign(char c);
+
+t_lexem   				*get_command(char *str, t_cursor *cur);
+t_lexem   				*get_string(t_lines *lines, t_cursor *cur);
+t_lexem					*get_comment(char *str, t_cursor *cur);
+t_lexem   				*get_separator(char *str, t_cursor *cur);
+t_lexem   				*get_direct(char *str, t_cursor *cur);
+t_lexem   				*get_direct_label(char *str, t_cursor *cur);
+t_lexem   				*get_register(char *str, t_cursor *cur);
+t_lexem					*get_instruction(char *str, t_cursor *cur, int len);
+t_lexem   				*get_indir_num(char *str, t_cursor *cur);
+t_lexem   				*get_undef(char *str, t_cursor *cur);
+t_lexem   				*get_indir_label(char *str, t_cursor *cur);
+t_lexem   				*get_label(char *str, t_cursor *cur, int len);
+
 t_lexem   				*check_instuct_label_reg(char *str, t_cursor *cur);
-t_lexem   				*ft_get_indir_label(char *str, t_cursor *cur);
-t_lexem   				*ft_get_label(char *str, t_cursor *cur, int len);
 t_lexem   				*check_indir_or_label(char *str, t_cursor *cur);
 t_lexem  				*check_label_or_undef(char *str, t_cursor *cur);
 
-t_lexical_err 			*ft_get_lex_errors(t_tokens *tokens);
-void					ft_push_list_lex_errors(t_lexical_err **alst, int err, int addit_err, t_lexem *lexem);
-void    				print_errors(char *filename, t_lexical_err *lex_errors);
-void					delete_str_commas(t_tokens *tokens);
+int						check_error_string(char *value);
+int						check_error_command(char *value);
+int						check_error_reg(char *value);
+int						check_error_dir(char *value);
+int						check_error_indir(char *value);
+int						check_error_instruction(char *value);
+int						check_error_dir_label(char *value);
+int						check_error_indir_label(char *value);
+int						check_error_undef(char *value);
 
-t_op					*get_op();
+void    				print_errors(char *filename, t_errors *lex_errors);
+
+void					delete_str_commas(t_tokens *tokens);
+void					delete_lines(t_lines **del);
+void					delete_tokens(t_tokens **del);
+void 					delete_lex_errors(t_errors **del);
+void					delete_lexem(t_lexem **del);
+void					delete_elem_lex_list(t_lex_list **lst, t_lex_list *del);
+void					delete_lex_list(t_lex_list **head);
 
 #endif
