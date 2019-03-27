@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 15:35:18 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 20:02:27 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,11 @@ int	get_cmd_length(t_op *op, unsigned char *mempos)
 
 inline static bool	is_arg_types_valid(t_op *op, uint8_t args_types)
 {
-	return (ARG_TYPE(args_types, 0) & op->arg_type[0]
-		&& (op->arg_count < 2 || ARG_TYPE(args_types, 1) & op->arg_type[1])
-		&& (op->arg_count < 3 || ARG_TYPE(args_types, 2) & op->arg_type[2]));
+	return (op->arg_type[0] & (1 << (ARG_TYPE(args_types, 0) - 1))
+		&& (op->arg_count < 2
+			|| op->arg_type[1] & (1 << (ARG_TYPE(args_types, 1) - 1)))
+		&& (op->arg_count < 3
+			|| op->arg_type[1] & (1 << (ARG_TYPE(args_types, 1) - 1))));
 }
 
 int		get_arg_value(t_carriage *carriage,
@@ -96,7 +98,6 @@ int		get_arg_value(t_carriage *carriage,
 	int		value;
 	short	short_arg;
 
-	// type == DIR_CODE && dir_ind_size && (type = IND_CODE);
 	if (type == REG_CODE)
 	{
 		value = *((unsigned char*)(*mempos));
@@ -108,17 +109,11 @@ int		get_arg_value(t_carriage *carriage,
 		{
 			value = *((unsigned short*)(*mempos));
 			*mempos += sizeof(unsigned short);
-			// ft_printf("dir_ind_size:\n");
-			// print_memory(&value, 4);
-			// ft_putchar('\n');
 		}
 		else
 		{
 			value = *((unsigned int*)(*mempos));
 			*mempos += sizeof(unsigned int);
-			// ft_printf("dir_size:\n");
-			// print_memory(&value, 4);
-			// ft_putchar('\n');
 		}
 	}
 	else if (type == IND_CODE)
@@ -132,9 +127,10 @@ int		get_arg_value(t_carriage *carriage,
 	return (value);
 }
 
-int	get_arg_content(t_env *env, t_carriage *carriage, bool dir_ind_size, t_arg *arg)
+int	get_arg_content(t_env *env, t_carriage *carriage, t_op *op, t_arg *arg)
 {
 	short	short_arg;
+	bool	need_truncat;
 
 	if (arg->type == REG_CODE)
 	{
@@ -142,12 +138,16 @@ int	get_arg_content(t_env *env, t_carriage *carriage, bool dir_ind_size, t_arg *
 	}
 	else if (arg->type == IND_CODE)
 	{
-		arg->content = get_mem_value(env, carriage, arg->value, true);
+		if (op->op_code == 13)
+			need_truncat = false;
+		else
+			need_truncat = true;
+		arg->content = get_mem_value(env, carriage, arg->value, need_truncat);
 		return (true);
 	}
 	else if (arg->type == DIR_CODE)
 	{
-		if (dir_ind_size)
+		if (op->dir_ind_size)
 		{
 			short_arg = arg->value;
 			if (PROC_ENDIAN)
@@ -191,9 +191,10 @@ bool	get_args(
 			(*args)[i].type = ARG_TYPE(args_types, i);
 			(*args)[i].value = get_arg_value(
 				carriage, (*args)[i].type, op->dir_ind_size, &mempos);
-			if (!get_arg_content(env, carriage, op->dir_ind_size, (*args) + i))
+			if (!get_arg_content(env, carriage, op, (*args) + i))
 				return (false);
-			// ft_printf("type: %d, value: %x, content: %x\n", (*args)[i].type, (*args)[i].value, (*args)[i].content);
+			// ft_printf("type: %d, value: %d [%x], content: %x\n",
+			// 	(*args)[i].type, (*args)[i].value, (*args)[i].value, (*args)[i].content);
 			i++;
 		}
 		return (true);
@@ -208,25 +209,24 @@ int	do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 	int		zjmp;
 	int		len;
 
-	zjmp = -1;
 	mempos++;
+	len = 1;
+	if (env->acount_cycles > 20000 && carriage->id == 4)
+	{
+		// print_carriage(env, carriage);
+		print_memory(env->field + carriage->position, 10);
+		write(1, "\n", 1);
+	}
 	if ((op = get_op(carriage->op_code)))
 	{
 		len = get_cmd_length(op, mempos);
 		if (get_args(env, carriage, mempos, &args))
-		{
-			if (VERB_LEVEL(SHOW_OPS))
-				print_do_op(carriage->id, op->cmd, args, op->arg_count);
-			zjmp = g_op_funcs[carriage->op_code](env, carriage, 0, args);
-			VERB_LEVEL(SHOW_OPS) && write(1, "\n", 1);
-		}
+			zjmp = g_op_funcs[carriage->op_code](env, carriage, args);
 		if (VERB_LEVEL(SHOW_PC_MOVES) && zjmp == -1)
 			print_move(env, carriage->position, len);
 		zjmp != -1 && (len = zjmp);
 	}
-	else
-	{
-		len = 1;
-	}
+	else if (env->acount_cycles > 20000 && carriage->id == 4)
+		ft_putstr("invalid cmd or args\n");
 	return (calc_mem_addr(carriage->position, len, true));
 }

@@ -6,35 +6,32 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:26:57 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 14:06:36 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:26:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	op_ldi(t_env *env, t_carriage *carriage, int args_types, t_arg *args)
+int	op_ldi(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	int				value[2];
-	unsigned int	mempos;
+	int	value[2];
+	int offset;
 
 	value[0] = args[0].content;
-	if (args[0].type == REG_CODE || args[0].type == IND_CODE)
-	{
-		if (PROC_ENDIAN)
-			swap_bytes(&value[0], sizeof(value[0]));
-	}
+	if (PROC_ENDIAN && (args[0].type == REG_CODE || args[0].type == IND_CODE))
+		swap_bytes(&value[0], sizeof(int));
 	value[1] = args[1].content;
-	if (args[1].type == REG_CODE)
-	{
-		if (PROC_ENDIAN)
-			swap_bytes(&value[1], sizeof(value[1]));
-	}
-	mempos = calc_mem_addr(carriage->position, value[0] + value[1], true);
+	if (PROC_ENDIAN && args[1].type == REG_CODE)
+		swap_bytes(&value[1], sizeof(int));
+	offset = value[0] + value[1];
 	set_reg_value(carriage, args[2].value,
-		get_mem_value(env, carriage, value[0] + value[1], true), false);
-	VERB_LEVEL(SHOW_OPS) &&
-		ft_printf("\n%8 | -> load from %d + %d = %d (with pc and mod %d)",
-		value[0], value[1], value[0] + value[1], mempos);
-	// print_carriage(env, carriage);
+		get_mem_value(env, carriage, offset, true), false);
+	if (VERB_LEVEL(SHOW_OPS))
+	{
+		ft_printf("P%5d | ldi %d %d r%d\n",
+			carriage->id, value[0], value[1], args[2].value);
+		ft_printf("%8| -> load from %d + %d = %d (with pc and mod %d)\n",
+			value[0], value[1], offset, carriage->position + offset % IDX_MOD);
+	}
 	return (-1);
 }

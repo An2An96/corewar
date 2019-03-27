@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 14:28:15 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:30:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,10 @@ typedef struct	s_env
 	int				acount_checks;
 }				t_env;
 
-typedef int (*t_op_func)(t_env *env, t_carriage *carriage, int args_types, ...);
+typedef int (*t_op_func)(t_env *env, t_carriage *carriage, t_arg *args);
 
 t_op	g_op_tab[17];
+char	g_op_args[17][3];
 
 /*
 **	Read
@@ -156,22 +157,22 @@ int			set_mem_value(t_env *env, t_carriage *carriage, int offset, int value);
 t_op		*get_op(char op_code);
 int			do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
 
-int			op_live(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_ld(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_st(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_add(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_sub(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_and(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_or(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_xor(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_zjmp(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_ldi(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_sti(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_fork(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
-int			op_lld(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_lldi(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_lfork(t_env *env, t_carriage *carriage, int args_types, ...);
-int			op_aff(t_env *env, t_carriage *carriage, int args_types, t_arg *args);
+int			op_live(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_ld(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_st(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_add(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_sub(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_and(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_or(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_xor(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_zjmp(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_ldi(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_sti(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_fork(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_lld(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_lldi(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_lfork(t_env *env, t_carriage *carriage, t_arg *args);
+int			op_aff(t_env *env, t_carriage *carriage, t_arg *args);
 
 /*
 **	Utils functions
@@ -186,13 +187,8 @@ void		swap_bytes(void *memory, int size);
 
 void		print_champion(t_champion *champion);
 void		print_carriage(t_env *env, t_carriage *carriage);
-void		print_do_op(int carriage_id, char *op_cmd, t_arg *args, int8_t args_count);
+// void		print_do_op(int carriage_id, char *op_cmd, t_arg *args, int8_t args_count);
 int			print_move(t_env *env, unsigned int curpos, unsigned int len);
-
-/*
-**	Print
-*/
-
 void    	print_players(t_env *env);
 
 #endif
