@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 19:12:54 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 16:00:41 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,9 +194,11 @@ int	do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 			}
 			VERB_LEVEL(SHOW_OPS) && write(1, "\n", 1);
 		}
+		if (VERB_LEVEL(SHOW_PC_MOVES) && zjmp == -1)
+			print_move(env, carriage->position, len);
+		zjmp != -1 && (len = zjmp);
 	}
-	if (VERB_LEVEL(SHOW_PC_MOVES) && zjmp == -1)
-		print_move(env, carriage->position, len);
-	zjmp != -1 && (len = zjmp);
+	else
+		len = 1;
 	return (calc_mem_addr(carriage->position, len, false));
 }

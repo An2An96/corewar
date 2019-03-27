@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:14:11 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 18:53:26 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 15:59:53 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void		vm_loop(t_env *env)
 			(op = get_op(carriage->op_code))
 				&& (carriage->cycles_to_execute = op->cycles_to_execute);
 		}
-		if (carriage->cycles_to_execute && --carriage->cycles_to_execute == 0)
+		carriage->cycles_to_execute && --carriage->cycles_to_execute;
+		if (carriage->cycles_to_execute == 0)
 			carriage->position =
 				do_op(env, carriage, env->field + carriage->position);
 		cur_lst = cur_lst->next;
