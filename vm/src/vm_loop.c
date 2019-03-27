@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:14:11 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 19:44:53 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 15:32:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ static int	vm_end(t_env *env)
 
 int			vm_check_die(t_env *env)
 {
+	t_list		*cur_lst;
+	t_carriage	*carriage;
+
 	if (env->cycles_to_die <= 0
 		|| (env->acount_cycles - env->last_cycle_check) == env->cycles_to_die)
 	{
-		t_list		*cur_lst;
-		t_carriage	*carriage;
-
 		cur_lst = env->carriages;
 		while (cur_lst)
 		{
@@ -70,7 +70,6 @@ void		vm_loop(t_env *env)
 	t_op		*op;
 	t_list		*cur_lst;
 	t_carriage	*carriage;
-	// int			new_pos;
 
 	env->acount_cycles++;
 	if (env->dump_nbr_cycle >= 0 && env->acount_cycles > env->dump_nbr_cycle)
@@ -90,9 +89,12 @@ void		vm_loop(t_env *env)
 			(op = get_op(carriage->op_code))
 				&& (carriage->cycles_to_execute = op->cycles_to_execute);
 		}
-		if (carriage->cycles_to_execute && --carriage->cycles_to_execute == 0)
+		carriage->cycles_to_execute && --carriage->cycles_to_execute;
+		if (carriage->cycles_to_execute == 0)
+		{
 			carriage->position =
 				do_op(env, carriage, env->field + carriage->position);
+		}
 		cur_lst = cur_lst->next;
 	}
 }
