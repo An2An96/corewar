@@ -6,86 +6,86 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:14:11 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 16:35:03 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 21:23:48 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-static int		vm_end()
+static int			vm_end(t_env *env)
 {
-	ft_printf("Contestant ???, has won !");
+	int8_t winner;
+
+	winner = env->last_live_champ;
+	ft_printf("Contestant %d, \"%s\", has won !\n",
+		winner + 1, env->champions[winner]->prog_name);
 	return (0);
 }
 
-int		vm_check_die(t_env *env)
+static int			vm_check_die_helper(t_env *env)
 {
-	if (env->cycles_to_die <= 0
-		|| (env->acount_cycles - env->last_cycle_check) == env->cycles_to_die)
+	if (env->rcount_lives >= NBR_LIVE
+		|| ++env->last_cycle_change_ctd == MAX_CHECKS)
 	{
-		// ft_printf("vm_check_die %d\n", env->cycles_to_die);
-		t_list		*cur_lst;
-		t_carriage	*carriage;
-
-		cur_lst = env->carriages;
-		while (cur_lst)
-		{
-			carriage = (t_carriage*)cur_lst->content;
-			ft_printf("%d - %d >= %d | %d >= %d\n",
-				carriage->last_live_cycle, env->last_cycle_check, env->cycles_to_die,
-				carriage->last_live_cycle - env->last_cycle_check, env->cycles_to_die);
-			if (env->cycles_to_die <= 0
-				|| (carriage->last_live_cycle - env->last_cycle_check) >= env->cycles_to_die)
-			{
-				remove_carriage(env, cur_lst);
-				if (!env->carriages_count)
-					return (vm_end());
-			}
-			cur_lst = cur_lst->next;
-		}
-		if (env->rcount_lives >= NBR_LIVE
-			|| ++env->last_cycle_change_ctd == MAX_CHECKS)
-		{
-			env->cycles_to_die -= CYCLE_DELTA;
-			env->last_cycle_change_ctd = 0;
-		}
-		env->rcount_lives = 0;
-		env->acount_checks++;
-		env->last_cycle_check = env->acount_cycles;
+		env->cycles_to_die -= CYCLE_DELTA;
+		env->last_cycle_change_ctd = 0;
+		VERB_LEVEL(SHOW_CYCLES) &&
+			ft_printf("Cycle to die is now %d\n", env->cycles_to_die);
 	}
+	env->rcount_lives = 0;
+	env->acount_checks++;
+	env->last_cycle_check = env->acount_cycles;
 	return (1);
 }
 
-// static void	vm_loop_helper(t_env *env)
-// {
-// 	if (env->dump_nbr_cycle >= 0 && env->acount_cycles >= env->dump_nbr_cycle)
-// 	{
-// 		print_memory(env->field, MEM_SIZE);
-// 		exit(EXIT_SUCCESS);
-// 	}
-// 	if (env->cycles_to_die <= 0
-// 		|| (env->acount_cycles - env->last_cycle_check) == env->cycles_to_die)
-// 	{
-// 		vm_check_die(env);
-// 	}
-// }
+int					vm_check_die(t_env *env)
+{
+	t_list		*cur_lst;
+	t_carriage	*carriage;
 
-void		vm_loop(t_env *env)
+	if (env->cycles_to_die > 0
+		&& (env->acount_cycles - env->last_cycle_check) != env->cycles_to_die)
+		return (1);
+	cur_lst = env->carriages;
+	while (cur_lst)
+	{
+		carriage = (t_carriage*)cur_lst->content;
+		if (env->cycles_to_die <= 0
+			|| carriage->last_live_cycle <= env->last_cycle_check)
+		{
+			VERB_LEVEL(SHOW_DEATHS) &&
+				ft_printf("Process %d hasn't lived for %d cycles (CTD %d)\n",
+				carriage->id, env->acount_cycles - carriage->last_live_cycle,
+				env->cycles_to_die);
+			cur_lst = remove_carriage(env, cur_lst);
+			if (!env->carriages_count)
+				return (vm_end(env));
+		}
+		else
+			cur_lst = cur_lst->next;
+	}
+	return (vm_check_die_helper(env));
+}
+
+inline static void	dump_exit(t_env *env)
+{
+	print_memory(env->field, MEM_SIZE);
+	exit(EXIT_SUCCESS);
+}
+
+void				vm_loop(t_env *env)
 {
 	t_op		*op;
 	t_list		*cur_lst;
 	t_carriage	*carriage;
 
-	if (env->dump_nbr_cycle >= 0 && env->acount_cycles >= env->dump_nbr_cycle)
-	{
-		print_memory(env->field, MEM_SIZE);
-		exit(EXIT_SUCCESS);
-	}
+	env->acount_cycles++;
+	if (env->dump_nbr_cycle >= 0 && env->acount_cycles > env->dump_nbr_cycle)
+		dump_exit(env);
+	VERB_LEVEL(SHOW_CYCLES) && ft_printf(CYCLE_NUM_MESG);
 	cur_lst = env->carriages;
-	// write(1, "9\n", 2);
 	while (cur_lst)
 	{
-		// write(1, "8\n", 2);
 		carriage = (t_carriage*)cur_lst->content;
 		if (!carriage->cycles_to_execute)
 		{
@@ -93,16 +93,8 @@ void		vm_loop(t_env *env)
 			(op = get_op(carriage->op_code))
 				&& (carriage->cycles_to_execute = op->cycles_to_execute);
 		}
-		// write(1, "7\n", 2);
 		carriage->cycles_to_execute && --carriage->cycles_to_execute;
-		!carriage->cycles_to_execute
-			&& do_op(env, carriage, env->field + carriage->position);
-		// write(1, "6\n", 2);
+		!carriage->cycles_to_execute && do_op(env, carriage);
 		cur_lst = cur_lst->next;
 	}
-	env->acount_cycles++;
-	write(1, "cycle: ", 7);
-	ft_putnbr(env->acount_cycles);
-	write(1, "\n", 1);
-	// ft_printf("cycle: %d\n", env->acount_cycles);
 }

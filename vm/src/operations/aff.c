@@ -6,20 +6,18 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:37:40 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 17:55:48 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:25:43 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	op_aff(t_env *env, t_carriage *carriage, int args_types, ...)
+int	op_aff(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	va_list	args;
-	int		value;
-
-	va_start(args, args_types);
-	get_reg_value(carriage, va_arg(args, int), &value, PROC_ENDIAN);
-	write(1, (char*)&value, 1);
-	va_end(args);
+	if (PROC_ENDIAN)
+		swap_bytes(&args[0].content, sizeof(args[0].content));
+	if (VERB_LEVEL(SHOW_OPS))
+		ft_putchar('\n');
+	ft_putchar((char)args[0].content);
 	return (-1);
 }

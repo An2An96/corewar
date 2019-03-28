@@ -6,26 +6,26 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:23:21 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 20:25:05 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:26:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	op_sub(t_env *env, t_carriage *carriage, int args_types, ...)
+int	op_sub(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	va_list		args;
-	int			value[2];
+	int result;
 
-	va_start(args, args_types);
-	if (get_reg_value(carriage, va_arg(args, int), &value[0], PROC_ENDIAN)
-		&& get_reg_value(carriage, va_arg(args, int), &value[1], PROC_ENDIAN))
+	if (PROC_ENDIAN)
 	{
-		value[0] -= value[1];
-		if (set_reg_value(carriage, va_arg(args, int), value[0], PROC_ENDIAN))
-			carriage->carry = !value[0];
+		swap_bytes(&args[0].content, sizeof(args[0].content));
+		swap_bytes(&args[1].content, sizeof(args[0].content));
 	}
-	print_carriage(env, carriage);
-	va_end(args);
+	result = args[0].content - args[1].content;
+	if (set_reg_value(carriage, args[2].value, result, true))
+		carriage->carry = !result;
+	if (VERB_LEVEL(SHOW_OPS))
+		ft_printf("P%5d | sub r%d r%d r%d\n",
+			carriage->id, args[0].value, args[1].value, args[2].value);
 	return (-1);
 }

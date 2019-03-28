@@ -6,48 +6,31 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:17:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 16:08:32 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:46:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	op_sti(t_env *env, t_carriage *carriage, int args_types, ...)
+int	op_sti(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	va_list			args;
-	unsigned char	arg_type;
-	unsigned char	reg;
-	int				value[3];
+	int	value[2];
+	int	offset;
 
-	va_start(args, args_types);
-	reg = va_arg(args, int);
-	arg_type = ARG_TYPE(args_types, 1);
-	value[0] = va_arg(args, int);
-	if (arg_type == REG_CODE)
-	{
-		if (!get_reg_value(carriage, value[0], &value[0], PROC_ENDIAN))
-		{
-			va_end(args);
-			return (-1);
-		}
-	}
-	else if (arg_type == IND_CODE)
-	{
-		value[0] = get_mem_value(env, carriage, value[0], true);
+	value[0] = args[1].content;
+	if (PROC_ENDIAN && (args[1].type == REG_CODE || args[1].type == IND_CODE))
 		swap_bytes(&value[0], sizeof(int));
-	}
-	arg_type = ARG_TYPE(args_types, 2);
-	value[1] = va_arg(args, int);
-	if (arg_type == REG_CODE)
+	value[1] = args[2].content;
+	if (PROC_ENDIAN && args[2].type == REG_CODE)
+		swap_bytes(&value[1], sizeof(int));
+	offset = value[0] + value[1];
+	set_mem_value(env, carriage, offset, args[0].content);
+	if (VERB_LEVEL(SHOW_OPS))
 	{
-		if (!get_reg_value(carriage, value[1], &value[1], PROC_ENDIAN))
-		{
-			va_end(args);
-			return (-1);
-		}
+		ft_printf("P%5d | sti r%d %d %d\n",
+			carriage->id, args[0].value, value[0], value[1]);
+		ft_printf("%8 | -> store to %d + %d = %d (with pc and mod %d)\n",
+			value[0], value[1], offset, carriage->position + offset % IDX_MOD);
 	}
-	get_reg_value(carriage, reg, &value[2], BIG_END);
-	set_mem_value(env, carriage, value[0] + value[1], true, value[2]);
-	va_end(args);
 	return (-1);
 }

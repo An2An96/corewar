@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/23 16:10:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 21:52:07 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_op_func	g_op_funcs[] = {
 	op_aff
 };
 
-t_op	*get_op(char op_code)
+t_op				*get_op(char op_code)
 {
 	int8_t i;
 
@@ -49,149 +49,66 @@ t_op	*get_op(char op_code)
 	return (NULL);
 }
 
-unsigned int	get_arg(char type, bool dir_ind_size, unsigned char **mempos)
+inline static void	get_cmd_length_helper(
+	unsigned char mempos, int codage_octal, uint8_t *args_types, int *len)
 {
-	int arg;
-	short short_arg;
-
-	if (type == REG_CODE)
+	if (codage_octal)
 	{
-		// print_memory(*mempos, 1);	ft_printf("\n");
-		arg = *((unsigned char*)(*mempos));
-		swap_bytes(&arg, sizeof(unsigned char));
-		*mempos += sizeof(unsigned char);
-		// print_memory(&arg, 4);	ft_printf("\n");
-		// ft_printf("REG_CODE: %d\n", arg);
+		*args_types = mempos;
+		(*len)++;
 	}
-	else if (type == IND_CODE || dir_ind_size)
-	{
-		// print_memory(*mempos, 2);	ft_printf("\n");
-		short_arg = *((unsigned short*)(*mempos));
-		swap_bytes(&short_arg, sizeof(unsigned short));
-		*mempos += sizeof(unsigned short);
-		// print_memory(&short_arg, 2);	ft_printf("\n");
-		arg = short_arg;
-		// ft_printf("IND_CODE: %d\n", (int)arg);
-	}
-	else if (type == DIR_CODE)
-	{
-		// print_memory(*mempos, 4);	ft_printf("\n");
-		arg = *((unsigned int*)(*mempos));
-		swap_bytes(&arg, sizeof(unsigned int));
-		*mempos += sizeof(unsigned int);
-		// print_memory(&arg, 4);	ft_printf("\n");
-		// ft_printf("DIR_CODE: %u 123\n", arg);
-	}
-	return (arg);
+	else
+		*args_types = T_DIR << 6;
 }
 
-/*
-
-Если данный код корректен и указывает, что среди аргументов операции есть регистр, необходимо также убедиться в корректности номера регистра.
-
-Если все необходимые проверки были успешно пройдены, нужно выполнить операцию и передвинуть каретку на следующую позицию.
-
-Если же код операции ошибочен, необходимо просто переместить каретку на следующий байт.
-
-Если с самим кодом все нормально, но код типов аргументов или же номер регистра ошибочен, нужно пропустить данную операцию вместе с кодом типов аргументов и самими аргументами.
-
-*/
-
-unsigned char	*do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
+static int			get_cmd_length(t_op *op, unsigned char mempos)
 {
-	t_op			*op;
-	int				args[3];
-	unsigned char	args_types;
-	bool			invalid_args;
-	int				new_pos;
+	int		len;
+	int		i;
+	uint8_t	args_types;
+	uint8_t	arg_type;
 
-	char *arg_type_names[] = { "", "REG_CODE", "DIR_CODE", "IND_CODE" };
-
-	if (env->acount_cycles == 104830)
-		new_pos = -1;
-
-	mempos++;
-	write(1, "do_op\n", 6);
-	// ft_putnbr(carriage->position);
-	// write(1, "\n", 1);
-	// ft_printf("do_op: car_pos: %d\n", carriage->position);
-	if (env->field[carriage->position] && env->field[carriage->position] <= 0x10)
+	len = 1;
+	if (op)
 	{
-		// write(1, "1\n", 2);
-		op = get_op(carriage->op_code);
-		if (op->codage_octal)
+		get_cmd_length_helper(mempos, op->codage_octal, &args_types, &len);
+		i = op->arg_count;
+		while (i)
 		{
-			args_types = *mempos;
-			invalid_args = (!(ARG_TYPE(args_types, 0) & op->arg_type[0]
-				&& (op->arg_count < 2 || ARG_TYPE(args_types, 1) & op->arg_type[1])
-				&& (op->arg_count < 3 || ARG_TYPE(args_types, 2) & op->arg_type[2])));
-			mempos++;
+			arg_type = ARG_TYPE(args_types, i - 1);
+			arg_type == DIR_CODE && op->dir_ind_size && (arg_type = IND_CODE);
+			if (arg_type == REG_CODE)
+				len++;
+			else if (arg_type == IND_CODE)
+				len += 2;
+			else if (arg_type == DIR_CODE)
+				len += 4;
+			i--;
 		}
-		else
-			args_types = T_DIR << 6;
-		// write(1, "2\n", 2);
-		args[0] = get_arg(ARG_TYPE(args_types, 0), op->dir_ind_size, &mempos);
-		if (op->arg_count > 1)
-			args[1] = get_arg(ARG_TYPE(args_types, 1), op->dir_ind_size, &mempos);
-		if (op->arg_count > 2)
-			args[2] = get_arg(ARG_TYPE(args_types, 2), op->dir_ind_size, &mempos);
-		// write(1, "3\n", 2);	
-		if (!invalid_args)
-		{
-			// write(1, "4\n", 2);	
-			ft_putstr(op->cmd);
-			write(1, "\n", 1);
-			// if (carriage->op_code == 1)
-			// {
-			// 	new_pos = op_live(env, carriage, args_types, args[0]);
-			// }
-			// else if (carriage->op_code == 9)
-			// {
-			// 	write(1, "jmp\n", 4);
-			// 	ft_putnbr(env->acount_cycles);
-			// 	write(1, "\n", 1);
-			// 	ft_putnbr(args_types);
-			// 	write(1, "\n", 1);
-			// 	ft_putnbr(args[0]);
-			// 	write(1, "\n", 1);
-			// 	new_pos = op_zjmp(env, carriage, args_types, args[0]);
-			// 	write(1, "jmp end\n", 8);
-			// }
-			if (op->arg_count == 1)
-			{
-				// ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s)]\n",
-				// 	env->acount_cycles, op->cmd, args[0], arg_type_names[ARG_TYPE(args_types, 0)]);
-				// write(1, "5\n", 2);
-				// ft_putnbr(carriage->op_code);
-				// write(1, "\n", 1);
-				new_pos = g_op_funcs[carriage->op_code](
-					env, carriage, args_types, args[0]);
-				// write(1, "6\n", 2);
-			}
-			else if (op->arg_count == 2)
-			{
-				// ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s)]\n",
-				// 	env->acount_cycles, op->cmd,
-				// 	args[0], arg_type_names[ARG_TYPE(args_types, 0)],
-				// 	args[1], arg_type_names[ARG_TYPE(args_types, 1)]);
-				new_pos = g_op_funcs[carriage->op_code](
-					env, carriage, args_types, args[0], args[1]);
-			}
-			else if (op->arg_count == 3)
-			{
-				// ft_printf("[Cycle: %d] CALL CMD: %s [%d (%s), %d (%s), %d (%s)]\n",
-				// 	env->acount_cycles, op->cmd,
-				// 	args[0], arg_type_names[ARG_TYPE(args_types, 0)],
-				// 	args[1], arg_type_names[ARG_TYPE(args_types, 1)],
-				// 	args[2], arg_type_names[ARG_TYPE(args_types, 2)]);
-				new_pos = g_op_funcs[carriage->op_code](
-					env, carriage, args_types, args[0], args[1], args[2]);
-			}
-		}
-		else
-			new_pos = -1;
-		// write(1, "4\n", 2);
-		set_carriage_pos(carriage, (new_pos != -1) ? new_pos : (mempos - env->field));
 	}
-	return (mempos);
+	return (len);
+}
+
+int					do_op(t_env *env, t_carriage *carriage)
+{
+	t_op	*op;
+	t_arg	*args;
+	int		zjmp;
+	int		len;
+
+	len = 1;
+	zjmp = -1;
+	if ((op = get_op(carriage->op_code)))
+	{
+		len = get_cmd_length(op, *(env->field + carriage->position + 1));
+		if (get_args(env, carriage, &args))
+			zjmp = g_op_funcs[carriage->op_code](env, carriage, args);
+		if (args)
+			free(args);
+		if (VERB_LEVEL(SHOW_PC_MOVES) && zjmp == -1)
+			print_move(env, carriage->position, len);
+	}
+	carriage->position = zjmp != -1 ?
+		zjmp : calc_mem_addr(carriage->position, len, true);
+	return (1);
 }

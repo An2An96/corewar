@@ -4,3 +4,5 @@ asm
 corewar
 out
 .vscode/
+**/*.cor
+**/*.out

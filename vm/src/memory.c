@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:23:15 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 20:51:35 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:51:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,33 @@ int	calc_mem_addr(int start, int offset, bool truncat)
 	int	mempos;
 
 	truncat && (offset %= IDX_MOD);
-	mempos = start + offset;
-	(mempos < 0) && (mempos = MEM_SIZE - mempos);
+	mempos = (start + offset) % MEM_SIZE;
+	(mempos < 0) && (mempos = MEM_SIZE + mempos);
 	return (mempos);
+}
+
+int	get_mem_value_ex(t_env *env, int mempos, int bytes, bool convert_endian)
+{
+	int	i;
+	int	result;
+
+	i = -1;
+	result = 0;
+	if (convert_endian)
+		while (++i < bytes)
+			result |=
+				*(env->field + (mempos + bytes - 1 - i) % MEM_SIZE) << (8 * i);
+	else
+		while (++i < bytes)
+			result |=
+				*(env->field + (mempos + i) % MEM_SIZE) << (8 * i);
+	if (result >> ((4 - bytes) * 8 - 1) & 1)
+	{
+		i = -1;
+		while (++i < (4 - bytes))
+			result |= 0xFF << (8 * (bytes + i));
+	}
+	return (result);
 }
 
 int	get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat)
@@ -35,20 +59,21 @@ int	get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat)
 	value[2] = *(env->field + mempos % MEM_SIZE);
 	mempos++;
 	value[3] = *(env->field + mempos % MEM_SIZE);
-	return (int)value;
+	return (*((int*)value));
 }
 
-void	set_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat, int value)
+int	set_mem_value(t_env *env, t_carriage *carriage, int offset, int value)
 {
 	int mempos;
 
-	mempos = calc_mem_addr(carriage->position, offset, truncat);
-	env->field[mempos] = (unsigned int)((value) & 0xFF);
+	mempos = calc_mem_addr(carriage->position, offset, true);
+	env->field[mempos] = (unsigned char)((value) & 0xFF);
 	mempos++;
-	env->field[mempos % MEM_SIZE] = (unsigned int)((value >> 8) & 0xFF);
+	env->field[mempos % MEM_SIZE] = (unsigned char)((value >> 8) & 0xFF);
 	mempos++;
-	env->field[mempos % MEM_SIZE] = (unsigned int)((value >> 16) & 0xFF);
+	env->field[mempos % MEM_SIZE] = (unsigned char)((value >> 16) & 0xFF);
 	mempos++;
-	env->field[mempos % MEM_SIZE] = (unsigned int)(value >> 24);
+	env->field[mempos % MEM_SIZE] = (unsigned char)(value >> 24);
 	mempos++;
+	return (mempos - 4);
 }

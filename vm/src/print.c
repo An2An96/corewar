@@ -1,32 +1,51 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_memory.c                                     :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/19 17:36:22 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/21 18:26:44 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/28 15:49:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-inline static char	get_hex_char(char octet)
-{
-	return ((octet < 10 ? '0' : ('a' - 10)) + octet);
-}
-
-inline static void	print_memory_chars(const void *memory)
+void				print_players(t_env *env)
 {
 	int i;
 
-	while (i < 16)
+	i = 0;
+	ft_printf("Introducing contestants...\n");
+	while (env->champions[i])
 	{
-		write(1, ft_isprint(*((char*)memory + i)) ? memory + i : ".", 1);
+		ft_printf("* Player %d, weighing %d bytes, \"%s\" (\"%s\") !\n",
+			i + 1, env->champions[i]->prog_size, env->champions[i]->prog_name,
+			env->champions[i]->comment);
 		i++;
 	}
+}
+
+int					print_move(t_env *env, int curpos, int len)
+{
+	if (curpos)
+		ft_printf("ADV %d (%#06x -> %#06x) ", len, curpos, curpos + len);
+	else
+		ft_printf("ADV %d (0x%04x -> %#06x) ", len, curpos, curpos + len);
+	while (len)
+	{
+		ft_printf("%02x ", *(env->field + curpos % MEM_SIZE));
+		curpos++;
+		len--;
+	}
 	write(1, "\n", 1);
+	return (1);
+}
+
+inline static char	get_hex_char(char octet)
+{
+	return ((octet < 10 ? '0' : ('a' - 10)) + octet);
 }
 
 void				print_memory(const void *memory, size_t size)
@@ -41,10 +60,8 @@ void				print_memory(const void *memory, size_t size)
 		ft_putchar(get_hex_char(((unsigned char*)memory)[i] >> 4));
 		ft_putchar(get_hex_char(((unsigned char*)memory)[i] & 0xF));
 		i++;
-		// if (i % 2 == 0)
-			write(1, " ", 1);
+		write(1, " ", 1);
 		if (i % 64 == 0)
 			write(1, "\n", 1);
-		// 	print_memory_chars(memory + i - 16);
 	}
 }
