@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_champion.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wballaba <wballaba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/22 13:17:35 by wballaba         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:41:09 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,10 +95,4 @@ void				check_arr_champions(int count_champion,
 			throw_error("[Read Error]:", "Incorrect position players");
 		i++;
 	}
-	// j = 0;
-	// while (j < count_champion)
-	// {
-	// 	print_champion(env->champions[j]);
-	// 	j++;
-	// }
 }

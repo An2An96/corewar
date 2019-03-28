@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 13:48:15 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:46:04 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,10 @@ int			set_mem_value(t_env *env, t_carriage *carriage, int offset, int value);
 t_op		*get_op(char op_code);
 int			do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
 
+/*
+**	Operations
+*/
+
 int			op_live(t_env *env, t_carriage *carriage, t_arg *args);
 int			op_ld(t_env *env, t_carriage *carriage, t_arg *args);
 int			op_st(t_env *env, t_carriage *carriage, t_arg *args);
@@ -180,17 +184,14 @@ int			op_aff(t_env *env, t_carriage *carriage, t_arg *args);
 **	Utils functions
 */
 
-void		print_memory(const void *memory, size_t size);
 void		swap_bytes(void *memory, int size);
 
 /*
-**	Debug
+**	Print
 */
 
-void		print_champion(t_champion *champion);
-void		print_carriage(t_env *env, t_carriage *carriage);
-// void		print_do_op(int carriage_id, char *op_cmd, t_arg *args, int8_t args_count);
-int			print_move(t_env *env, unsigned int curpos, unsigned int len);
+int			print_move(t_env *env, int curpos, int len);
 void    	print_players(t_env *env);
+void		print_memory(const void *memory, size_t size);
 
 #endif
