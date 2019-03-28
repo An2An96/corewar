@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 22:00:58 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/28 21:25:46 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,29 @@ enum lexical_errors
 	NON_EXISTENT_LEXEM = 5
 };
 
+enum syntactic_errors
+{
+	WRONG_PROGRAM_STRUCTURE = 1,
+	MISSING_SEPARATOR,
+	EXCESS_SEPARATOR,
+	EXCESS_INSTUCTION_IN_LINE
+};
+
+enum semantic_errors
+{
+	NO_ARGUMENTS = 1,
+	NO_CODE,
+	NO_COMMANDS,
+	INVALID_NUMBER_OF_ARGUMENT,
+	INVALID_TYPE_OF_ARGUMENT,
+	INVALID_LEXEM_SEQUENCE,
+	INDECLARED_IDENTIFIER,
+	EXCESS_SIZE_COMMAND,
+	COMMAND_NAME_NOT_FOUND,
+	COMMAND_COMMENT_NOT_FOUND,
+	COMMAND_REDEFINITION
+};
+
 typedef struct          s_lines
 {
     int                 count;
@@ -114,10 +137,11 @@ t_bool					is_file_name_valid(char *str);
 
 t_lines         		*read_file_into_lines(int fd, char **line);
 t_tokens				*get_tokens(t_lines *lines);
-t_errors 				*get_lex_errors(t_tokens *tokens);
+void 					get_lex_errors(t_tokens *tokens, t_errors **res);
+void 					get_syn_sem_errors(t_tokens *tokens, t_errors **err);
 
 void					push_back_lex_list(t_lex_list **alst, t_lexem *content);
-void					push_back_lex_errors(t_errors **alst, int err, int addit_err, t_lexem *lexem);
+void					push_back_errors_list(t_errors **alst, int err, int addit_err, t_lexem *lexem);
 
 t_bool					is_label_char(char c);
 t_bool					is_undefined(char c);
@@ -149,6 +173,10 @@ int						check_error_instruction(char *value);
 int						check_error_dir_label(char *value);
 int						check_error_indir_label(char *value);
 int						check_error_undef(char *value);
+
+void					check_commands(t_tokens *tokens, t_errors **err);
+void					check_code(t_tokens *tokens, t_errors **err);
+void					check_instructions(t_lex_list *lst, t_errors **err);
 
 void    				print_errors(char *filename, t_errors *lex_errors);
 
