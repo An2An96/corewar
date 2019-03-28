@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:28:26 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 16:34:02 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/28 19:41:55 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,6 @@ t_lexem			*check_instuct_label_reg(char *str, t_cursor *cur)
 			return (get_label(str, cur, i - cur->pos));
 		else
 			break ;
-	}
-	i = cur->pos + 1;
-	while (str[i])
-	{
-		if (ft_isalpha_small(str[i]))
-			i++;
-		else
-			return (get_instruction(str, cur, i - cur->pos));
 	}
 	return (get_instruction(str, cur, i - cur->pos));
 }

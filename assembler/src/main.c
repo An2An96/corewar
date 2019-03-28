@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 22:16:23 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:19:25 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ static void		print_main_errors(int err)
 		exit(1);
 }
 
-static void		print_lex_errors(char *name, t_tokens **tokens,
-									t_errors **lex_errors)
+static void		print_errors_and_exit(char *name, t_tokens **tokens,
+										 t_errors **lex_errors)
 {
 	print_errors(name, *lex_errors);
 	delete_tokens(tokens);
@@ -112,9 +112,12 @@ int				main(int argc, char *argv[])
 	tokens = get_tokens(lines);
 	delete_comments(&tokens);
 	delete_lines(&lines);
-	errors = get_lex_errors(tokens);
+	get_lex_errors(tokens, &errors);
 	if (errors)
-		print_lex_errors(argv[1], &tokens, &errors);
+		print_errors_and_exit(argv[1], &tokens, &errors);
+	get_syn_sem_errors(tokens, &errors);
+	if (errors)
+		print_errors_and_exit(argv[1], &tokens, &errors);
 	delete_str_commas(tokens);
 	delete_tokens(&tokens);
 	close(fd);

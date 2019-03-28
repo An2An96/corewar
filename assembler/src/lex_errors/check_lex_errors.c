@@ -6,7 +6,7 @@
 /*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 13:56:24 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 17:45:49 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:18:32 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,22 @@ int 				check_lex_errors(t_lexem *lexem)
 	return (0);
 }
 
-t_errors 		*get_lex_errors(t_tokens *tokens)
+void 		get_lex_errors(t_tokens *tokens, t_errors **res)
 {
 	int				i;
 	int 			addit_err;
-	t_errors	*res;
 	t_lex_list		*tmp;
 
 	i = 0;
-	res = NULL;
 	while (i < tokens->count)
 	{
 		tmp = tokens->tokenlst[i];
 		while (tmp)
 		{
 			if ((addit_err = check_lex_errors(tmp->lexem)))
-				push_back_lex_errors(&res, 1, addit_err, tmp->lexem);
+				push_back_errors_list(res, LEXICAL, addit_err, tmp->lexem);
 			tmp = tmp->next;
 		}
 		i++;
 	}
-	return (res);
 }

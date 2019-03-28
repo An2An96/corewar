@@ -54,8 +54,8 @@ static t_errors	*create_lex_errors(int err, int addit_err,
 	return (ptr);
 }
 
-void					push_back_lex_errors(t_errors **alst, int err,
-											int addit_err, t_lexem *lexem)
+void					push_back_errors_list(t_errors **alst, int err,
+											  int addit_err, t_lexem *lexem)
 {
 	t_errors	*tmp;
 
