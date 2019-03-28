@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 20:02:27 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:19:40 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,7 @@ int	get_arg_content(t_env *env, t_carriage *carriage, t_op *op, t_arg *arg)
 	bool	need_truncat;
 
 	if (arg->type == REG_CODE)
-	{
 		return (get_reg_value(carriage, arg->value, &arg->content, false));
-	}
 	else if (arg->type == IND_CODE)
 	{
 		if (op->op_code == 13)
@@ -171,8 +169,12 @@ bool	get_args(
 	t_op		*op;
 	uint8_t		args_types;
 	int8_t		i;
+	int			res;
+	int			type_size;
+	int			offset;
 
 	*args = NULL;
+	offset = 0;
 	if ((op = get_op(carriage->op_code)))
 	{
 		if (op->codage_octal)
@@ -186,11 +188,37 @@ bool	get_args(
 			args_types = DIR_CODE << 6;
 		SECURE_MALLOC(*args = ft_memalloc(op->arg_count * sizeof(t_arg)));
 		i = 0;
+		offset += 1 + op->codage_octal;
 		while (i < op->arg_count)
 		{
 			(*args)[i].type = ARG_TYPE(args_types, i);
-			(*args)[i].value = get_arg_value(
-				carriage, (*args)[i].type, op->dir_ind_size, &mempos);
+			if ((*args)[i].type == REG_CODE)
+			{
+				type_size = sizeof(char);
+				(*args)[i].value = get_mem_value_ex(env,
+					calc_mem_addr(carriage->position, offset, false),
+					type_size, false);
+			}
+			else if ((*args)[i].type == IND_CODE)
+			{
+				type_size = sizeof(short);
+				(*args)[i].value = get_mem_value_ex(env,
+					calc_mem_addr(carriage->position, offset, false),
+					type_size, true);
+			}
+			else if ((*args)[i].type == DIR_CODE)
+			{
+				if (op->dir_ind_size)
+					type_size = sizeof(short);
+				else
+					type_size = sizeof(int);
+				(*args)[i].value = get_mem_value_ex(env,
+					calc_mem_addr(carriage->position, offset, false),
+					type_size, false);
+			}
+			offset += type_size;
+			// (*args)[i].value = get_arg_value(
+			// 	carriage, (*args)[i].type, op->dir_ind_size, &mempos);
 			if (!get_arg_content(env, carriage, op, (*args) + i))
 				return (false);
 			// ft_printf("type: %d, value: %d [%x], content: %x\n",
@@ -211,12 +239,7 @@ int	do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 
 	mempos++;
 	len = 1;
-	if (env->acount_cycles > 20000 && carriage->id == 4)
-	{
-		// print_carriage(env, carriage);
-		print_memory(env->field + carriage->position, 10);
-		write(1, "\n", 1);
-	}
+	zjmp = -1;
 	if ((op = get_op(carriage->op_code)))
 	{
 		len = get_cmd_length(op, mempos);
@@ -224,9 +247,6 @@ int	do_op(t_env *env, t_carriage *carriage, unsigned char *mempos)
 			zjmp = g_op_funcs[carriage->op_code](env, carriage, args);
 		if (VERB_LEVEL(SHOW_PC_MOVES) && zjmp == -1)
 			print_move(env, carriage->position, len);
-		zjmp != -1 && (len = zjmp);
 	}
-	else if (env->acount_cycles > 20000 && carriage->id == 4)
-		ft_putstr("invalid cmd or args\n");
-	return (calc_mem_addr(carriage->position, len, true));
+	return (zjmp != -1 ? zjmp : calc_mem_addr(carriage->position, len, true));
 }

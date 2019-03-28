@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 19:30:26 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 13:48:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct	s_env
 
 	t_champion		**champions;
 	t_list			*carriages;
+	int				last_carriage_id;
 	int				carriages_count;
 
 	int8_t			last_live_champ;
@@ -152,6 +153,7 @@ bool		set_reg_value(t_carriage *carriage, char idx, int value, bool endian);
 
 int			calc_mem_addr(int start, int offset, bool truncat);
 int			get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat);
+int			get_mem_value_ex(t_env *env, int mempos, int bytes, bool convert_endian);
 int			set_mem_value(t_env *env, t_carriage *carriage, int offset, int value);
 
 t_op		*get_op(char op_code);

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:21:14 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 19:40:45 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 20:39:58 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
 
 	SECURE_MALLOC(new_carriage = (t_carriage*)ft_memalloc(sizeof(t_carriage)));
 	ft_lstadd(&env->carriages, ft_lstnew_ptr(new_carriage));
-	new_carriage->id = ++env->carriages_count;
+	new_carriage->id = ++env->last_carriage_id;
 	if (parent)
 	{
 		ft_memcpy(new_carriage->registers,
@@ -27,6 +27,7 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
 		new_carriage->last_live_cycle = parent->last_live_cycle;
 	}
 	new_carriage->position = pos;
+	env->carriages_count++;
 	return (new_carriage);
 }
 
