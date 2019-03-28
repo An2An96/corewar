@@ -6,20 +6,19 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:13:09 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/26 14:59:34 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:26:07 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	op_live(t_env *env, t_carriage *carriage, int args_types, ...)
+int	op_live(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	va_list	args;
 	int		player;
 	int		i;
 
-	va_start(args, args_types);
-	player = va_arg(args, int);
+	player = args[0].content;
+	VERB_LEVEL(SHOW_OPS) && ft_printf("P%5d | live %d\n", carriage->id, player);
 	carriage->last_live_cycle = env->acount_cycles;
 	env->rcount_lives++;
 	i = 0;
@@ -29,17 +28,12 @@ int	op_live(t_env *env, t_carriage *carriage, int args_types, ...)
 		{
 			env->last_live_champ = i;
 			env->champions[i]->last_live_cycle = env->acount_cycles;
-			if (VERB_LEVEL(SHOW_LIVES))
-			{
-				VERB_LEVEL(SHOW_OPS) && write(1, "\n", 1);
-				ft_printf("Player %d (%s) is said to be alive",
+			VERB_LEVEL(SHOW_LIVES)
+				&& ft_printf("Player %d (%s) is said to be alive\n",
 					i + 1, env->champions[i]->prog_name);
-				!VERB_LEVEL(SHOW_OPS)  && write(1, "\n", 1);
-			}
 			break ;
 		}
 		i++;
 	}
-	va_end(args);
 	return (-1);
 }

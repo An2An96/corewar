@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 16:03:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:36:48 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,32 @@ void	print_carriage(t_env *env, t_carriage *carriage)
 	}
 }
 
+// void	print_do_op(int carriage_id, char *op_cmd, t_arg *args, int8_t args_count)
+// {
+// 	int i;
+
+// 	ft_printf("P%5d | %s", carriage_id, op_cmd);
+// 	i = 0;
+// 	while (i < args_count)
+// 	{
+// 		write(1, " ", 1);
+// 		if (args[i].type == REG_CODE)
+// 		{
+// 			write(1, "r", 1);
+// 			ft_putnbr(args[i].value);
+// 		}
+// 		// else if (args[i].type == DIR_CODE)
+// 		// {
+// 		// 	ft_putnbr(args[i].content);
+// 		// }
+// 		else
+// 		{
+// 			ft_putnbr(args[i].content);
+// 		}
+// 		i++;
+// 	}
+// }
+
 int		print_move(t_env *env, unsigned int curpos, unsigned int len)
 {
 	if (curpos)
@@ -56,5 +82,10 @@ int		print_move(t_env *env, unsigned int curpos, unsigned int len)
 		len--;
 	}
 	write(1, "\n", 1);
+	// if (curpos + len == 0x0f7f)	//	DEBUG
+	// {
+	// 	print_memory(env->field + curpos + len, 6);
+	// 	write(1, "\n", 1);
+	// }
 	return (1);
 }

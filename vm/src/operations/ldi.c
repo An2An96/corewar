@@ -6,39 +6,32 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:26:57 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/22 17:47:54 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 19:26:01 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int	op_ldi(t_env *env, t_carriage *carriage, int args_types, ...)
+int	op_ldi(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	va_list			args;
-	unsigned char	arg_type;
-	unsigned char	reg_idx;
-	int				value[2];
+	int	value[2];
+	int offset;
 
-	va_start(args, args_types);
-	arg_type = ARG_TYPE(args_types, 0);
-	value[0] = va_arg(args, int);
-	if (arg_type == REG_CODE)
-	{
-		if (!get_reg_value(carriage, value[0], &value[0], PROC_ENDIAN))
-			return (-1);
-	}
-	else if (arg_type == IND_CODE)
-	{
-		value[0] = get_mem_value(env, carriage, value[0], true);
+	value[0] = args[0].content;
+	if (PROC_ENDIAN && (args[0].type == REG_CODE || args[0].type == IND_CODE))
 		swap_bytes(&value[0], sizeof(int));
+	value[1] = args[1].content;
+	if (PROC_ENDIAN && args[1].type == REG_CODE)
+		swap_bytes(&value[1], sizeof(int));
+	offset = value[0] + value[1];
+	set_reg_value(carriage, args[2].value,
+		get_mem_value(env, carriage, offset, true), false);
+	if (VERB_LEVEL(SHOW_OPS))
+	{
+		ft_printf("P%5d | ldi %d %d r%d\n",
+			carriage->id, value[0], value[1], args[2].value);
+		ft_printf("%8| -> load from %d + %d = %d (with pc and mod %d)\n",
+			value[0], value[1], offset, carriage->position + offset % IDX_MOD);
 	}
-	value[1] = va_arg(args, int);
-	if (ARG_TYPE(args_types, 1) == REG_CODE
-		&& !get_reg_value(carriage, value[1], &value[1], PROC_ENDIAN))
-		return (-1);
-	reg_idx = va_arg(args, int);
-	set_reg_value(carriage, reg_idx,
-		get_mem_value(env, carriage, value[0] + value[1], true), BIG_END);
-	va_end(args);
 	return (-1);
 }
