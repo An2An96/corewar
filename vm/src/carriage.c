@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/22 18:21:14 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 20:39:58 by rschuppe         ###   ########.fr       */
+/*   Created: 2019/03/28 20:25:58 by rschuppe          #+#    #+#             */
+/*   Updated: 2019/03/28 20:25:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ t_list *remove_carriage(t_env *env, t_list *die_carriage)
 			cur_lst = cur_lst->next;
 		}
 	}
+	free(die_carriage->content);
 	free(die_carriage);
 	env->carriages_count--;
 	return (next);

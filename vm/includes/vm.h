@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 15:46:04 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 21:23:38 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,11 @@
 # define SECURE_MALLOC(a)	!(a) && throw_error(MEMORY_ERR)
 
 # define STR_ERROR_SYS		COLOR_ERROR"[System Error]: "COLOR_NONE
+# define STR_ERROR_READ		COLOR_ERROR"[Read Error]: "COLOR_NONE
 # define STR_ERROR_VALID	COLOR_ERROR"[Validation Error]: "COLOR_NONE
 # define MEMORY_ERR			STR_ERROR_SYS, "Not enough memory"
+
+# define CYCLE_NUM_MESG		"It is now cycle %d\n", env->acount_cycles
 
 typedef struct	s_arg
 {
@@ -104,6 +107,7 @@ typedef struct	s_env
 {
 	unsigned char	field[MEM_SIZE];
 
+	bool			use_ncurses;
 	int8_t			verb_levels;
 	int				dump_nbr_cycle;
 
@@ -140,9 +144,12 @@ void		check_arr_champions(int count_champion, int *mask, t_env *env);
 **	Main VM functions
 */
 
-void		init_env(t_env *env);
+void		vm_init(t_env *env);
+void		vm_destroy(t_env *env);
 void		vm_loop(t_env *env);
 int			vm_check_die(t_env *env);
+
+bool		get_args(t_env *env, t_carriage *carriage, t_arg **args);
 
 t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos);
 t_list 		*remove_carriage(t_env *env, t_list *die_carriage);
@@ -157,7 +164,7 @@ int			get_mem_value_ex(t_env *env, int mempos, int bytes, bool convert_endian);
 int			set_mem_value(t_env *env, t_carriage *carriage, int offset, int value);
 
 t_op		*get_op(char op_code);
-int			do_op(t_env *env, t_carriage *carriage, unsigned char *mempos);
+int			do_op(t_env *env, t_carriage *carriage);
 
 /*
 **	Operations
@@ -193,5 +200,6 @@ void		swap_bytes(void *memory, int size);
 int			print_move(t_env *env, int curpos, int len);
 void    	print_players(t_env *env);
 void		print_memory(const void *memory, size_t size);
+int			print_env(t_env *env);
 
 #endif
