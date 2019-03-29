@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 21:07:47 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 21:16:48 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:31:06 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ static int			get_arg_content(
 		if (op->dir_ind_size)
 		{
 			short_arg = arg->value;
-			if (PROC_ENDIAN)
+			if (DIFF_ENDIAN)
 				swap_bytes(&short_arg, sizeof(short));
 			arg->content = short_arg;
 		}
 		else
 		{
 			arg->content = arg->value;
-			if (PROC_ENDIAN)
+			if (DIFF_ENDIAN)
 				swap_bytes(&arg->content, sizeof(int));
 		}
 	}
@@ -69,7 +69,7 @@ inline static bool	is_arg_types_valid(t_op *op, uint8_t args_types)
 		&& (op->arg_count < 2
 			|| op->arg_type[1] & (1 << (ARG_TYPE(args_types, 1) - 1)))
 		&& (op->arg_count < 3
-			|| op->arg_type[1] & (1 << (ARG_TYPE(args_types, 1) - 1))));
+			|| op->arg_type[2] & (1 << (ARG_TYPE(args_types, 2) - 1))));
 }
 
 inline static int	get_args_helper(t_env *env, t_carriage *carriage, t_op *op)
@@ -87,7 +87,7 @@ inline static int	get_args_helper(t_env *env, t_carriage *carriage, t_op *op)
 	return (args_types);
 }
 
-bool				get_args(t_env *env, t_carriage *carriage, t_arg **args)
+bool				vm_get_args(t_env *env, t_carriage *carriage, t_arg **args)
 {
 	t_op		*op;
 	uint8_t		args_types;
