@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/28 20:22:04 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:59:22 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void			read_exec_code(int fd, t_champion *champion)
 			"error exec code champion more than CHAMP_MAX_SIZE");
 	SECURE_MALLOC(champion->exec_code = (unsigned char*)
 		ft_memalloc(sizeof(unsigned char) * champion->prog_size));
-	while (i < champion->prog_size)
+	while (i < (int)champion->prog_size)
 	{
 		if (read(fd, champion->exec_code, 1) == 0)
 			throw_error(STR_ERROR_VALID, "error exec code");
@@ -81,8 +81,7 @@ void				put_champ_on_arr(int nbr_player,
 	}
 }
 
-void				check_arr_champions(int count_champion,
-	int *mask, t_env *env)
+void				check_arr_champions(int count_champion, int *mask)
 {
 	int i;
 

@@ -10,13 +10,16 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS =	main.c read_args.c read_champion.c vm_core.c op.c swap_bytes.c \
-		vm_loop.c vm_do_op.c carriage.c memory.c registers.c print.c \
-		print_env.c vm_args.c \
-		operations/live.c operations/ld.c operations/st.c operations/add.c \
-		operations/sub.c operations/and.c operations/or.c operations/xor.c \
-		operations/zjmp.c operations/ldi.c operations/sti.c operations/fork.c \
-		operations/lld.c operations/lldi.c operations/lfork.c \
+SRCS =	main.c				read_args.c			read_champion.c		\
+		vm_core.c			vm_loop.c			vm_do_op.c			\
+		carriage.c			memory.c			registers.c			\
+		vm_args.c			op.c				print.c				\
+		ncurses_print.c		swap_bytes.c							\
+		operations/live.c	operations/ld.c		operations/st.c		\
+		operations/add.c	operations/sub.c	operations/and.c	\
+		operations/or.c		operations/xor.c	operations/zjmp.c	\
+		operations/ldi.c	operations/sti.c	operations/fork.c	\
+		operations/lld.c	operations/lldi.c	operations/lfork.c	\
 		operations/aff.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = vm.h

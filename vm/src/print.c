@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 16:37:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 15:49:01 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 11:06:23 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ inline static char	get_hex_char(char octet)
 	return ((octet < 10 ? '0' : ('a' - 10)) + octet);
 }
 
-void				print_memory(const void *memory, size_t size)
+void				print_memory(const void *memory, int size)
 {
 	int i;
 

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 10:08:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 11:17:22 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@
 */
 
 # define COLOR_USAGE		"\x1b[32m"
+# define COLOR_ERROR		"\x1b[31m"
+# define COLOR_NONE			"\x1b[39m"
 
 # define SHOW_LIVES			1
 # define SHOW_CYCLES		2
@@ -73,8 +75,8 @@ typedef struct	s_carriage
 	int				id;
 	bool			carry;
 	unsigned char	op_code;
-	unsigned int	last_live_cycle;
-	unsigned int	cycles_to_execute;
+	int				last_live_cycle;
+	int				cycles_to_execute;
 	unsigned int	position;
 	unsigned int	registers[REG_NUMBER];
 }				t_carriage;
@@ -142,7 +144,7 @@ t_op			*get_op(char op_code);
 int				read_args(int argc, char **argv, t_env *env);
 void			put_champ_on_arr(
 	int nbr_player, char *argv, t_env *env, int *mask);
-void			check_arr_champions(int count_champion, int *mask, t_env *env);
+void			check_arr_champions(int count_champion, int *mask);
 
 /*
 **	main vm functions
@@ -217,7 +219,10 @@ void			swap_bytes(void *memory, int size);
 
 int				print_move(t_env *env, int curpos, int len);
 void			print_players(t_env *env);
-void			print_memory(const void *memory, size_t size);
-int				print_env(t_env *env);
+void			print_memory(const void *memory, int size);
+
+int				ncurses_init(void);
+int				ncurses_print_env(t_env *env);
+int				ncurses_destroy(void);
 
 #endif

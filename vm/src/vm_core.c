@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 20:50:41 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 08:58:51 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:59:34 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	vm_init(t_env *env)
 {
 	int8_t		i;
-	int8_t		j;
 	int			offset;
 	int8_t		champions_count;
 	t_carriage	*carriage;

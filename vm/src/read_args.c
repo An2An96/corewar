@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/29 10:07:51 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:58:33 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 int		read_args(int argc, char **argv, t_env *env)
 {
 	int			i;
-	t_champion	*champion;
 	int			nbr_player;
 	int			count_champion;
 	int			*mask;
@@ -127,7 +126,7 @@ int		read_args(int argc, char **argv, t_env *env)
 		put_champ_on_arr(nbr_player, argv[i], env, mask);
 		count_champion++;
 	}
-	check_arr_champions(count_champion, mask, env);
+	check_arr_champions(count_champion, mask);
 	free(mask);
 	return (1);
 }

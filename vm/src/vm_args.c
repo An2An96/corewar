@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 21:07:47 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 10:31:06 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 11:37:04 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int			get_arg_value(t_env *env, int mempos, t_op *op, t_arg *arg)
 {
 	int type_size;
 
+	type_size = 0;
 	if (arg->type == REG_CODE)
 	{
 		type_size = sizeof(char);
@@ -78,7 +79,8 @@ inline static int	get_args_helper(t_env *env, t_carriage *carriage, t_op *op)
 
 	if (op->codage_octal)
 	{
-		args_types = *(env->field + carriage->position + 1);
+		args_types = get_mem_value_ex(env,
+			calc_mem_addr(carriage->position, 1, false), 1, false);
 		if (!is_arg_types_valid(op, args_types))
 			return (false);
 	}
