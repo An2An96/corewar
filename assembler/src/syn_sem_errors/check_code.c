@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_code.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 19:43:16 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/28 21:35:58 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:21:12 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int 		find_count_instructions(t_lex_list *lst)
 {
@@ -34,8 +34,7 @@ static void		check_start_instruction(t_lex_list *lst, t_errors **err)
 {
 	if (!lst->next)
 		return (push_back_errors_list(err, SEMANTIC, NO_ARGUMENTS, lst->lexem));
-	lst = lst->next;
-	if (find_count_instructions(lst) > 0)
+	if (find_count_instructions(lst->next) > 0)
 		return (push_back_errors_list(err, SYNTACTIC, EXCESS_INSTUCTION_IN_LINE, lst->lexem));
 	else
 		check_instructions(lst, err);

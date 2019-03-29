@@ -10,8 +10,16 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS =	main.c file_stuff.c ft_strsplit.c lines_stuff.c list_stuff.c op.c \
-		string_stuff.c tokens_stuff.c
+SRCS =	delete_commas.c	delete_structures.c	file_stuff.c	list_stuff.c \
+		main.c	op.c	print_errors.c	tokens_stuff.c \
+		get_lexems/get_comm_str_lexems.c	get_lexems/get_dir_indir_reg.c \
+		get_lexems/get_instruct_label.c		get_lexems/get_sep_undef.c \
+		get_lexems/help_functions.c \
+		lex_errors/check_comm_str_error.c	lex_errors/check_inst_label_undef_error.c \
+		lex_errors/check_lex_errors.c		lex_errors/check_lex_type.c \
+		lex_errors/check_num_reg_error.c \
+		syn_sem_errors/check_code.c			syn_sem_errors/check_commands.c \
+		syn_sem_errors/check_instructions.c	syn_sem_errors/check_syntactic_semantic_errors.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = asm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))

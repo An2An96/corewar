@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_num_reg_error.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:42:05 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 17:43:39 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int	check_number_error(char *value, long long *nb)
 {

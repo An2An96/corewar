@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_commands.c                                   :+:      :+:    :+:   */
+/*   check_syntactic_semantic_errors.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:45:43 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/28 20:03:06 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:12:07 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int 		find_last_command_line_number(t_tokens *tokens)
 {
@@ -77,5 +77,4 @@ void 		get_syn_sem_errors(t_tokens *tokens, t_errors **err)
 		}
 		check_commands(tokens, err);
 	}
-
 }

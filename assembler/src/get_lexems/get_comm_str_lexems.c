@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_text_lexems.c                                  :+:      :+:    :+:   */
+/*   get_comm_str_lexems.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:50:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 17:56:35 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int	check_char(t_lines *lines, t_cursor *cur, t_lexem *res, int j)
 {

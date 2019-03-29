@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokens_stuff.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 17:46:26 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 17:56:35 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:55:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/asm.h"
+#include "asm.h"
 
 static t_lexem		*ft_define_lex(t_lines *lines, t_cursor *cur)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   list_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 20:14:42 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 21:57:05 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:55:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/asm.h"
+#include "asm.h"
 
 static t_lex_list		*create_lex_list(t_lexem *content)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   define_lexems.c                                    :+:      :+:    :+:   */
+/*   get_dir_indir_reg.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:13:44 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 16:34:02 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 t_lexem   *get_indir_num(char *str, t_cursor *cur)
 {

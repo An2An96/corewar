@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file_name_validity.c                               :+:      :+:    :+:   */
+/*   file_stuff.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 15:31:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 16:07:43 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:55:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/asm.h"
+#include "asm.h"
 
 static char		*get_file_extension(char *str, char c)
 {

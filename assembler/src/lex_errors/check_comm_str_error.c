@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_text_error.c                                 :+:      :+:    :+:   */
+/*   check_comm_str_error.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:31:01 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 19:11:17 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 int		check_error_command(char *value)
 {

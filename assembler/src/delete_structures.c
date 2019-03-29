@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   delete_structures.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 12:50:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 21:11:17 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:55:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/asm.h"
+#include "asm.h"
 
 void			delete_lex_errors(t_errors **del)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_lexical_errors.c                             :+:      :+:    :+:   */
+/*   check_lex_errors.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 13:56:24 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/28 16:18:32 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 int 				check_lex_errors(t_lexem *lexem)
 {

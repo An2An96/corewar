@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_chars.c                                      :+:      :+:    :+:   */
+/*   help_functions.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:15:08 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/27 16:15:18 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:58:07 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 t_bool		is_label_char(char c)
 {
@@ -49,4 +49,13 @@ t_bool		is_digit_sign(char c)
 	if (c == '+')
 		return (true);
 	return (false);
+}
+
+int			ft_isalpha_small(int c)
+{
+    if (c > 127 || c < 0)
+        return (0);
+    if ((unsigned char)c >= 'a' && (unsigned char)c <= 'z')
+        return (1);
+    return (0);
 }

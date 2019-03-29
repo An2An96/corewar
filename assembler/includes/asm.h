@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   asm.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/28 21:25:46 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:03:29 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 
-# include "../libft/libft.h"
+# include "libft.h"
+# include "ft_printf.h"
 # include "op.h"
 
 # define CHECK_NULL(x) if (x == NULL) return (NULL)
@@ -133,6 +134,10 @@ typedef struct			s_errors
 	struct s_errors		*next;
 }						t_errors;
 
+typedef char			t_bool;
+
+t_op					*get_op_by_name(char *cmd);
+
 t_bool					is_file_name_valid(char *str);
 
 t_lines         		*read_file_into_lines(int fd, char **line);
@@ -146,6 +151,7 @@ void					push_back_errors_list(t_errors **alst, int err, int addit_err, t_lexem 
 t_bool					is_label_char(char c);
 t_bool					is_undefined(char c);
 t_bool					is_digit_sign(char c);
+int						ft_isalpha_small(int c);
 
 t_lexem   				*get_command(char *str, t_cursor *cur);
 t_lexem   				*get_string(t_lines *lines, t_cursor *cur);
