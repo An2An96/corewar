@@ -6,13 +6,13 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:42:05 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 16:51:36 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:45:30 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-static int	check_number_error(char *value, long long *nb)
+static int	check_number_error(char *value, int *nb)
 {
 	int	i;
 	int	sign;
@@ -28,8 +28,8 @@ static int	check_number_error(char *value, long long *nb)
 	while (value[i] != '\0')
 	{
 		*nb = *nb * 10 + (value[i] - '0');
-		if (*nb > 2147483647)
-			return (OUT_OF_RANGE_VALUE);
+		// if (*nb > 2147483647)
+		// 	return (OUT_OF_RANGE_VALUE);
 		i++;
 	}
 	*nb = sign * (*nb);
@@ -38,8 +38,8 @@ static int	check_number_error(char *value, long long *nb)
 
 int			check_error_reg(char *value)
 {
-	long long	nb;
-	int			ret;
+	int	nb;
+	int	ret;
 
 	nb = 0;
 	ret = 0;
@@ -53,7 +53,7 @@ int			check_error_reg(char *value)
 
 int			check_error_dir(char *value)
 {
-	long long nb;
+	int nb;
 
 	nb = 0;
 	if (ft_strlen(value) == 0)
@@ -63,7 +63,7 @@ int			check_error_dir(char *value)
 
 int			check_error_indir(char *value)
 {
-	long long nb;
+	int nb;
 
 	nb = 0;
 	return (check_number_error(value, &nb));
