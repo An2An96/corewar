@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:21:12 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/29 10:59:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:37:17 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ static void			read_exec_code(int fd, t_champion *champion)
 	i = 0;
 	if (champion->prog_size > CHAMP_MAX_SIZE)
 		throw_error(STR_ERROR_VALID,
-			"error exec code champion more than CHAMP_MAX_SIZE");
+			"exec code champion more than CHAMP_MAX_SIZE");
+	else if (!champion->prog_size)
+		throw_error(STR_ERROR_VALID,
+			"is too small to be a champion");
 	SECURE_MALLOC(champion->exec_code = (unsigned char*)
 		ft_memalloc(sizeof(unsigned char) * champion->prog_size));
 	while (i < (int)champion->prog_size)

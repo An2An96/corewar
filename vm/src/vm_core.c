@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 20:50:41 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 10:59:34 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:22:24 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	vm_init(t_env *env)
 			swap_bytes(&carriage->registers[0], sizeof(carriage->registers[0]));
 		ft_memcpy(env->field + carriage->position,
 			env->champions[i]->exec_code, env->champions[i]->prog_size);
+		env->last_live_champ = i;
 		i++;
 	}
 	env->cycles_to_die = CYCLE_TO_DIE;

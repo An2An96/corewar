@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 11:17:22 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:44:15 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ typedef struct	s_env
 	unsigned char	field[MEM_SIZE];
 
 	bool			use_ncurses;
+	bool			show_aff;
 	int8_t			verb_levels;
 	int				dump_nbr_cycle;
 

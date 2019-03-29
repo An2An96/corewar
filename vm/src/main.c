@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 10:54:10 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:46:44 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	show_usage(void)
 {
 	ft_printf(COLOR_USAGE "Usage: " COLOR_NONE
 		"./corewar [-dump N -v N] <champion1.cor> <...>\n");
+	ft_printf("\t%-10s : "
+		"Prints output from \"aff\" (Default is to hide it)\n", "-a");
 	ft_printf("\t%-10s : "
 		"Dumps memory after N cycles then exits\n", "-dump N");
 	ft_printf("\t%-10s : "

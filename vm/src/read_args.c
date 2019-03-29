@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/29 10:58:33 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:44:03 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 	}
 	else if (!ft_strcmp(argv[(*i)], "-nv"))
 		env->use_ncurses = true;
+	else if (!ft_strcmp(argv[(*i)], "-a"))
+		env->show_aff = true;
 	else if (!ft_strcmp(argv[(*i)], "-s") && ++(*i) < argc)
 		env->start_show_verb = cw_atoi(argv[(*i)]);
 	else

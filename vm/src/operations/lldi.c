@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:36:12 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 08:58:51 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:42:13 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	op_lldi(t_env *env, t_carriage *carriage, t_arg *args)
 {
-	int	value[2];
+	int	value[3];
 	int offset;
 
 	value[0] = args[0].content;
@@ -24,8 +24,9 @@ int	op_lldi(t_env *env, t_carriage *carriage, t_arg *args)
 	if (DIFF_ENDIAN && args[1].type == REG_CODE)
 		swap_bytes(&value[1], sizeof(int));
 	offset = value[0] + value[1];
-	set_reg_value(carriage, args[2].value,
-		get_mem_value(env, carriage, offset, false), false);
+	value[2] = get_mem_value(env, carriage, offset, false);
+	if (set_reg_value(carriage, args[2].value, value[2], false))
+		carriage->carry = !value[2];
 	if (VERB_LEVEL(SHOW_OPS))
 	{
 		ft_printf("P%5d | lldi %d %d r%d\n",
