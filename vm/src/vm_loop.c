@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 13:14:11 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 21:23:48 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:52:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void				vm_loop(t_env *env)
 				&& (carriage->cycles_to_execute = op->cycles_to_execute);
 		}
 		carriage->cycles_to_execute && --carriage->cycles_to_execute;
-		!carriage->cycles_to_execute && do_op(env, carriage);
+		!carriage->cycles_to_execute && vm_do_op(env, carriage);
 		cur_lst = cur_lst->next;
 	}
 }

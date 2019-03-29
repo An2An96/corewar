@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/28 20:23:25 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:07:51 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,14 @@ int		read_flags(int argc, char **argv, t_env *env, int *i)
 	}
 	else if (!ft_strcmp(argv[(*i)], "-nv"))
 		env->use_ncurses = true;
+	else if (!ft_strcmp(argv[(*i)], "-s") && ++(*i) < argc)
+		env->start_show_verb = cw_atoi(argv[(*i)]);
 	else
 		return (0);
 	return (-1);
 }
 
-void	read_args(int argc, char **argv, t_env *env)
+int		read_args(int argc, char **argv, t_env *env)
 {
 	int			i;
 	t_champion	*champion;
@@ -109,7 +111,7 @@ void	read_args(int argc, char **argv, t_env *env)
 	int			*mask;
 
 	if (argc == 1)
-		throw_error(STR_ERROR_READ, "Invalid name file");
+		return (0);
 	count_champion = 0;
 	SECURE_MALLOC(env->champions = (t_champion**)
 		ft_memalloc(sizeof(t_champion*) * (MAX_PLAYERS + 1)));
@@ -127,4 +129,5 @@ void	read_args(int argc, char **argv, t_env *env)
 	}
 	check_arr_champions(count_champion, mask, env);
 	free(mask);
+	return (1);
 }

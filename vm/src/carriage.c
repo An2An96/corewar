@@ -6,23 +6,24 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 20:25:58 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 20:25:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:43:25 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
+t_carriage	*create_carriage(t_env *env, t_carriage *parent, int pos)
 {
-	t_carriage *new_carriage;
+	t_carriage	*new_carriage;
+	int			mem_size;
 
 	SECURE_MALLOC(new_carriage = (t_carriage*)ft_memalloc(sizeof(t_carriage)));
 	ft_lstadd(&env->carriages, ft_lstnew_ptr(new_carriage));
 	new_carriage->id = ++env->last_carriage_id;
 	if (parent)
 	{
-		ft_memcpy(new_carriage->registers,
-			parent->registers, REG_NUMBER * sizeof(unsigned int));
+		mem_size = REG_NUMBER * sizeof(unsigned int);
+		ft_memcpy(new_carriage->registers, parent->registers, mem_size);
 		new_carriage->carry = parent->carry;
 		new_carriage->last_live_cycle = parent->last_live_cycle;
 	}
@@ -31,7 +32,7 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos)
 	return (new_carriage);
 }
 
-t_list *remove_carriage(t_env *env, t_list *die_carriage)
+t_list		*remove_carriage(t_env *env, t_list *die_carriage)
 {
 	t_list	*cur_lst;
 	t_list	*next;
@@ -56,11 +57,4 @@ t_list *remove_carriage(t_env *env, t_list *die_carriage)
 	free(die_carriage);
 	env->carriages_count--;
 	return (next);
-}
-
-void	set_carriage_pos(t_env *env, t_carriage *carriage, int pos)
-{
-	pos %= MEM_SIZE;
-	(pos < 0) && (pos = MEM_SIZE - pos);
-	carriage->position = pos;
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   do_op.c                                            :+:      :+:    :+:   */
+/*   vm_do_op.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 21:52:07 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:52:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,23 +31,6 @@ t_op_func	g_op_funcs[] = {
 	op_lfork,
 	op_aff
 };
-
-t_op				*get_op(char op_code)
-{
-	int8_t i;
-
-	if (op_code && op_code <= 0x10)
-	{
-		i = 0;
-		while (g_op_tab[i].op_code)
-		{
-			if (g_op_tab[i].op_code == op_code)
-				return (&g_op_tab[i]);
-			i++;
-		}
-	}
-	return (NULL);
-}
 
 inline static void	get_cmd_length_helper(
 	unsigned char mempos, int codage_octal, uint8_t *args_types, int *len)
@@ -89,7 +72,7 @@ static int			get_cmd_length(t_op *op, unsigned char mempos)
 	return (len);
 }
 
-int					do_op(t_env *env, t_carriage *carriage)
+int					vm_do_op(t_env *env, t_carriage *carriage)
 {
 	t_op	*op;
 	t_arg	*args;
@@ -101,7 +84,7 @@ int					do_op(t_env *env, t_carriage *carriage)
 	if ((op = get_op(carriage->op_code)))
 	{
 		len = get_cmd_length(op, *(env->field + carriage->position + 1));
-		if (get_args(env, carriage, &args))
+		if (vm_get_args(env, carriage, &args))
 			zjmp = g_op_funcs[carriage->op_code](env, carriage, args);
 		if (args)
 			free(args);

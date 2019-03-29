@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:33:27 by zaz               #+#    #+#             */
-/*   Updated: 2019/03/23 17:32:03 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:41:31 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@
 # define NBR_LIVE				21
 # define MAX_CHECKS				10
 
-typedef char	t_arg_type;
-
 # define T_REG					1
 # define T_DIR					2
 # define T_IND					4
@@ -60,6 +58,8 @@ typedef char	t_arg_type;
 # define PROG_NAME_LENGTH		(128)
 # define COMMENT_LENGTH			(2048)
 # define COREWAR_EXEC_MAGIC		0xea83f3
+
+typedef char	t_arg_type;
 
 typedef struct	s_header
 {
@@ -80,5 +80,7 @@ typedef struct	s_op
 	char			codage_octal;
 	char			dir_ind_size;
 }				t_op;
+
+t_op			g_op_tab[17];
 
 #endif

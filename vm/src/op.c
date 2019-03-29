@@ -6,11 +6,11 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/03/27 16:50:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:51:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "op.h"
+#include "vm.h"
 
 t_op	g_op_tab[17] =
 {
@@ -38,3 +38,20 @@ t_op	g_op_tab[17] =
 	{ "aff", 1, { T_REG }, 16, 2, "aff", 1, 0 },
 	{ 0, 0, 0, 0, 0, 0, 0, 0 }
 };
+
+t_op	*get_op(char op_code)
+{
+	int8_t i;
+
+	if (op_code && op_code <= 0x10)
+	{
+		i = 0;
+		while (g_op_tab[i].op_code)
+		{
+			if (g_op_tab[i].op_code == op_code)
+				return (&g_op_tab[i]);
+			i++;
+		}
+	}
+	return (NULL);
+}

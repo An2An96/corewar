@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_vm.c                                          :+:      :+:    :+:   */
+/*   vm_core.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 20:50:41 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 20:50:49 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:58:51 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	vm_init(t_env *env)
 	{
 		carriage = create_carriage(env, NULL, offset * i);
 		carriage->registers[0] = -(i + 1);
-		if (PROC_ENDIAN)
+		if (DIFF_ENDIAN)
 			swap_bytes(&carriage->registers[0], sizeof(carriage->registers[0]));
 		ft_memcpy(env->field + carriage->position,
 			env->champions[i]->exec_code, env->champions[i]->prog_size);

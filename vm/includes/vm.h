@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/28 21:23:38 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 10:08:37 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@
 **	Macroses
 */
 
+# define COLOR_USAGE		"\x1b[32m"
+
 # define SHOW_LIVES			1
 # define SHOW_CYCLES		2
 # define SHOW_OPS			4
 # define SHOW_DEATHS		8
 # define SHOW_PC_MOVES		16
 
-# define VERB_LEVEL(level)	(env->verb_levels & level)
+# define VERB_LEVEL(level)	(env->acount_cycles >= env->start_show_verb && env->verb_levels & level)
 
-# define PROC_ENDIAN		(LITTLE_ENDIAN == BYTE_ORDER)
-# define BIG_END			0
-# define LITTLE_END			1
+# define DIFF_ENDIAN		(LITTLE_ENDIAN == BYTE_ORDER)
 
 # define ARG_TYPE(val, num)	((val) >> (8 - (2 * (num + 1))) & 0x3)
 
@@ -96,11 +96,11 @@ typedef struct	s_champion
 /*
 **	Structure describe vm state
 **	last_cycle_*	-	переменная хранящая номер цикла в котором произошло
-						какое-то действие
+**						какое-то действие
 **	rcount_*		-	(repeat counter) счетчик периодически скидывающий
 **						свое значение (0)
 **	acount_*		-	(absolute counter) абсолютный счетчик, который считает
-						не скидывает значения до конца выполнения программы
+**						не скидывает значения до конца выполнения программы
 */
 
 typedef struct	s_env
@@ -125,81 +125,99 @@ typedef struct	s_env
 	int				rcount_lives;
 	int				acount_cycles;
 	int				acount_checks;
+
+
+	//debug
+	int				start_show_verb;
 }				t_env;
 
-typedef int (*t_op_func)(t_env *env, t_carriage *carriage, t_arg *args);
+typedef	int	(*t_op_func)(t_env *env, t_carriage *carriage, t_arg *args);
 
-t_op	g_op_tab[17];
-char	g_op_args[17][3];
-
-/*
-**	Read
-*/
-
-void		put_champ_on_arr(int nbr_player, char *argv, t_env *env, int *mask);
-void		read_args(int argc, char **argv, t_env *env);
-void		check_arr_champions(int count_champion, int *mask, t_env *env);
+t_op			*get_op(char op_code);
 
 /*
-**	Main VM functions
+**	read args and champions
 */
 
-void		vm_init(t_env *env);
-void		vm_destroy(t_env *env);
-void		vm_loop(t_env *env);
-int			vm_check_die(t_env *env);
-
-bool		get_args(t_env *env, t_carriage *carriage, t_arg **args);
-
-t_carriage	*create_carriage(t_env *env, t_carriage *parent, unsigned int pos);
-t_list 		*remove_carriage(t_env *env, t_list *die_carriage);
-void		set_carriage_pos(t_env *env, t_carriage *carriage, int pos);
-
-bool		get_reg_value(t_carriage *carriage, char idx, int *value, bool endian);
-bool		set_reg_value(t_carriage *carriage, char idx, int value, bool endian);
-
-int			calc_mem_addr(int start, int offset, bool truncat);
-int			get_mem_value(t_env *env, t_carriage *carriage, int offset, bool truncat);
-int			get_mem_value_ex(t_env *env, int mempos, int bytes, bool convert_endian);
-int			set_mem_value(t_env *env, t_carriage *carriage, int offset, int value);
-
-t_op		*get_op(char op_code);
-int			do_op(t_env *env, t_carriage *carriage);
+int				read_args(int argc, char **argv, t_env *env);
+void			put_champ_on_arr(
+	int nbr_player, char *argv, t_env *env, int *mask);
+void			check_arr_champions(int count_champion, int *mask, t_env *env);
 
 /*
-**	Operations
+**	main vm functions
 */
 
-int			op_live(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_ld(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_st(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_add(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_sub(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_and(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_or(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_xor(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_zjmp(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_ldi(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_sti(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_fork(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_lld(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_lldi(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_lfork(t_env *env, t_carriage *carriage, t_arg *args);
-int			op_aff(t_env *env, t_carriage *carriage, t_arg *args);
+void			vm_init(t_env *env);
+void			vm_loop(t_env *env);
+int				vm_check_die(t_env *env);
+void			vm_destroy(t_env *env);
+
+bool			vm_get_args(t_env *env, t_carriage *carriage, t_arg **args);
+int				vm_do_op(t_env *env, t_carriage *carriage);
 
 /*
-**	Utils functions
+**	carriage functions
 */
 
-void		swap_bytes(void *memory, int size);
+t_carriage		*create_carriage(t_env *env, t_carriage *parent, int pos);
+t_list			*remove_carriage(t_env *env, t_list *die_carriage);
+
+/*
+**	carriage registers functions
+*/
+
+bool			get_reg_value(
+	t_carriage *carriage, char idx, int *value, bool convert_endian);
+bool			set_reg_value(
+	t_carriage *carriage, char idx, int value, bool convert_endian);
+
+/*
+**	vm memory functions
+*/
+
+int				calc_mem_addr(int start, int offset, bool truncat);
+int				get_mem_value(
+	t_env *env, t_carriage *carriage, int offset, bool truncat);
+int				get_mem_value_ex(
+	t_env *env, int mempos, int bytes, bool convert_endian);
+int				set_mem_value(
+	t_env *env, t_carriage *carriage, int offset, int value);
+
+/*
+**	vm operations
+*/
+
+int				op_live(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_ld(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_st(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_add(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_sub(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_and(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_or(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_xor(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_zjmp(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_ldi(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_sti(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_fork(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_lld(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_lldi(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_lfork(t_env *env, t_carriage *carriage, t_arg *args);
+int				op_aff(t_env *env, t_carriage *carriage, t_arg *args);
+
+/*
+**	utils functions
+*/
+
+void			swap_bytes(void *memory, int size);
 
 /*
 **	Print
 */
 
-int			print_move(t_env *env, int curpos, int len);
-void    	print_players(t_env *env);
-void		print_memory(const void *memory, size_t size);
-int			print_env(t_env *env);
+int				print_move(t_env *env, int curpos, int len);
+void			print_players(t_env *env);
+void			print_memory(const void *memory, size_t size);
+int				print_env(t_env *env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 20:17:43 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/27 19:46:26 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 08:58:51 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int	op_sti(t_env *env, t_carriage *carriage, t_arg *args)
 	int	offset;
 
 	value[0] = args[1].content;
-	if (PROC_ENDIAN && (args[1].type == REG_CODE || args[1].type == IND_CODE))
+	if (DIFF_ENDIAN && (args[1].type == REG_CODE || args[1].type == IND_CODE))
 		swap_bytes(&value[0], sizeof(int));
 	value[1] = args[2].content;
-	if (PROC_ENDIAN && args[2].type == REG_CODE)
+	if (DIFF_ENDIAN && args[2].type == REG_CODE)
 		swap_bytes(&value[1], sizeof(int));
 	offset = value[0] + value[1];
 	set_mem_value(env, carriage, offset, args[0].content);
