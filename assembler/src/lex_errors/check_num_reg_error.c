@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:42:05 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:51:36 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	check_number_error(char *value, long long *nb)
 {
-	int			i;
-	int 		sign;
+	int	i;
+	int	sign;
 
 	i = 0;
 	sign = 1;
@@ -58,7 +58,7 @@ int			check_error_dir(char *value)
 	nb = 0;
 	if (ft_strlen(value) == 0)
 		return (EMPTY_VALUE);
-	return(check_number_error(value, &nb));
+	return (check_number_error(value, &nb));
 }
 
 int			check_error_indir(char *value)
@@ -66,5 +66,5 @@ int			check_error_indir(char *value)
 	long long nb;
 
 	nb = 0;
-	return(check_number_error(value, &nb));
+	return (check_number_error(value, &nb));
 }

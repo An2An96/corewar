@@ -6,16 +6,16 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 14:45:43 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 16:12:07 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:30:48 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-static int 		find_last_command_line_number(t_tokens *tokens)
+static int	find_last_command_line_number(t_tokens *tokens)
 {
 	int			i;
-	int 		ret;
+	int			ret;
 	t_lex_list	*tmp;
 
 	i = 0;
@@ -31,10 +31,10 @@ static int 		find_last_command_line_number(t_tokens *tokens)
 	return (ret);
 }
 
-static int 		find_first_not_command_line_number(t_tokens *tokens)
+static int	find_first_not_command_line_number(t_tokens *tokens)
 {
 	int			i;
-	int 		ret;
+	int			ret;
 	t_lex_list	*tmp;
 
 	i = 0;
@@ -53,10 +53,10 @@ static int 		find_first_not_command_line_number(t_tokens *tokens)
 	return (ret);
 }
 
-void 		get_syn_sem_errors(t_tokens *tokens, t_errors **err)
+void		get_syn_sem_errors(t_tokens *tokens, t_errors **err)
 {
-	int 	com;
-	int 	code;
+	int	com;
+	int	code;
 
 	code = find_first_not_command_line_number(tokens);
 	com = find_last_command_line_number(tokens);
@@ -72,7 +72,8 @@ void 		get_syn_sem_errors(t_tokens *tokens, t_errors **err)
 		else
 		{
 			if (code < com)
-				push_back_errors_list(err, SYNTACTIC, WRONG_PROGRAM_STRUCTURE, NULL);
+				push_back_errors_list(err,
+					SYNTACTIC, WRONG_PROGRAM_STRUCTURE, NULL);
 			check_code(tokens, err);
 		}
 		check_commands(tokens, err);
