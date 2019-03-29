@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 15:55:15 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:12:26 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ int				main(int argc, char *argv[])
 	if (errors)
 		print_errors_and_exit(argv[1], &tokens, &errors);
 	delete_str_commas(tokens);
+	ft_to_code(tokens, argv[1]);
 	delete_tokens(&tokens);
 	close(fd);
 	exit(0);

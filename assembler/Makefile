@@ -19,7 +19,12 @@ SRCS =	delete_commas.c	delete_structures.c	file_stuff.c	list_stuff.c \
 		lex_errors/check_lex_errors.c		lex_errors/check_lex_type.c \
 		lex_errors/check_num_reg_error.c \
 		syn_sem_errors/check_code.c			syn_sem_errors/check_commands.c \
-		syn_sem_errors/check_instructions.c	syn_sem_errors/check_syntactic_semantic_errors.c
+		syn_sem_errors/check_instructions.c	syn_sem_errors/check_syntactic_semantic_errors.c \
+		bytecode/and.c		bytecode/hash.c		bytecode/instructions.c \
+		bytecode/label.c	bytecode/ldi_lldi.c	bytecode/lld.c \
+		bytecode/name_comment.c		bytecode/sti.c		bytecode/xor.c \
+		bytecode/compiler.c			bytecode/instructions_2.c \
+		bytecode/ld.c				bytecode/print_bytes.c	bytecode/to_code.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = asm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))
@@ -50,6 +55,10 @@ $(LIBS):
 
 $(OBJ_DIR):
 	@mkdir -p $@
+	@mkdir -p $@/get_lexems
+	@mkdir -p $@/lex_errors
+	@mkdir -p $@/syn_sem_errors
+	@mkdir -p $@/bytecode
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS) | $(OBJ_DIR)
 	@gcc $(OBJ_FLAGS) -c $< -o $@

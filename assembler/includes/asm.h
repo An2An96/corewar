@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 16:03:29 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:18:23 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include <stdio.h>
 
 # include "libft.h"
 # include "ft_printf.h"
 # include "op.h"
 
-# define CHECK_NULL(x) if (x == NULL) return (NULL)
+# define CHECK_NULL(x)	if (x == NULL) return (NULL)
+
+# define FIRST_BYTE		0x000000ff
 
 # define COLOR_BOLD		"\x1b[1m"
 # define COLOR_ERROR	"\x1b[1;31m"
@@ -134,6 +135,27 @@ typedef struct			s_errors
 	struct s_errors		*next;
 }						t_errors;
 
+typedef struct			s_asm_list
+{
+	unsigned int 		index;
+	int 				start;
+	unsigned int 		size;
+	struct s_asm_list	*next;
+}						t_asm_list;
+
+typedef struct 			s_list_label
+{
+	struct s_list_label	*next;
+	struct s_label		*label;
+}						t_list_label;
+
+typedef struct 			s_label
+{
+	char 				*name;
+	int 				start_byte;
+	t_asm_list				*indexs_to_substitude;
+}						t_label;
+
 typedef char			t_bool;
 
 t_op					*get_op_by_name(char *cmd);
@@ -193,5 +215,36 @@ void 					delete_lex_errors(t_errors **del);
 void					delete_lexem(t_lexem **del);
 void					delete_elem_lex_list(t_lex_list **lst, t_lex_list *del);
 void					delete_lex_list(t_lex_list **head);
+
+void 					ft_to_code(t_tokens *tokens, char *name);
+char    				*ft_get_extension(char *str, char c);
+char					*ft_print_bytes(int number, unsigned int bytes);
+int						ft_set_name_comment(t_tokens *tokens, t_header *head);
+void 					ft_print_error(t_lexem *lexem);
+unsigned int			ft_set_program(t_tokens *tokens, char **program, int start);
+t_label					*ft_find_label(t_list_label *labels, char *name);
+void					ft_create_label(t_list_label **labels, char *name, int byte);
+int 					ft_index(char *name);
+void					ft_live(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_write_program(char **program, unsigned int *bytes, unsigned int size, int code);
+void					ft_add_label(t_list_label **labels, char *name, unsigned int byte);
+t_label 				*ft_add_to_substitude(t_list_label **labels, int size, unsigned int index, char *name);
+
+void					ft_fork(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_lfork(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_aff(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_zjmp(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_ld(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_lld(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_add(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_sub(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_st(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_and(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_or(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_xor(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_lldi(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_ldi(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_sti(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void					ft_delete_labels(t_list_label **labels);
 
 #endif
