@@ -6,30 +6,11 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/21 18:20:09 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/29 13:44:03 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:18:39 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
-
-int		cw_atoi(const char *str)
-{
-	int			i;
-	long long	nb;
-
-	nb = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] < '0' || str[i] > '9')
-			throw_error(STR_ERROR_READ, "Invalid player nbr");
-		nb = nb * 10 + (str[i] - '0');
-		if (nb > 2147483647)
-			throw_error(STR_ERROR_READ, "Invalid player nbr");
-		i++;
-	}
-	return (nb);
-}
 
 void	put_champions_on_mask(int argc, char **argv, int *mask, int *i)
 {
@@ -38,7 +19,7 @@ void	put_champions_on_mask(int argc, char **argv, int *mask, int *i)
 	nbr_player = 0;
 	if (++(*i) < argc)
 	{
-		nbr_player = cw_atoi(argv[(*i)]);
+		nbr_player = cw_atoi(argv[(*i)], "Invalid player nbr");
 		if (nbr_player - 1 < MAX_PLAYERS)
 		{
 			if (mask[nbr_player - 1] == 0)
@@ -72,36 +53,43 @@ int		*create_mask(int argc, char **argv)
 	return (mask);
 }
 
+int		read_flags_helper(int argc, char **argv, t_env *env, int *i)
+{
+	if (!ft_strcmp(argv[(*i)], "-v"))
+	{
+		if (++(*i) < argc)
+			env->verb_levels = cw_atoi(argv[(*i)], "Invalid verbosity level");
+	}
+	else if (!ft_strcmp(argv[(*i)], "-s"))
+		env->visualise = true;
+	else if (!ft_strcmp(argv[(*i)], "-a"))
+		env->show_aff = true;
+	else
+		return (0);
+	return (-1);
+}
+
 int		read_flags(int argc, char **argv, t_env *env, int *i)
 {
 	int	nbr_player;
 
 	nbr_player = 0;
-	if (!ft_strcmp(argv[(*i)], "-dump") && ++(*i) < argc)
-		env->dump_nbr_cycle = cw_atoi(argv[(*i)]);
+	if (!ft_strcmp(argv[(*i)], "-dump"))
+	{
+		if (++(*i) < argc)
+			env->dump_nbr_cycle = cw_atoi(argv[(*i)], "Invalid dump cycle");
+		return (-1);
+	}
 	else if (!ft_strcmp(argv[(*i)], "-n"))
 	{
 		if (++(*i) < argc)
-			nbr_player = cw_atoi(argv[(*i)]);
+			nbr_player = cw_atoi(argv[(*i)], "Invalid player nbr");
 		if (nbr_player > MAX_PLAYERS || nbr_player == 0)
 			throw_error(STR_ERROR_READ, "Invalid player nbr");
 		(*i)++;
 		return (nbr_player);
 	}
-	else if (!ft_strcmp(argv[(*i)], "-v"))
-	{
-		if (++(*i) < argc)
-			env->verb_levels = cw_atoi(argv[(*i)]);
-	}
-	else if (!ft_strcmp(argv[(*i)], "-nv"))
-		env->use_ncurses = true;
-	else if (!ft_strcmp(argv[(*i)], "-a"))
-		env->show_aff = true;
-	else if (!ft_strcmp(argv[(*i)], "-s") && ++(*i) < argc)
-		env->start_show_verb = cw_atoi(argv[(*i)]);
-	else
-		return (0);
-	return (-1);
+	return (read_flags_helper(argc, argv, env, i));
 }
 
 int		read_args(int argc, char **argv, t_env *env)

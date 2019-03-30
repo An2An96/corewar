@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:36 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 19:12:26 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 21:12:53 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,11 @@ static void		print_main_errors(int err)
 		exit(1);
 }
 
-static void		print_errors_and_exit(char *name, t_tokens **tokens,
-										 t_errors **lex_errors)
+static void		print_errors_and_exit(
+	char *name, t_tokens **tokens, t_errors **lex_errors)
 {
 	print_errors(name, *lex_errors);
-	delete_tokens(tokens);
+	delete_tokens(*tokens);
 	delete_lex_errors(lex_errors);
 	exit(1);
 }
@@ -93,7 +93,7 @@ int				main(int argc, char *argv[])
 		print_errors_and_exit(argv[1], &tokens, &errors);
 	delete_str_commas(tokens);
 	ft_to_code(tokens, argv[1]);
-	delete_tokens(&tokens);
+	delete_tokens(tokens);
 	close(fd);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2013/10/04 11:43:01 by zaz               #+#    #+#             */
-/*   Updated: 2019/03/29 15:55:31 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 20:59:10 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ t_op	*get_op_by_name(char *cmd)
 			return (&g_op_tab[i]);
 		i++;
 	}
-	return (NULL);
+	exit(1);
 }

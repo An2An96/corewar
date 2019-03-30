@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:20:36 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 11:37:41 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:16:40 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,9 @@ int					vm_do_op(t_env *env, t_carriage *carriage)
 		if (VERB_LEVEL(SHOW_PC_MOVES) && zjmp == -1)
 			print_move(env, carriage->position, len);
 	}
-	carriage->position = zjmp != -1 ?
-		zjmp : calc_mem_addr(carriage->position, len, true);
+	zjmp = zjmp != -1 ? zjmp : calc_mem_addr(carriage->position, len, true);
+	if (env->visualise)
+		draw_move_carriage(env, carriage->position, zjmp, 0xFFFFFF);
+	carriage->position = zjmp;
 	return (1);
 }

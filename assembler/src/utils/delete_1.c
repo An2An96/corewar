@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   delete_structures.c                                :+:      :+:    :+:   */
+/*   delete_1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 12:50:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 19:25:49 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/30 21:13:21 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,18 @@ void	delete_lex_list(t_lex_list **head)
 	(*head) = NULL;
 }
 
-void	delete_tokens(t_tokens **del)
+void	delete_tokens(t_tokens *del)
 {
 	int i;
 
 	i = 0;
-	if (*del == NULL)
+	if (del == NULL)
 		return ;
-	while (i < (*del)->count)
+	while (i < del->count)
 	{
-		delete_lex_list(&((*del)->tokenlst[i]));
+		delete_lex_list(&del->tokenlst[i]);
 		i++;
 	}
-	free((*del)->tokenlst);
-	free(*del);
-	*del = NULL;
+	free(del->tokenlst);
+	free(del);
 }

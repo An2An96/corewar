@@ -6,13 +6,14 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 15:32:20 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 21:13:11 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ASM_ASM_H
 # define ASM_ASM_H
 
+# include <stdio.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/stat.h>
@@ -136,7 +137,7 @@ typedef struct			s_errors
 	struct s_errors		*next;
 }						t_errors;
 
-typedef struct 			s_lab_list
+typedef struct			s_lab_list
 {
 	t_lexem				*lexem;
 	struct s_lab_list	*next;
@@ -181,7 +182,7 @@ void					push_back_errors_list(t_errors **alst, int err,
 t_bool					is_label_char(char c);
 t_bool					is_undefined(char c);
 t_bool					is_digit_sign(char c);
-int					ft_isalpha_small(int c);
+int						ft_isalpha_small(int c);
 
 t_lexem					*get_command(char *str, t_cursor *cur);
 t_lexem					*get_string(t_lines *lines, t_cursor *cur);
@@ -217,8 +218,8 @@ void					check_instructions(t_lex_list *lst, t_errors **err);
 void					print_errors(char *filename, t_errors *lex_errors);
 
 void					delete_str_commas(t_tokens *tokens);
-void					delete_lines(t_lines **del);
-void					delete_tokens(t_tokens **del);
+void					delete_lines(t_lines *del);
+void					delete_tokens(t_tokens *del);
 void					delete_lex_errors(t_errors **del);
 void					delete_lexem(t_lexem **del);
 void					delete_elem_lex_list(t_lex_list **lst, t_lex_list *del);
@@ -226,12 +227,14 @@ void					delete_lex_list(t_lex_list **head);
 void					delete_cursor(t_cursor **cur);
 void					delete_comments(t_tokens **tokens);
 
-int 					count_command_definitions(t_tokens *tokens, char *str);
-void					find_fisrt_redef_command(t_tokens *tokens, char *str, t_errors **err);
+int						count_command_definitions(t_tokens *tokens, char *str);
+void					find_fisrt_redef_command(
+	t_tokens *tokens, char *str, t_errors **err);
 void					push_back_lab_list(t_lab_list **alst, t_lexem *content);
 t_lab_list				*generate_lab_list(t_tokens *tokens);
 void					find_duplicate_labes(t_lab_list *lab, t_errors **err);
-void					find_undeclared_labels(t_tokens *tokens, t_lab_list *labels, t_errors **err);
+void					find_undeclared_labels(
+	t_tokens *tokens, t_lab_list *labels, t_errors **err);
 void					delete_lab_list(t_lab_list **lab);
 
 void					ft_to_code(t_tokens *tokens, char *name);

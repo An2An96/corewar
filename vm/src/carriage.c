@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 20:25:58 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 19:14:03 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:10:04 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_carriage	*create_carriage(t_env *env, t_carriage *parent, int pos)
 		ft_memcpy(new_carriage->registers, parent->registers, mem_size);
 		new_carriage->carry = parent->carry;
 		new_carriage->last_live_cycle = parent->last_live_cycle;
+		new_carriage->color = parent->color;
 	}
 	new_carriage->position = pos;
 	env->carriages_count++;

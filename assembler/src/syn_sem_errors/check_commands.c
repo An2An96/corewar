@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_program_structure.c                          :+:      :+:    :+:   */
+/*   check_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 18:09:28 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 19:06:01 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/30 20:57:23 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ static void		find_command_line_errors(t_lex_list *lexem_lst,
 
 	head = lexem_lst;
 	if (!lexem_lst->next)
+	{
 		return (push_back_errors_list(error, SEMANTIC,
-				NO_ARGUMENTS, lexem_lst->lexem));
+			NO_ARGUMENTS, lexem_lst->lexem));
+	}
 	lexem_lst = lexem_lst->next;
 	if (lexem_lst->lexem->type != STRING)
 		push_back_errors_list(error, SEMANTIC,

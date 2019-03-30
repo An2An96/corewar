@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 13:46:44 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 19:31:54 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ static void	show_usage(void)
 		"Show operations (Params are NOT litteral ...)\n", "- 4");
 	ft_printf("%20s : Show deaths\n", "- 8");
 	ft_printf("%20s : Show PC movements (Except for jumps)\n", "- 16");
+	ft_printf("\t%-10s : "
+		"Enable graphical visualization\n",
+		"-s");
 }
 
 int			main(int argc, char **argv)
@@ -40,15 +43,14 @@ int			main(int argc, char **argv)
 	if (read_args(argc, argv, env))
 	{
 		vm_init(env);
-		env->use_ncurses && ncurses_init();
-		while (vm_check_die(env))
+		if (env->visualise)
+			mlx_loop(env->mlx->mlx_ptr);
+		else
 		{
-			env->use_ncurses && ncurses_print_env(env);
-			vm_loop(env);
-			env->use_ncurses && usleep(10000);
+			while (vm_check_die(env))
+				vm_loop(env);
+			vm_destroy(env);
 		}
-		vm_destroy(env);
-		env->use_ncurses && ncurses_destroy();
 	}
 	else
 		show_usage();

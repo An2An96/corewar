@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 15:23:45 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/30 15:32:55 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 21:03:16 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,11 @@ void	print_errors(char *filename, t_errors *lex_errors)
 			print_semantic_err(lex_errors);
 		if (lex_errors->lexem != NULL)
 		{
-			if (ft_strlen(lex_errors->lexem->value) > 20)
-				ft_printf(COLOR_GREEN "\"%.20s...\" " COLOR_NONE,
-					lex_errors->lexem->value);
-			else
-				ft_printf(COLOR_GREEN "\"%s\" " COLOR_NONE,
-					lex_errors->lexem->value);
+			ft_printf(COLOR_GREEN "\"%.*s%s\" " COLOR_NONE,
+				ft_strlen(lex_errors->lexem->value) > 20 ?
+				20 : ft_strlen(lex_errors->lexem->value),
+				lex_errors->lexem->value,
+				ft_strlen(lex_errors->lexem->value) > 20 ? "..." : "");
 			print_type_lexem(lex_errors);
 		}
 		ft_printf("\n");

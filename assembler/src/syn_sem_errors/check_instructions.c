@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_instructions.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 21:25:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 19:10:07 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/30 20:59:23 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,15 @@ void		check_instructions(t_lex_list *lexem_lst, t_errors **error)
 	t_lex_list	*head;
 
 	head = lexem_lst;
-	if (!(op = get_op_by_name(lexem_lst->lexem->value)))
-		exit(1);
+	op = get_op_by_name(lexem_lst->lexem->value);
 	i = -1;
 	while (++i < op->arg_count)
 	{
 		lexem_lst = lexem_lst->next;
 		if (!lexem_lst)
 		{
-			push_back_errors_list(error, SEMANTIC,
-					INVALID_NUMBER_OF_ARGUMENT, head->lexem);
-			return ;
+			return (push_back_errors_list(error, SEMANTIC,
+					INVALID_NUMBER_OF_ARGUMENT, head->lexem));
 		}
 		if (!check_instruct_args(lexem_lst, error, op->arg_type[i]))
 			return ;
