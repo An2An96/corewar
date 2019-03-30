@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static t_lexem		*ft_define_lex(t_lines *lines, t_cursor *cur)
 {
