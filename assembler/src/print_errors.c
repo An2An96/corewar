@@ -35,6 +35,10 @@ void	print_semantic_err(t_errors *lex_errors)
 		ft_printf("excess size of command ");
 	else if (lex_errors->error_code[1] == INVALID_LEXEM_SEQUENCE)
 		ft_printf("invalid lexem sequence ");
+	else if (lex_errors->error_code[1] == CONSTANT_REDEFINITION)
+		ft_printf("constant redefinition ");
+	else if (lex_errors->error_code[1] == UNDECLARED_IDENTIFIER)
+		ft_printf("undeclared identifier ");
 }
 
 void	print_syntactic_err(t_errors *errors)
