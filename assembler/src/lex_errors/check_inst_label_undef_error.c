@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_inst_label_undef_error.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:43:43 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 16:51:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 17:14:47 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
 int		check_error_instruction(char *value)
 {

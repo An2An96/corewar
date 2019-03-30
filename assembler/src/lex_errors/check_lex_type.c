@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_lex_type.c                                   :+:      :+:    :+:   */
+/*   check_lexems.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 16:28:26 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/28 19:41:55 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
 t_lexem			*check_label_or_undef(char *str, t_cursor *cur)
 {

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_lex_errors.c                                 :+:      :+:    :+:   */
+/*   check_lexical_errors.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 13:56:24 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 18:28:42 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
-int 				check_lex_errors(t_lexem *lexem)
+static int	check_lex_errors(t_lexem *lexem)
 {
 	if (lexem->type == COMMAND)
 		return (check_error_command(lexem->value));
@@ -35,11 +35,11 @@ int 				check_lex_errors(t_lexem *lexem)
 	return (0);
 }
 
-void 		get_lex_errors(t_tokens *tokens, t_errors **res)
+void		get_lex_errors(t_tokens *tokens, t_errors **res)
 {
-	int				i;
-	int 			addit_err;
-	t_lex_list		*tmp;
+	int			i;
+	int			addit_err;
+	t_lex_list	*tmp;
 
 	i = 0;
 	while (i < tokens->count)

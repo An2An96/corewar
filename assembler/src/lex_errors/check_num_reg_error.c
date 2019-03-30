@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_num_reg_error.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:42:05 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 19:45:30 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 17:43:39 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
 static int	check_number_error(char *value, int *nb)
 {
@@ -28,8 +28,6 @@ static int	check_number_error(char *value, int *nb)
 	while (value[i] != '\0')
 	{
 		*nb = *nb * 10 + (value[i] - '0');
-		// if (*nb > 2147483647)
-		// 	return (OUT_OF_RANGE_VALUE);
 		i++;
 	}
 	*nb = sign * (*nb);
