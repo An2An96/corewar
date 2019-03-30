@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 15:23:45 by wballaba          #+#    #+#             */
-/*   Updated: 2019/03/29 16:24:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 15:32:55 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	print_syntactic_err(t_errors *errors)
 	else if (errors->error_code[1] == EXCESS_SEPARATOR)
 		ft_printf("excess separator ");
 	else if (errors->error_code[1] == EXCESS_INSTUCTION_IN_LINE)
-		printf("excess instruction in line ");
+		ft_printf("excess instruction in line ");
 }
 
 void	print_lexical_err(t_errors *lex_errors)

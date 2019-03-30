@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 20:27:14 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/30 14:51:19 by rtroll           ###   ########.fr       */
+/*   Updated: 2019/03/30 15:32:11 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void		ft_substitute_labels(t_list_label *labels, char *program)
 	}
 }
 
-static void		ft_delete_lab(t_label *label)
+void			ft_delete_lab(t_label *label)
 {
 	t_asm_list	*list;
 	t_asm_list	*del;

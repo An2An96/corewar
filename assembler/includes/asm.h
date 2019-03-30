@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 15:28:12 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 15:02:17 by rtroll           ###   ########.fr       */
+/*   Updated: 2019/03/30 15:32:20 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,5 +268,6 @@ void					ft_ldi(t_lex_list *args, unsigned int *bytes,
 void					ft_sti(t_lex_list *args, unsigned int *bytes,
 		t_list_label **labels, char **program);
 void					ft_delete_labels(t_list_label **labels);
+void					ft_delete_lab(t_label *label);
 
 #endif

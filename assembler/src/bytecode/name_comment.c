@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 17:23:39 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/30 14:37:39 by rtroll           ###   ########.fr       */
+/*   Updated: 2019/03/30 15:29:51 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	ft_check_comment(t_header *head, t_lex_list *list, int *comment)
 		ft_print_error(list->next->next->lexem);
 }
 
-static void	ft_check_name(t_header *head, t_lex_list *list, int line, int *name)
+static void	ft_check_name(t_header *head, t_lex_list *list, int *name)
 {
 	char *str;
 
@@ -72,7 +72,7 @@ static void	ft_check_command(t_lex_list *tmp, t_header *head,
 	if (ft_strcmp(tmp->lexem->value, "comment") == 0 && *comment == 1)
 		ft_print_error(tmp->lexem);
 	if (ft_strcmp(tmp->lexem->value, "name") == 0)
-		ft_check_name(head, tmp, line, name);
+		ft_check_name(head, tmp, name);
 	else if (ft_strcmp(tmp->lexem->value, "comment") == 0)
 		ft_check_comment(head, tmp, comment);
 }
@@ -97,7 +97,7 @@ int			ft_set_name_comment(t_tokens *tokens, t_header *head)
 			(name == 0 || comment == 0))
 			ft_print_error(tokens->tokenlst[i]->lexem);
 		else if (tokens->tokenlst[i]->lexem->type == COMMAND)
-			ft_check_command(tokens->tokenlist[i], head, &name, &comment);
+			ft_check_command(tokens->tokenlst[i], head, &name, &comment);
 		else if (tokens->tokenlst[i]->lexem->type != COMMAND && name == 1 &&
 		comment == 1)
 			break ;
