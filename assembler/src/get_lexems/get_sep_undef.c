@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_sep_undef.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:57:34 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/27 16:31:45 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
 t_lexem		*get_separator(char *str, t_cursor *cur)
 {

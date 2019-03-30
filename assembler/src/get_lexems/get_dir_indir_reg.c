@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_dir_indir_reg.c                                :+:      :+:    :+:   */
+/*   define_lexems.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:13:44 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 15:46:59 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 18:25:55 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
-t_lexem   *get_indir_num(char *str, t_cursor *cur)
+t_lexem		*get_indir_num(char *str, t_cursor *cur)
 {
-	t_lexem     *res;
-	int         j;
-	int         len;
+	t_lexem		*res;
+	int			j;
+	int			len;
 
 	j = cur->pos + 1;
 	res = (t_lexem *)malloc(sizeof(t_lexem));
@@ -38,11 +38,11 @@ t_lexem   *get_indir_num(char *str, t_cursor *cur)
 	return (res);
 }
 
-t_lexem   *get_register(char *str, t_cursor *cur)
+t_lexem		*get_register(char *str, t_cursor *cur)
 {
-	t_lexem     *res;
-	int         j;
-	int         len;
+	t_lexem		*res;
+	int			j;
+	int			len;
 
 	j = cur->pos + 1;
 	res = (t_lexem *)malloc(sizeof(t_lexem));
@@ -64,11 +64,11 @@ t_lexem   *get_register(char *str, t_cursor *cur)
 	return (res);
 }
 
-t_lexem   *get_direct(char *str, t_cursor *cur)
+t_lexem		*get_direct(char *str, t_cursor *cur)
 {
-	t_lexem     *res;
-	int         j;
-	int         len;
+	t_lexem		*res;
+	int			j;
+	int			len;
 
 	j = cur->pos + 1;
 	if (str[j] == ':')
