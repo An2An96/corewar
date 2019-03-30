@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 t_lexem			*get_label(char *str, t_cursor *cur, int len)
 {
