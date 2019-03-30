@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 t_lexem			*check_label_or_undef(char *str, t_cursor *cur)
 {
