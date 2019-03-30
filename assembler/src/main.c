@@ -71,33 +71,6 @@ static t_lines	*get_and_check_lines(int argc, char **argv, int *fd)
 	return (lines);
 }
 
-static void		delete_comments(t_tokens **tokens)
-{
-	int			i;
-	t_lex_list	*tmp;
-	int 		count;
-
-	i = 0;
-	while (i < (*tokens)->count)
-	{
-		tmp = (*tokens)->tokenlst[i];
-		count = 0;
-		while (tmp)
-		{
-			if (tmp->lexem->type == COMMENT)
-			{
-				if (count == 0)
-					delete_lex_list(&((*tokens)->tokenlst[i]));
-				else
-					delete_elem_lex_list(&((*tokens)->tokenlst[i]), tmp);
-			}
-			tmp = tmp->next;
-			count++;
-		}
-		i++;
-	}
-}
-
 int				main(int argc, char *argv[])
 {
 	int			fd;
@@ -111,7 +84,7 @@ int				main(int argc, char *argv[])
 	lines = get_and_check_lines(argc, argv, &fd);
 	tokens = get_tokens(lines);
 	delete_comments(&tokens);
-	delete_lines(&lines);
+	delete_lines(lines);
 	get_lex_errors(tokens, &errors);
 	if (errors)
 		print_errors_and_exit(argv[1], &tokens, &errors);
