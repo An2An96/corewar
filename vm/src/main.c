@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 12:59:07 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/30 15:57:33 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:27:17 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ static void	show_usage(void)
 		"Show operations (Params are NOT litteral ...)\n", "- 4");
 	ft_printf("%20s : Show deaths\n", "- 8");
 	ft_printf("%20s : Show PC movements (Except for jumps)\n", "- 16");
+	ft_printf("\t%-10s : "
+		"Enable graphical visualization\n",
+		"-s");
 }
 
 int			main(int argc, char **argv)
