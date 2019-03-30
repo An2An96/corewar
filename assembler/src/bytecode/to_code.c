@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 17:51:36 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/30 14:19:54 by rtroll           ###   ########.fr       */
+/*   Updated: 2019/03/30 23:35:02 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void			ft_to_code(t_tokens *tokens, char *name)
 	file_name = ft_correct_name(name);
 	fd = open(file_name, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
 	ft_write_to_file(fd, &head, program);
+	ft_printf("Writing output program to %s\n", file_name);
 	ft_strdel(&program);
 	ft_strdel(&file_name);
 	close(fd);
