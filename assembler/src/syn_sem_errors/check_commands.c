@@ -1,87 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_commands.c                                   :+:      :+:    :+:   */
+/*   check_program_structure.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 18:09:28 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 16:45:07 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 19:06:01 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
-static int		count_command_definitions(t_tokens *tokens, char *str)
+static void		not_valid_count_commands(t_tokens *tokens, t_errors **err,
+									int name_count, int comment_count)
 {
-	int			i;
-	int			count;
-	t_lex_list	*tmp;
-
-	i = 0;
-	count = 0;
-	while (i < tokens->count)
-	{
-		tmp = tokens->tokenlst[i];
-		while (tmp)
-		{
-			if (tmp->lexem->type == COMMAND &&
-				(ft_strcmp(tmp->lexem->value, str) == 0))
-				count++;
-			tmp = tmp->next;
-		}
-		i++;
-	}
-	return (count);
-}
-
-static t_lexem	*find_redef_command(t_tokens *tokens, char *str)
-{
-	int			i;
-	int			count;
-	t_lex_list	*tmp;
-
-	count = 0;
-	i = -1;
-	while (++i < tokens->count)
-	{
-		tmp = tokens->tokenlst[i];
-		while (tmp)
-		{
-			if (tmp->lexem->type == COMMAND &&
-				(ft_strcmp(tmp->lexem->value, str) == 0))
-			{
-				if (count++)
-					return (tmp->lexem);
-			}
-			tmp = tmp->next;
-		}
-	}
-	return (NULL);
-}
-
-void			not_valid_count_commands(
-	t_tokens *tokens, t_errors **err, int name_count, int comment_count)
-{
-	t_lexem	*lexem;
-
 	if (name_count == 0)
 		push_back_errors_list(err, SEMANTIC, COMMAND_NAME_NOT_FOUND, NULL);
 	else if (name_count > 1)
-	{
-		lexem = find_redef_command(tokens, "name");
-		push_back_errors_list(err, SEMANTIC, COMMAND_REDEFINITION, lexem);
-	}
+		find_fisrt_redef_command(tokens, "name", err);
 	if (comment_count == 0)
 		push_back_errors_list(err, SEMANTIC, COMMAND_COMMENT_NOT_FOUND, NULL);
 	else if (comment_count > 1)
-	{
-		lexem = find_redef_command(tokens, "comment");
-		push_back_errors_list(err, SEMANTIC, COMMAND_REDEFINITION, lexem);
-	}
+		find_fisrt_redef_command(tokens, "comment", err);
 }
 
-void			check_command_size(t_lexem *lexem, t_errors **error)
+static void		check_command_size(t_lexem *lexem, t_errors **error)
 {
 	if (ft_strcmp(lexem->value, "name"))
 		if (ft_strlen(lexem->value) >= PROG_NAME_LENGTH)
@@ -91,26 +35,24 @@ void			check_command_size(t_lexem *lexem, t_errors **error)
 			push_back_errors_list(error, SEMANTIC, EXCESS_SIZE_COMMAND, lexem);
 }
 
-void			find_command_line_errors(
-	t_lex_list *lexem_lst, t_errors **error)
+static void		find_command_line_errors(t_lex_list *lexem_lst,
+										t_errors **error)
 {
 	t_lex_list	*head;
 
 	head = lexem_lst;
 	if (!lexem_lst->next)
-	{
-		push_back_errors_list(error, SEMANTIC, NO_ARGUMENTS, lexem_lst->lexem);
-		return ;
-	}
+		return (push_back_errors_list(error, SEMANTIC,
+				NO_ARGUMENTS, lexem_lst->lexem));
 	lexem_lst = lexem_lst->next;
 	if (lexem_lst->lexem->type != STRING)
-		push_back_errors_list(error,
-			SEMANTIC, INVALID_TYPE_OF_ARGUMENT, lexem_lst->lexem);
+		push_back_errors_list(error, SEMANTIC,
+				INVALID_TYPE_OF_ARGUMENT, lexem_lst->lexem);
 	else
 		check_command_size(lexem_lst->lexem, error);
 	if (lexem_lst->next)
-		return (push_back_errors_list(error,
-			SEMANTIC, INVALID_NUMBER_OF_ARGUMENT, head->lexem));
+		return (push_back_errors_list(error, SEMANTIC,
+				INVALID_NUMBER_OF_ARGUMENT, head->lexem));
 }
 
 void			check_commands(t_tokens *tokens, t_errors **err)
@@ -123,7 +65,8 @@ void			check_commands(t_tokens *tokens, t_errors **err)
 	name_count = count_command_definitions(tokens, "name");
 	comment_count = count_command_definitions(tokens, "comment");
 	i = 0;
-	if (name_count != 1 || comment_count != 1)
+	if (name_count == 0 || name_count > 1 ||
+		comment_count == 0 || comment_count > 1)
 	{
 		not_valid_count_commands(tokens, err, name_count, comment_count);
 		return ;

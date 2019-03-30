@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_code.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 19:43:16 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/29 16:49:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 18:30:51 by vrestles         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "asm.h"
+#include "../inc/asm.h"
 
 static int		find_count_instructions(t_lex_list *lst)
 {
@@ -40,7 +40,7 @@ static void		check_start_instruction(t_lex_list *lst, t_errors **err)
 	if (find_count_instructions(lst->next) > 0)
 	{
 		push_back_errors_list(err,
-			SYNTACTIC, EXCESS_INSTUCTION_IN_LINE, lst->lexem);
+				SYNTACTIC, EXCESS_INSTUCTION_IN_LINE, lst->lexem);
 		return ;
 	}
 	else
@@ -53,10 +53,20 @@ static void		check_start_label(t_lex_list *lst, t_errors **err)
 		return ;
 	lst = lst->next;
 	if (lst->lexem->type != INSTRUCT)
-		push_back_errors_list(err,
-			SEMANTIC, INVALID_LEXEM_SEQUENCE, lst->lexem);
+		push_back_errors_list(err, SEMANTIC,
+				INVALID_LEXEM_SEQUENCE, lst->lexem);
 	else
 		check_start_instruction(lst, err);
+}
+
+static void		check_all_about_labels(t_tokens *tokens, t_errors **err)
+{
+	t_lab_list	*labels;
+
+	labels = generate_lab_list(tokens);
+	find_duplicate_labes(labels, err);
+	find_undeclared_labels(tokens, labels, err);
+	delete_lab_list(&labels);
 }
 
 void			check_code(t_tokens *tokens, t_errors **err)
@@ -79,9 +89,10 @@ void			check_code(t_tokens *tokens, t_errors **err)
 			else if (tmp->lexem->type == INSTRUCT)
 				check_start_instruction(tmp, err);
 			else
-				push_back_errors_list(err,
-					SEMANTIC, INVALID_LEXEM_SEQUENCE, tmp->lexem);
+				push_back_errors_list(err, SEMANTIC,
+						INVALID_LEXEM_SEQUENCE, tmp->lexem);
 		}
 		i++;
 	}
+	check_all_about_labels(tokens, err);
 }
