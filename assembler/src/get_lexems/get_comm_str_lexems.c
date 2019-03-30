@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int	check_char(t_lines *lines, t_cursor *cur, t_lexem *res, int j)
 {
