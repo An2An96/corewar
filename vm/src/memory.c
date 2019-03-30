@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/22 18:23:15 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 08:59:19 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:08:06 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,20 @@ int	set_mem_value(t_env *env, t_carriage *carriage, int offset, int value)
 
 	mempos = calc_mem_addr(carriage->position, offset, true);
 	env->field[mempos] = (unsigned char)((value) & 0xFF);
-	mempos++;
-	env->field[mempos % MEM_SIZE] = (unsigned char)((value >> 8) & 0xFF);
-	mempos++;
-	env->field[mempos % MEM_SIZE] = (unsigned char)((value >> 16) & 0xFF);
-	mempos++;
-	env->field[mempos % MEM_SIZE] = (unsigned char)(value >> 24);
-	mempos++;
+	if (env->visualise)
+		draw_set_mem_cell_color(env, mempos, carriage->color);
+	mempos = (mempos + 1) % MEM_SIZE;
+	env->field[mempos] = (unsigned char)((value >> 8) & 0xFF);
+	if (env->visualise)
+		draw_set_mem_cell_color(env, mempos, carriage->color);
+	mempos = (mempos + 1) % MEM_SIZE;
+	env->field[mempos] = (unsigned char)((value >> 16) & 0xFF);
+	if (env->visualise)
+		draw_set_mem_cell_color(env, mempos, carriage->color);
+	mempos = (mempos + 1) % MEM_SIZE;
+	env->field[mempos] = (unsigned char)(value >> 24);
+	if (env->visualise)
+		draw_set_mem_cell_color(env, mempos, carriage->color);
+	mempos = (mempos + 1) % MEM_SIZE;
 	return (mempos - 4);
 }

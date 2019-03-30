@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/29 19:13:21 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:07:14 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 
 # include "libft.h"
 # include "ft_printf.h"
+# include "draw.h"
 
 /*
 **	Main header by subject
@@ -34,6 +35,17 @@
 **	Macroses
 */
 
+# define WIN_MARGIN			10
+# define CELL_SIZE			4
+# define CELL_MARGIN		1
+# define WIN_HEIGHT			(CELL_SIZE + CELL_MARGIN * 2) * 64 + WIN_MARGIN * 2
+# define WIN_WIDTH			WIN_HEIGHT + 200
+
+# define CHAMP1_COLOR		0x00FF00
+# define CHAMP2_COLOR		0x0000FF
+# define CHAMP3_COLOR		0xFF0000
+# define CHAMP4_COLOR		0xFFFF00
+
 # define COLOR_USAGE		"\x1b[32m"
 # define COLOR_ERROR		"\x1b[31m"
 # define COLOR_NONE			"\x1b[39m"
@@ -44,7 +56,7 @@
 # define SHOW_DEATHS		8
 # define SHOW_PC_MOVES		16
 
-# define VERB_LEVEL(level)	(env->acount_cycles >= env->start_show_verb && env->verb_levels & level)
+# define VERB_LEVEL(level)	(env->verb_levels & level)
 
 # define DIFF_ENDIAN		(LITTLE_ENDIAN == BYTE_ORDER)
 
@@ -79,6 +91,7 @@ typedef struct	s_carriage
 	int				cycles_to_execute;
 	unsigned int	position;
 	unsigned int	registers[REG_NUMBER];
+	int				color;
 }				t_carriage;
 
 /*
@@ -109,7 +122,7 @@ typedef struct	s_env
 {
 	unsigned char	field[MEM_SIZE];
 
-	bool			use_ncurses;
+	bool			visualise;
 	bool			show_aff;
 	int8_t			verb_levels;
 	int				dump_nbr_cycle;
@@ -129,12 +142,13 @@ typedef struct	s_env
 	int				acount_cycles;
 	int				acount_checks;
 
-
-	//debug
-	int				start_show_verb;
+	t_mlx			*mlx;
+	t_img			*mem_line[64];
 }				t_env;
 
 typedef	int	(*t_op_func)(t_env *env, t_carriage *carriage, t_arg *args);
+
+int				g_carriage_colors[4];
 
 t_op			*get_op(char op_code);
 
@@ -213,6 +227,7 @@ int				op_aff(t_env *env, t_carriage *carriage, t_arg *args);
 */
 
 void			swap_bytes(void *memory, int size);
+int				cw_atoi(const char *str, const char *error);
 
 /*
 **	Print
@@ -222,8 +237,17 @@ int				print_move(t_env *env, int curpos, int len);
 void			print_players(t_env *env);
 void			print_memory(const void *memory, int size);
 
-int				ncurses_init(void);
-int				ncurses_print_env(t_env *env);
-int				ncurses_destroy(void);
+/*
+**	Visualise
+*/
+
+void			draw_init(t_env *env);
+int				draw_loop(t_env *env);
+void			draw_carriage(t_env *env, int cell, int color);
+void			draw_move_carriage(
+	t_env *env, int old_cell, int new_cell, int color);
+void			draw_set_mem_cell_color(t_env *env, int cell, int color);
+void			draw_info(t_env *env, int *offset);
+void			draw_players(t_env *env, int *offset);
 
 #endif

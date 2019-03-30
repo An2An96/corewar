@@ -6,23 +6,23 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/30 11:59:24 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/30 15:27:08 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 16:09:17 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 
-int		g_carriage_colors[4] = {
+int			g_carriage_colors[4] = {
 	CHAMP1_COLOR, CHAMP2_COLOR, CHAMP3_COLOR, CHAMP4_COLOR
 };
 
-int		mlx_close(void)
+static int	mlx_close(void)
 {
 	exit(0);
 	return (1);
 }
 
-void	draw_render(t_env *env)
+static void	draw_render(t_env *env)
 {
 	int		i;
 	int		pos_offset;
@@ -43,7 +43,7 @@ void	draw_render(t_env *env)
 	draw_players(env, &pos_offset);
 }
 
-void	draw_init_mem_field(t_env *env)
+static void	draw_init_mem_field(t_env *env)
 {
 	int i;
 
@@ -63,7 +63,7 @@ void	draw_init_mem_field(t_env *env)
 	}
 }
 
-void	draw_init(t_env *env)
+void		draw_init(t_env *env)
 {
 	if (env->visualise)
 	{
@@ -74,7 +74,7 @@ void	draw_init(t_env *env)
 	}
 }
 
-int		draw_loop(t_env *env)
+int			draw_loop(t_env *env)
 {
 	if (vm_check_die(env))
 	{

@@ -8,13 +8,13 @@ SRC_DIR = ./src
 OBJ_DIR = ./obj
 INC_DIR = ./includes
 
-LIBS = libft libftprintf
+LIBS = libft libftprintf libdraw
 
 SRCS =	main.c				read_args.c			read_champion.c		\
 		vm_core.c			vm_loop.c			vm_do_op.c			\
 		carriage.c			memory.c			registers.c			\
 		vm_args.c			op.c				print.c				\
-		ncurses_print.c		swap_bytes.c							\
+		draw/core.c			draw/funcs.c		utils.c				\
 		operations/live.c	operations/ld.c		operations/st.c		\
 		operations/add.c	operations/sub.c	operations/and.c	\
 		operations/or.c		operations/xor.c	operations/zjmp.c	\
@@ -37,7 +37,7 @@ ifeq ($(DEBUG),true)
 endif
 
 FLAGS += $(foreach lib,$(LIBS),-L$(LIB_DIR)/$(lib) -l$(lib:lib%=%))
-FLAGS += -lncurses
+FLAGS += -framework OpenGL -framework AppKit
 
 ############################		  Rules 		############################
 
@@ -49,6 +49,7 @@ $(LIBS):
 $(OBJ_DIR):
 	@mkdir -p $@
 	@mkdir -p $@/operations
+	@mkdir -p $@/draw
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCS) | $(OBJ_DIR)
 	@gcc $(OBJ_FLAGS) -c $< -o $@
