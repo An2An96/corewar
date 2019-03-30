@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_inst_label_undef_error.c                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrestles <vrestles@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 17:43:43 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 17:14:47 by vrestles         ###   ########.fr       */
+/*   Updated: 2019/03/30 22:43:49 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int		check_error_indir_label(char *value)
 
 int		check_error_undef(char *value)
 {
+	(void)value;
 	return (NON_EXISTENT_LEXEM);
 }

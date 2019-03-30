@@ -6,13 +6,13 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 21:25:51 by vrestles          #+#    #+#             */
-/*   Updated: 2019/03/30 20:59:23 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 22:44:38 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-static int	get_bytmap_offset(t_lex_list *lexem_lst, t_errors **error)
+static int	get_bytmap_offset(t_lex_list *lexem_lst)
 {
 	if (lexem_lst->lexem->type == REG)
 		return (0);
@@ -30,7 +30,7 @@ static int	check_instruct_args(
 {
 	int offset;
 
-	if ((offset = get_bytmap_offset(lexem_lst, error)) == -1)
+	if ((offset = get_bytmap_offset(lexem_lst)) == -1)
 	{
 		push_back_errors_list(error, SEMANTIC,
 				INVALID_TYPE_OF_ARGUMENT, lexem_lst->lexem);

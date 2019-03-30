@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:04:29 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/30 14:51:19 by rtroll           ###   ########.fr       */
+/*   Updated: 2019/03/30 22:45:43 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_add(t_lex_list *args, unsigned int *bytes, t_list_label **labels,
 	int	i;
 	int	arg[3];
 
+	(void)labels;
 	i = 0;
 	while (i < 3)
 	{
@@ -42,6 +43,7 @@ void	ft_sub(t_lex_list *args, unsigned int *bytes, t_list_label **labels,
 	int	i;
 	int	arg[3];
 
+	(void)labels;
 	i = 0;
 	while (i < 3)
 	{
