@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 t_lexem		*get_indir_num(char *str, t_cursor *cur)
 {
