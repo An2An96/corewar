@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 18:39:51 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/29 19:06:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:51:19 by rtroll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_label		*ft_find_label(t_list_label *labels, char *name)
 	return (NULL);
 }
 
-void	ft_create_label(t_list_label **labels, char *name, int byte)
+void		ft_create_label(t_list_label **labels, char *name, int byte)
 {
 	t_list_label *tmp;
 
@@ -39,7 +39,7 @@ void	ft_create_label(t_list_label **labels, char *name, int byte)
 	(*labels)->label = (t_label*)malloc(sizeof(t_label));
 	(*labels)->label->name = ft_strdup(name);
 	(*labels)->label->start_byte = byte;
-	(*labels)->label->indexs_to_substitude = NULL;
+	(*labels)->label->idxs = NULL;
 }
 
 static void	ft_create_substidue(t_asm_list **subs, int size, int index)
@@ -53,7 +53,8 @@ static void	ft_create_substidue(t_asm_list **subs, int size, int index)
 	(*subs)->size = size;
 }
 
-t_label * ft_add_to_substitude(t_list_label **labels, int size, unsigned int index, char *name)
+t_label		*ft_add_2_sb(t_list_label **labels, int size,
+							unsigned int index, char *name)
 {
 	t_label		*label;
 
@@ -61,10 +62,10 @@ t_label * ft_add_to_substitude(t_list_label **labels, int size, unsigned int ind
 	{
 		ft_create_label(labels, name, -1);
 		label = ft_find_label(*labels, name);
-		ft_create_substidue(&(label->indexs_to_substitude), size, index);
+		ft_create_substidue(&(label->idxs), size, index);
 	}
 	else
-		ft_create_substidue(&(label->indexs_to_substitude), size, index);
+		ft_create_substidue(&(label->idxs), size, index);
 	return (label);
 }
 
@@ -84,5 +85,4 @@ void		ft_add_label(t_list_label **labels, char *name, unsigned int byte)
 	}
 	else
 		ft_create_label(labels, name, byte);
-
 }

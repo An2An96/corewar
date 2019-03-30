@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 17:23:39 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/29 19:06:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:37:39 by rtroll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,9 @@ static void	ft_check_name(t_header *head, t_lex_list *list, int line, int *name)
 		ft_print_error(list->next->next->lexem);
 }
 
-static void	ft_check_command(t_tokens *tokens, t_header *head, int line, int *name, int *comment)
+static void	ft_check_command(t_lex_list *tmp, t_header *head,
+		int *name, int *comment)
 {
-	t_lex_list *tmp;
-
-	tmp = tokens->tokenlst[line];
 	if (ft_strcmp(tmp->lexem->value, "name") == 0 && *name == 1)
 		ft_print_error(tmp->lexem);
 	if (ft_strcmp(tmp->lexem->value, "comment") == 0 && *comment == 1)
@@ -77,14 +75,13 @@ static void	ft_check_command(t_tokens *tokens, t_header *head, int line, int *na
 		ft_check_name(head, tmp, line, name);
 	else if (ft_strcmp(tmp->lexem->value, "comment") == 0)
 		ft_check_comment(head, tmp, comment);
-	//todo: могут ли быть в токене другие команды? если да, то надо вывести здесь ошибку
 }
 
-int 		ft_set_name_comment(t_tokens *tokens, t_header *head)
+int			ft_set_name_comment(t_tokens *tokens, t_header *head)
 {
-	int			i;
-	int 		name;
-	int 		comment;
+	int	i;
+	int	name;
+	int	comment;
 
 	name = 0;
 	comment = 0;
@@ -93,13 +90,16 @@ int 		ft_set_name_comment(t_tokens *tokens, t_header *head)
 	i = 0;
 	while (i < tokens->count)
 	{
-		if (tokens->tokenlst[i] == NULL || tokens->tokenlst[i]->lexem->type == COMMENT)
+		if (tokens->tokenlst[i] == NULL ||
+			tokens->tokenlst[i]->lexem->type == COMMENT)
 			;
-		else if (tokens->tokenlst[i]->lexem->type != COMMAND && (name == 0 || comment == 0))
+		else if (tokens->tokenlst[i]->lexem->type != COMMAND &&
+			(name == 0 || comment == 0))
 			ft_print_error(tokens->tokenlst[i]->lexem);
 		else if (tokens->tokenlst[i]->lexem->type == COMMAND)
-			ft_check_command(tokens, head, i, &name, &comment);
-		else if (tokens->tokenlst[i]->lexem->type != COMMAND && name == 1 && comment == 1)
+			ft_check_command(tokens->tokenlist[i], head, &name, &comment);
+		else if (tokens->tokenlst[i]->lexem->type != COMMAND && name == 1 &&
+		comment == 1)
 			break ;
 		i++;
 	}

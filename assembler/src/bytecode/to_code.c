@@ -6,31 +6,31 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/23 17:51:36 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/29 19:10:06 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:19:54 by rtroll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-char     *ft_get_extension(char *str, char c)
+char			*ft_get_extension(char *str, char c)
 {
-    int len;
+	int	len;
 
-    len = (int)ft_strlen(str);
-    str += len - 1;
-    while (*str)
-    {
-        if (*str == c)
-            return str;
-        str--;
-    }
-    return str;
+	len = (int)ft_strlen(str);
+	str += len - 1;
+	while (*str)
+	{
+		if (*str == c)
+			return (str);
+		str--;
+	}
+	return (str);
 }
 
-static char	*ft_correct_name(char *name)
+static char		*ft_correct_name(char *name)
 {
-	size_t size;
-	char 	*cor;
+	size_t	size;
+	char	*cor;
 
 	size = ft_strlen(name);
 	cor = ft_strnew(size + 2);
@@ -42,8 +42,8 @@ static char	*ft_correct_name(char *name)
 static void		ft_write_to_file(int fd, t_header *head, char *program)
 {
 	char	*magic;
-	char 	*size;
-	char 	*null;
+	char	*size;
+	char	*null;
 
 	null = ft_print_bytes(0, 4);
 	magic = ft_print_bytes(head->magic, 4);
@@ -60,13 +60,13 @@ static void		ft_write_to_file(int fd, t_header *head, char *program)
 	ft_strdel(&null);
 }
 
-void 			ft_to_code(t_tokens *tokens, char *name)
+void			ft_to_code(t_tokens *tokens, char *name)
 {
 	t_header	head;
-	int 		line_program;
-	char 		*program;
-	char 		*file_name;
-	int 		fd;
+	int			line_program;
+	char		*program;
+	char		*file_name;
+	int			fd;
 
 	program = NULL;
 	head.magic = COREWAR_EXEC_MAGIC;

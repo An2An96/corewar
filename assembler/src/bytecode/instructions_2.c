@@ -6,16 +6,17 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/27 20:04:29 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/29 19:06:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:51:19 by rtroll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-void	ft_add(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program)
+void	ft_add(t_lex_list *args, unsigned int *bytes, t_list_label **labels,
+		char **program)
 {
-	int 	i;
-	int 	arg[3];
+	int	i;
+	int	arg[3];
 
 	i = 0;
 	while (i < 3)
@@ -35,10 +36,11 @@ void	ft_add(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char *
 	}
 }
 
-void	ft_sub(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program)
+void	ft_sub(t_lex_list *args, unsigned int *bytes, t_list_label **labels,
+		char **program)
 {
-	int 	i;
-	int 	arg[3];
+	int	i;
+	int	arg[3];
 
 	i = 0;
 	while (i < 3)
@@ -58,10 +60,11 @@ void	ft_sub(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char *
 	}
 }
 
-void	ft_st(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program)
+void	ft_st(t_lex_list *args, unsigned int *bytes, t_list_label **labels,
+		char **program)
 {
 	t_lexem	*arg[2];
-	int 	start;
+	int		start;
 
 	start = *bytes;
 	arg[0] = args->lexem;
@@ -74,7 +77,8 @@ void	ft_st(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **
 	ft_write_program(program, bytes, 1, ft_atoi(arg[0]->value));
 	if (arg[1]->type == INDIR_LABEL)
 	{
-		ft_add_to_substitude(labels, 2, *bytes, arg[1]->value)->indexs_to_substitude->start = start;
+		ft_add_2_sb(labels, 2, *bytes,
+					arg[1]->value)->idxs->start = start;
 		ft_write_program(program, bytes, 2, 0xcccc);
 	}
 	else if (arg[1]->type == INDIR)

@@ -6,15 +6,17 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/24 20:27:14 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/29 19:10:45 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:51:19 by rtroll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "asm.h"
 
-void			(*g_instruct[16])(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program);
+void			(*g_instruct[16])(t_lex_list *args, unsigned int *bytes,
+		t_list_label **labels, char **program);
 
-static void		ft_check_instruct(t_lex_list *list, unsigned int *bytes, t_list_label **labels, char **program)
+static void		ft_check_instruct(t_lex_list *list, unsigned int *bytes,
+		t_list_label **labels, char **program)
 {
 	int index;
 
@@ -34,14 +36,14 @@ static void		ft_check_instruct(t_lex_list *list, unsigned int *bytes, t_list_lab
 	g_instruct[13] = ft_lldi;
 	g_instruct[14] = ft_lfork;
 	g_instruct[15] = ft_aff;
-
 	index = ft_index(list->lexem->value);
 	if (index == -1)
 		ft_print_error(list->lexem);
 	g_instruct[index](list->next, bytes, labels, program);
 }
 
-static void		ft_check_label(t_lex_list *list, unsigned int *bytes, t_list_label **labels, char **program)
+static void		ft_check_label(t_lex_list *list, unsigned int *bytes,
+		t_list_label **labels, char **program)
 {
 	if (list->next == NULL || list->next->lexem->type == COMMENT)
 		ft_add_label(labels, list->lexem->value, *bytes);
@@ -57,11 +59,11 @@ static void		ft_check_label(t_lex_list *list, unsigned int *bytes, t_list_label 
 static void		ft_substitute_labels(t_list_label *labels, char *program)
 {
 	t_asm_list	*tmp;
-	char 	*sub;
+	char		*sub;
 
 	while (labels != NULL)
 	{
-		tmp = labels->label->indexs_to_substitude;
+		tmp = labels->label->idxs;
 		while (tmp != NULL)
 		{
 			if (labels->label->start_byte == -1)
@@ -70,7 +72,8 @@ static void		ft_substitute_labels(t_list_label *labels, char *program)
 				ft_putendl_fd(labels->label->name, 2);
 				exit(1);
 			}
-			sub = ft_print_bytes(labels->label->start_byte - tmp->start, tmp->size);
+			sub = ft_print_bytes(labels->label->start_byte - tmp->start,
+					tmp->size);
 			ft_memcpy(program + tmp->index, sub, tmp->size);
 			ft_strdel(&sub);
 			tmp = tmp->next;
@@ -79,13 +82,13 @@ static void		ft_substitute_labels(t_list_label *labels, char *program)
 	}
 }
 
-static void	ft_delete_lab(t_label *label)
+static void		ft_delete_lab(t_label *label)
 {
 	t_asm_list	*list;
 	t_asm_list	*del;
 
 	ft_strdel(&label->name);
-	list = label->indexs_to_substitude;
+	list = label->idxs;
 	while (list != NULL)
 	{
 		del = list;
@@ -93,19 +96,6 @@ static void	ft_delete_lab(t_label *label)
 		free(del);
 	}
 	free(label);
-}
-
-void		ft_delete_labels(t_list_label **labels)
-{
-	t_list_label	*del;
-
-	while (*labels != NULL)
-	{
-		del = *labels;
-		*labels = (*labels)->next;
-		ft_delete_lab(del->label);
-		free(del);
-	}
 }
 
 unsigned int	ft_set_program(t_tokens *tokens, char **program, int start)
@@ -119,7 +109,8 @@ unsigned int	ft_set_program(t_tokens *tokens, char **program, int start)
 	i = start;
 	while (i < tokens->count)
 	{
-		if (tokens->tokenlst[i] == NULL || tokens->tokenlst[i]->lexem->type == COMMENT)
+		if (tokens->tokenlst[i] == NULL ||
+		tokens->tokenlst[i]->lexem->type == COMMENT)
 			;
 		else if (tokens->tokenlst[i]->lexem->type == LABEL)
 			ft_check_label(tokens->tokenlst[i], &bytes, &labels, program);

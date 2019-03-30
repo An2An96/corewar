@@ -6,7 +6,7 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 16:20:59 by rtroll            #+#    #+#             */
-/*   Updated: 2019/03/29 19:06:37 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 14:51:19 by rtroll           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static void	ft_args(t_lexem **arg, t_lex_list *args)
 	}
 }
 
-static void	ft_write_normal(char **program, unsigned int *bytes, t_lexem **arg, int i)
+static void	ft_write_normal(char **program, unsigned int *bytes,
+		t_lexem **arg, int i)
 {
 	if (arg[i]->type == DIR)
 		ft_write_program(program, bytes, 4, ft_atoi(arg[i]->value));
@@ -59,31 +60,31 @@ static void	ft_write_normal(char **program, unsigned int *bytes, t_lexem **arg, 
 		ft_write_program(program, bytes, 1, ft_atoi(arg[i]->value));
 }
 
-void		ft_xor(t_lex_list *args, unsigned int *bytes, t_list_label **labels, char **program)
+void		ft_xor(t_lex_list *args, unsigned int *bytes,
+		t_list_label **labels, char **program)
 {
 	t_lexem	*arg[3];
-	int 	i;
-	int 	start;
+	int		i;
+	int		start;
 
 	start = *bytes;
 	ft_args(arg, args);
 	ft_write_program(program, bytes, 1, 0x08);
 	ft_write_program(program, bytes, 1, ft_arg_code(arg));
-	i = 0;
-	while (i < 3)
+	i = -1;
+	while (++i < 3)
 	{
 		if (arg[i]->type == DIR_LABEL)
 		{
-			ft_add_to_substitude(labels, 4, *bytes, arg[i]->value)->indexs_to_substitude->start = start;
+			ft_add_2_sb(labels, 4, *bytes, arg[i]->value)->idxs->start = start;
 			ft_write_program(program, bytes, 4, 0xcccccccc);
 		}
 		else if (arg[i]->type == INDIR_LABEL)
 		{
-			ft_add_to_substitude(labels, 2, *bytes, arg[i]->value)->indexs_to_substitude->start = start;
+			ft_add_2_sb(labels, 2, *bytes, arg[i]->value)->idxs->start = start;
 			ft_write_program(program, bytes, 2, 0xcccc);
 		}
 		else
 			ft_write_normal(program, bytes, arg, i);
-		i++;
 	}
 }

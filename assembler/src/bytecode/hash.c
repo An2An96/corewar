@@ -27,11 +27,11 @@ static char	ft_hash_func(char *name)
 	return ((char)(sum % 127));
 }
 
-int 	ft_index(char *name)
+int			ft_index(char *name)
 {
 	char	*hash_table;
-	char 	value;
-	int 	i;
+	char	value;
+	int		i;
 
 	hash_table = ft_strdup("3Qh+L5b[D;R6>(\"/");
 	i = 0;

@@ -12,7 +12,7 @@
 
 #include "asm.h"
 
-void ft_print_error(t_lexem *lexem)
+void	ft_print_error(t_lexem *lexem)
 {
 	ft_putstr_fd("Error at [", 2);
 	ft_putnbr_fd(lexem->line, 2);
@@ -42,7 +42,8 @@ char	*ft_print_bytes(int number, unsigned int bytes)
 	return (result);
 }
 
-void	ft_write_program(char **program, unsigned int *bytes, unsigned int size, int code)
+void	ft_write_program(char **program, unsigned int *bytes,
+		unsigned int size, int code)
 {
 	char	*tmp;
 	int		i;
