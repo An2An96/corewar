@@ -10,21 +10,45 @@ INC_DIR = ./includes
 
 LIBS = libft libftprintf
 
-SRCS =	delete_commas.c	delete_structures.c	file_stuff.c	list_stuff.c \
-		main.c	op.c	print_errors.c	tokens_stuff.c \
-		get_lexems/get_comm_str_lexems.c	get_lexems/get_dir_indir_reg.c \
-		get_lexems/get_instruct_label.c		get_lexems/get_sep_undef.c \
-		get_lexems/help_functions.c \
-		lex_errors/check_comm_str_error.c	lex_errors/check_inst_label_undef_error.c \
-		lex_errors/check_lex_errors.c		lex_errors/check_lex_type.c \
-		lex_errors/check_num_reg_error.c \
-		syn_sem_errors/check_code.c			syn_sem_errors/check_commands.c \
-		syn_sem_errors/check_instructions.c	syn_sem_errors/check_syntactic_semantic_errors.c \
-		bytecode/and.c		bytecode/hash.c		bytecode/instructions.c \
-		bytecode/label.c	bytecode/ldi_lldi.c	bytecode/lld.c \
-		bytecode/name_comment.c		bytecode/sti.c		bytecode/xor.c \
-		bytecode/compiler.c			bytecode/instructions_2.c \
-		bytecode/ld.c				bytecode/print_bytes.c	bytecode/to_code.c
+SRCS =	main.c												\
+		op.c												\
+		print_errors.c										\
+		get_lexems/get_comm_str_lexems.c					\
+		get_lexems/get_dir_indir_reg.c						\
+		get_lexems/get_instruct_label.c						\
+		get_lexems/get_sep_undef.c							\
+		get_lexems/get_lex_help_functions.c					\
+		lex_errors/check_comm_str_error.c					\
+		lex_errors/check_inst_label_undef_error.c			\
+		lex_errors/check_lex_errors.c						\
+		lex_errors/check_lex_type.c							\
+		lex_errors/check_num_reg_error.c					\
+		syn_sem_errors/check_code.c							\
+		syn_sem_errors/check_instructions.c					\
+		syn_sem_errors/list_labels_stuff.c					\
+		syn_sem_errors/check_com_help_functions.c			\
+		syn_sem_errors/check_labels.c						\
+		syn_sem_errors/check_commands.c						\
+		syn_sem_errors/check_syntactic_semantic_errors.c	\
+		utils/delete_1.c									\
+		utils/delete_2.c									\
+		utils/file_stuff.c									\
+		utils/list_stuff.c									\
+		utils/tokens_stuff.c								\
+		bytecode/and.c										\
+		bytecode/hash.c										\
+		bytecode/instructions.c								\
+		bytecode/label.c									\
+		bytecode/ldi_lldi.c									\
+		bytecode/lld.c										\
+		bytecode/name_comment.c								\
+		bytecode/sti.c										\
+		bytecode/xor.c										\
+		bytecode/compiler.c									\
+		bytecode/instructions_2.c							\
+		bytecode/ld.c										\
+		bytecode/print_bytes.c								\
+		bytecode/to_code.c
 OBJS = $(addprefix $(OBJ_DIR)/,$(SRCS:%.c=%.o))
 _INCS = asm.h
 INCS = $(addprefix $(INC_DIR)/,$(_INCS))
@@ -55,6 +79,7 @@ $(LIBS):
 
 $(OBJ_DIR):
 	@mkdir -p $@
+	@mkdir -p $@/utils
 	@mkdir -p $@/get_lexems
 	@mkdir -p $@/lex_errors
 	@mkdir -p $@/syn_sem_errors
@@ -78,5 +103,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all re clean fclean
-
-#	by rschuppe

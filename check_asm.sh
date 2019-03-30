@@ -1,7 +1,7 @@
 #!/bin/sh
 CHAMPION=$1
-MY_ASM=/Users/rtroll/Desktop/corewar_norme/asm
-ORIGINAL_ASM=/Users/rtroll/Desktop/resourses/vm_champs/asm
+MY_ASM=/Users/rschuppe/projects/corewar/asm
+ORIGINAL_ASM=/Users/rschuppe/Downloads/vm_champs/asm
 CHAMPION_COR=${CHAMPION%\.s}.cor
 mkdir -p tmp/
 $MY_ASM $CHAMPION
