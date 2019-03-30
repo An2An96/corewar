@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static void		not_valid_count_commands(t_tokens *tokens, t_errors **err,
 									int name_count, int comment_count)
