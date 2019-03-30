@@ -88,11 +88,12 @@ enum	e_semantic_errors
 	INVALID_NUMBER_OF_ARGUMENT,
 	INVALID_TYPE_OF_ARGUMENT,
 	INVALID_LEXEM_SEQUENCE,
-	INDECLARED_IDENTIFIER,
+	UNDECLARED_IDENTIFIER,
 	EXCESS_SIZE_COMMAND,
 	COMMAND_NAME_NOT_FOUND,
 	COMMAND_COMMENT_NOT_FOUND,
-	COMMAND_REDEFINITION
+	COMMAND_REDEFINITION,
+	CONSTANT_REDEFINITION
 };
 
 typedef struct			s_lines
@@ -135,6 +136,12 @@ typedef struct			s_errors
 	struct s_errors		*next;
 }						t_errors;
 
+typedef struct 			s_lab_list
+{
+	t_lexem				*lexem;
+	struct s_lab_list	*next;
+}						t_lab_list;
+
 typedef struct			s_asm_list
 {
 	unsigned int		index;
@@ -174,7 +181,7 @@ void					push_back_errors_list(t_errors **alst, int err,
 t_bool					is_label_char(char c);
 t_bool					is_undefined(char c);
 t_bool					is_digit_sign(char c);
-int						ft_isalpha_small(int c);
+int					ft_isalpha_small(int c);
 
 t_lexem					*get_command(char *str, t_cursor *cur);
 t_lexem					*get_string(t_lines *lines, t_cursor *cur);
@@ -216,6 +223,16 @@ void					delete_lex_errors(t_errors **del);
 void					delete_lexem(t_lexem **del);
 void					delete_elem_lex_list(t_lex_list **lst, t_lex_list *del);
 void					delete_lex_list(t_lex_list **head);
+void					delete_cursor(t_cursor **cur);
+void					delete_comments(t_tokens **tokens);
+
+int 					count_command_definitions(t_tokens *tokens, char *str);
+void					find_fisrt_redef_command(t_tokens *tokens, char *str, t_errors **err);
+void					push_back_lab_list(t_lab_list **alst, t_lexem *content);
+t_lab_list				*generate_lab_list(t_tokens *tokens);
+void					find_duplicate_labes(t_lab_list *lab, t_errors **err);
+void					find_undeclared_labels(t_tokens *tokens, t_lab_list *labels, t_errors **err);
+void					delete_lab_list(t_lab_list **lab);
 
 void					ft_to_code(t_tokens *tokens, char *name);
 char					*ft_get_extension(char *str, char c);
