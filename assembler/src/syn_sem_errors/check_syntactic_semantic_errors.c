@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int		find_last_command_line_number(t_tokens *tokens)
 {
