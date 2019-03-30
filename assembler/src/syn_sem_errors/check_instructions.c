@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static int	get_bytmap_offset(t_lex_list *lexem_lst, t_errors **error)
 {
