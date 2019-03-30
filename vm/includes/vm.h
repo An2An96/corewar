@@ -6,16 +6,12 @@
 /*   By: rschuppe <rschuppe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/14 13:48:56 by rschuppe          #+#    #+#             */
-/*   Updated: 2019/03/30 16:07:14 by rschuppe         ###   ########.fr       */
+/*   Updated: 2019/03/30 17:11:48 by rschuppe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VM_H
 # define VM_H
-
-# include <stdio.h>
-# include <stdarg.h>
-# include <ncurses.h>
 
 /*
 **	Libs
