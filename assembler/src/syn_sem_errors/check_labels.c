@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/asm.h"
+#include "asm.h"
 
 static t_bool	lexem_in_label_list(t_lexem *lexem, t_lab_list *lab)
 {
